@@ -6,7 +6,9 @@ import NetworkNavigatorInterface from '@/components/network/NetworkNavigatorInte
 const NetworkNavigator: React.FC = () => {
   return (
     <MainLayout>
-      <NetworkNavigatorInterface />
+      <div className="h-full">
+        <NetworkNavigatorInterface />
+      </div>
     </MainLayout>
   );
 };

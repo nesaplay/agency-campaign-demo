@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MapView from './MapView';
 import PublisherResults from './PublisherResults';
@@ -63,7 +62,6 @@ const NetworkNavigatorInterface: React.FC = () => {
     let filtered = publishers;
     
     if (selectedStates.length > 0) {
-      // Extract state from location string (e.g., "Phoenix, AZ" -> "AZ")
       filtered = filtered.filter(pub => {
         const statePart = pub.location.split(', ')[1];
         return selectedStates.includes(statePart);
@@ -104,7 +102,7 @@ const NetworkNavigatorInterface: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="flex flex-col">
       <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10">
         <div className="relative flex-1 max-w-2xl">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -165,7 +163,6 @@ const NetworkNavigatorInterface: React.FC = () => {
             </button>
           </div>
           
-          {/* Applied Filters */}
           {(selectedStates.length > 0 || selectedCategories.length > 0) && (
             <div className="mb-4">
               <h4 className="text-sm font-medium text-gray-500 mb-2">Applied Filters</h4>
@@ -198,7 +195,6 @@ const NetworkNavigatorInterface: React.FC = () => {
           )}
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Geographic Filters */}
             <div>
               <h4 className="text-sm font-medium text-gray-500 mb-2">Location</h4>
               
@@ -220,7 +216,6 @@ const NetworkNavigatorInterface: React.FC = () => {
               </div>
             </div>
             
-            {/* Content Category Filters */}
             <div>
               <h4 className="text-sm font-medium text-gray-500 mb-2">Content Categories</h4>
               
@@ -242,7 +237,6 @@ const NetworkNavigatorInterface: React.FC = () => {
               </div>
             </div>
             
-            {/* Audience Filters */}
             <div>
               <h4 className="text-sm font-medium text-gray-500 mb-2">Audience Size</h4>
               
@@ -288,7 +282,7 @@ const NetworkNavigatorInterface: React.FC = () => {
         </div>
       )}
       
-      <div className="flex-1 flex flex-col overflow-auto">
+      <div className="flex flex-col">
         <div className="bg-gray-50 p-4 border-b border-gray-200">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-medium text-empowerlocal-navy">Featured Collections</h3>
@@ -304,7 +298,7 @@ const NetworkNavigatorInterface: React.FC = () => {
         
         {displayMode === 'map' ? (
           <>
-            <div className="h-[60vh] border-b border-gray-200">
+            <div className="h-[40vh] border-b border-gray-200">
               <MapView 
                 publishers={filteredPublishers} 
                 onPublisherSelect={handlePublisherSelect}
@@ -312,7 +306,7 @@ const NetworkNavigatorInterface: React.FC = () => {
               />
             </div>
             
-            <div className="h-[40vh] overflow-hidden">
+            <div className="h-[40vh]">
               <PublisherResults 
                 publishers={filteredPublishers}
                 viewMode={viewMode}
@@ -322,7 +316,7 @@ const NetworkNavigatorInterface: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="flex-1 overflow-auto">
+          <div>
             <SeasonalCalendar 
               events={mockSeasonalEvents}
               regions={eventRegions}
