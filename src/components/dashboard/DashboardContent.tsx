@@ -68,7 +68,7 @@ const DashboardContent: React.FC = () => {
         ))}
       </div>
 
-      {/* Placeholder Content */}
+      {/* Network Navigator Card */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-80 flex items-center justify-center">
         <div className="text-center max-w-md">
           <div className="empowerlocal-gradient inline-flex h-12 w-12 rounded-lg items-center justify-center text-white mb-4">
@@ -78,9 +78,9 @@ const DashboardContent: React.FC = () => {
           <p className="mt-2 text-gray-500">
             Explore our network of 1000+ trusted local publishers across the United States
           </p>
-          <button className="mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-medium transition-colors">
-            Coming Soon
-          </button>
+          <Link to="/network-navigator" className="mt-4 px-4 py-2 bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue text-white rounded-lg inline-flex items-center gap-2 font-medium">
+            Explore Network
+          </Link>
         </div>
       </div>
     </div>
