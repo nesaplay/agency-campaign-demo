@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MapView from './MapView';
 import PublisherResults from './PublisherResults';
@@ -62,7 +63,11 @@ const NetworkNavigatorInterface: React.FC = () => {
     let filtered = publishers;
     
     if (selectedStates.length > 0) {
-      filtered = filtered.filter(pub => selectedStates.includes(pub.location.split(', ')[1]));
+      // Extract state from location string (e.g., "Phoenix, AZ" -> "AZ")
+      filtered = filtered.filter(pub => {
+        const statePart = pub.location.split(', ')[1];
+        return selectedStates.includes(statePart);
+      });
     }
     
     if (selectedCategories.length > 0) {
