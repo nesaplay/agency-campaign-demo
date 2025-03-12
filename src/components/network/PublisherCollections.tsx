@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChevronRight, Heart, Flag, Utensils, Tree, Map } from 'lucide-react';
+import { ChevronRight, Heart, Flag, Utensils, TreeDeciduous, Map } from 'lucide-react';
 import { PublisherCollection } from './types';
 
 interface PublisherCollectionsProps {
@@ -21,7 +21,7 @@ const PublisherCollections: React.FC<PublisherCollectionsProps> = ({
     } else if (name.includes('Foodie') || name.includes('Food')) {
       return <Utensils className="h-6 w-6 text-yellow-500" />;
     } else if (name.includes('Outdoor')) {
-      return <Tree className="h-6 w-6 text-green-500" />;
+      return <TreeDeciduous className="h-6 w-6 text-green-500" />;
     } else {
       return <Map className="h-6 w-6 text-blue-500" />;
     }
