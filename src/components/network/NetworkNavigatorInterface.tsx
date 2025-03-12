@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 import MapView from './MapView';
-import FilterSidebar from './FilterSidebar';
 import PublisherResults from './PublisherResults';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -64,7 +62,7 @@ const NetworkNavigatorInterface: React.FC = () => {
     let filtered = publishers;
     
     if (selectedStates.length > 0) {
-      filtered = filtered.filter(pub => selectedStates.includes(pub.state));
+      filtered = filtered.filter(pub => selectedStates.includes(pub.location.split(', ')[1]));
     }
     
     if (selectedCategories.length > 0) {
