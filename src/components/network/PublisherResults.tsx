@@ -1,9 +1,9 @@
-
 import React from 'react';
-import { Grid2X2, LayoutList, ArrowUpDown } from 'lucide-react';
+import { Grid2X2, LayoutList } from 'lucide-react';
 import { Publisher } from './types';
 import PublisherCard from './PublisherCard';
 import PublisherListItem from './PublisherListItem';
+import SortControls from './SortControls';
 
 interface PublisherResultsProps {
   publishers: Publisher[];
@@ -18,6 +18,11 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
   setViewMode,
   onPublisherSelect
 }) => {
+  const handleSortChange = (sortBy: string) => {
+    // Sort functionality will be implemented when needed
+    console.log('Sorting by:', sortBy);
+  };
+
   return (
     <div className="h-full flex flex-col">
       {/* Controls */}
@@ -25,15 +30,7 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
         <h3 className="font-medium text-empowerlocal-navy">Publisher Results</h3>
         
         <div className="flex items-center gap-4">
-          <div className="flex items-center text-sm text-gray-500">
-            <span className="mr-2">Sort by:</span>
-            <select className="border-0 focus:ring-0 pr-8 py-0 text-sm">
-              <option>Relevance</option>
-              <option>Audience Size</option>
-              <option>Performance</option>
-            </select>
-            <ArrowUpDown className="h-4 w-4 ml-1" />
-          </div>
+          <SortControls onSortChange={handleSortChange} />
           
           <div className="flex bg-gray-100 rounded-lg">
             <button
