@@ -5,7 +5,6 @@ import PublisherCollections from './PublisherCollections';
 import { Publisher, PublisherCollection } from './types';
 import { mockPublishers } from './mockData';
 import { mockCollections } from './mockCollectionsData';
-import SearchBar from './SearchBar';
 import FilterPanel from './FilterPanel';
 import ResultsHeader from './ResultsHeader';
 import ResultsDisplay from './ResultsDisplay';
@@ -127,17 +126,6 @@ const NetworkNavigatorInterface: React.FC = () => {
   
   return (
     <div className="flex flex-col h-full">
-      {/* Top search and filters bar */}
-      <SearchBar 
-        searchQuery={searchQuery}
-        onSearchChange={handleSearch}
-        publisherCount={filteredPublishers.length}
-        showFilters={showFilters}
-        toggleFilters={toggleFilters}
-        resultsDisplayMode={resultsDisplayMode}
-        setResultsDisplayMode={setResultsDisplayMode}
-      />
-      
       {/* Filter panel */}
       {showFilters && (
         <FilterPanel 
@@ -171,6 +159,12 @@ const NetworkNavigatorInterface: React.FC = () => {
         setViewMode={setViewMode}
         selectedPublisher={selectedPublisher}
         onPublisherSelect={handlePublisherSelect}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearch}
+        publisherCount={filteredPublishers.length}
+        showFilters={showFilters}
+        toggleFilters={toggleFilters}
+        setResultsDisplayMode={setResultsDisplayMode}
       />
       
       {/* Detail view overlay */}
