@@ -38,3 +38,28 @@ export interface FilterOptions {
     maxCpm: number;
   };
 }
+
+export interface PublisherCollection {
+  id: string;
+  name: string;
+  description: string;
+  publisherCount: number;
+  thumbnail: string;
+  coverageMapThumbnail: string;
+  publishers: string[]; // Array of publisher IDs
+}
+
+export interface SeasonalEvent {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  regions: string[];
+  categories: string[];
+  relevanceScore: number;
+  color: string;
+  icon?: string;
+}
+
+export type ViewMode = 'map' | 'calendar';

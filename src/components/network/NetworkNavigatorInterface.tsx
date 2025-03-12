@@ -4,17 +4,22 @@ import MapView from './MapView';
 import FilterSidebar from './FilterSidebar';
 import PublisherResults from './PublisherResults';
 import PublisherDetail from './PublisherDetail';
-import { Publisher } from './types';
-import { ChevronLeft, Search } from 'lucide-react';
+import PublisherCollections from './PublisherCollections';
+import SeasonalCalendar from './SeasonalCalendar';
+import { Publisher, PublisherCollection, ViewMode } from './types';
+import { ChevronLeft, Search, Map, Calendar } from 'lucide-react';
 import { mockPublishers } from './mockData';
+import { mockCollections, mockSeasonalEvents, eventCategories, eventRegions } from './mockCollectionsData';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [publishers] = useState<Publisher[]>(mockPublishers);
   const [filteredPublishers, setFilteredPublishers] = useState<Publisher[]>(mockPublishers);
   const [selectedPublisher, setSelectedPublisher] = useState<Publisher | null>(null);
+  const [selectedCollection, setSelectedCollection] = useState<PublisherCollection | null>(null);
   const [showFilters, setShowFilters] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [displayMode, setDisplayMode] = useState<ViewMode>('map');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -53,6 +58,13 @@ const NetworkNavigatorInterface: React.FC = () => {
     setShowFilters(!showFilters);
   };
 
+  const handleExploreCollection = (collection: PublisherCollection) => {
+    setSelectedCollection(collection);
+    // This would typically filter publishers to show only those in this collection
+    console.log("Exploring collection:", collection.name);
+    // For demo, we'll just log it
+  };
+
   return (
     <div className="h-full flex flex-col">
       {/* Search Bar */}
@@ -80,6 +92,24 @@ const NetworkNavigatorInterface: React.FC = () => {
         <div className="text-sm font-medium text-gray-500">
           {filteredPublishers.length} publishers found
         </div>
+        
+        {/* View Mode Toggle */}
+        <div className="flex bg-gray-100 rounded-lg">
+          <button
+            onClick={() => setDisplayMode('map')}
+            className={`p-2 flex items-center gap-1 ${displayMode === 'map' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'} rounded-l-lg`}
+          >
+            <Map className="h-4 w-4" />
+            <span className="text-sm">Map</span>
+          </button>
+          <button
+            onClick={() => setDisplayMode('calendar')}
+            className={`p-2 flex items-center gap-1 ${displayMode === 'calendar' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'} rounded-r-lg`}
+          >
+            <Calendar className="h-4 w-4" />
+            <span className="text-sm">Calendar</span>
+          </button>
+        </div>
       </div>
       
       {/* Main Content */}
@@ -91,24 +121,44 @@ const NetworkNavigatorInterface: React.FC = () => {
         
         {/* Map and Results */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Map View (60% height) */}
-          <div className="h-3/5 border-b border-gray-200">
-            <MapView 
-              publishers={filteredPublishers} 
-              onPublisherSelect={handlePublisherSelect}
-              selectedPublisher={selectedPublisher}
+          {/* Collections Row */}
+          <div className="bg-gray-50 p-4 border-b border-gray-200">
+            <PublisherCollections 
+              collections={mockCollections}
+              onExploreCollection={handleExploreCollection}
             />
           </div>
           
-          {/* Results View (40% height) */}
-          <div className="h-2/5 overflow-hidden">
-            <PublisherResults 
-              publishers={filteredPublishers}
-              viewMode={viewMode}
-              setViewMode={setViewMode}
-              onPublisherSelect={handlePublisherSelect}
-            />
-          </div>
+          {displayMode === 'map' ? (
+            <>
+              {/* Map View (60% height) */}
+              <div className="h-3/5 border-b border-gray-200">
+                <MapView 
+                  publishers={filteredPublishers} 
+                  onPublisherSelect={handlePublisherSelect}
+                  selectedPublisher={selectedPublisher}
+                />
+              </div>
+              
+              {/* Results View (40% height) */}
+              <div className="h-2/5 overflow-hidden">
+                <PublisherResults 
+                  publishers={filteredPublishers}
+                  viewMode={viewMode}
+                  setViewMode={setViewMode}
+                  onPublisherSelect={handlePublisherSelect}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 overflow-hidden">
+              <SeasonalCalendar 
+                events={mockSeasonalEvents}
+                regions={eventRegions}
+                categories={eventCategories}
+              />
+            </div>
+          )}
         </div>
         
         {/* Publisher Detail Slide-in */}
