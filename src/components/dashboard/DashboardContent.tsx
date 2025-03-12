@@ -2,6 +2,7 @@
 import React from 'react';
 import { Bot, MapPin, Activity, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const DashboardContent: React.FC = () => {
   // Placeholder data
@@ -38,10 +39,10 @@ const DashboardContent: React.FC = () => {
             <h1 className="text-2xl font-semibold text-empowerlocal-navy">Welcome, Jane</h1>
             <p className="mt-1 text-gray-500">Discover and plan your next multi-local campaign</p>
           </div>
-          <button className="px-4 py-2 bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue text-white rounded-lg flex items-center gap-2 font-medium">
+          <Link to="/conversations" className="px-4 py-2 bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue text-white rounded-lg flex items-center gap-2 font-medium">
             <Bot className="h-4 w-4" />
             <span>Ask Lassie AI</span>
-          </button>
+          </Link>
         </div>
       </div>
 

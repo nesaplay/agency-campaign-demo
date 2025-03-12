@@ -9,6 +9,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -19,7 +20,7 @@ const Sidebar: React.FC = () => {
 
   const navItems = [
     { icon: Home, label: 'Home', href: '/' },
-    { icon: Bot, label: 'Build with Lassie AI', href: '/ai' },
+    { icon: Bot, label: 'Build with Lassie AI', href: '/conversations' },
     { icon: LineChart, label: 'Campaigns', href: '/campaigns' },
     { icon: BarChart3, label: 'Data & Analytics', href: '/analytics' },
     { icon: Settings, label: 'Settings', href: '/settings' },
@@ -52,8 +53,8 @@ const Sidebar: React.FC = () => {
         <ul className="space-y-1 px-2">
           {navItems.map((item, index) => (
             <li key={index}>
-              <a
-                href={item.href}
+              <Link
+                to={item.href}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors",
                   collapsed ? "justify-center" : ""
@@ -66,7 +67,7 @@ const Sidebar: React.FC = () => {
                   index !== 0 && index !== 1 && "text-gray-500"
                 )} />
                 {!collapsed && <span>{item.label}</span>}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
