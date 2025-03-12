@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MapView from './MapView';
 import FilterSidebar from './FilterSidebar';
@@ -40,9 +39,7 @@ const NetworkNavigatorInterface: React.FC = () => {
   };
 
   const handleFilter = (filters: any) => {
-    // This would be more sophisticated in a real app
     console.log("Applied filters:", filters);
-    // For demo, just use the original data
     setFilteredPublishers(publishers);
   };
 
@@ -60,15 +57,12 @@ const NetworkNavigatorInterface: React.FC = () => {
 
   const handleExploreCollection = (collection: PublisherCollection) => {
     setSelectedCollection(collection);
-    // This would typically filter publishers to show only those in this collection
     console.log("Exploring collection:", collection.name);
-    // For demo, we'll just log it
   };
 
   return (
     <div className="h-full flex flex-col">
-      {/* Search Bar */}
-      <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4">
+      <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10">
         <button 
           onClick={toggleFilters}
           className="p-2 rounded-lg hover:bg-gray-100"
@@ -93,7 +87,6 @@ const NetworkNavigatorInterface: React.FC = () => {
           {filteredPublishers.length} publishers found
         </div>
         
-        {/* View Mode Toggle */}
         <div className="flex bg-gray-100 rounded-lg">
           <button
             onClick={() => setDisplayMode('map')}
@@ -112,16 +105,12 @@ const NetworkNavigatorInterface: React.FC = () => {
         </div>
       </div>
       
-      {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Filter Sidebar */}
         {showFilters && (
           <FilterSidebar onApplyFilters={handleFilter} />
         )}
         
-        {/* Map and Results */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Collections Row */}
+        <div className="flex-1 flex flex-col overflow-auto">
           <div className="bg-gray-50 p-4 border-b border-gray-200">
             <PublisherCollections 
               collections={mockCollections}
@@ -131,8 +120,7 @@ const NetworkNavigatorInterface: React.FC = () => {
           
           {displayMode === 'map' ? (
             <>
-              {/* Map View (60% height) */}
-              <div className="h-3/5 border-b border-gray-200">
+              <div className="h-[60vh] border-b border-gray-200">
                 <MapView 
                   publishers={filteredPublishers} 
                   onPublisherSelect={handlePublisherSelect}
@@ -140,8 +128,7 @@ const NetworkNavigatorInterface: React.FC = () => {
                 />
               </div>
               
-              {/* Results View (40% height) */}
-              <div className="h-2/5 overflow-hidden">
+              <div className="h-[40vh] overflow-hidden">
                 <PublisherResults 
                   publishers={filteredPublishers}
                   viewMode={viewMode}
@@ -151,7 +138,7 @@ const NetworkNavigatorInterface: React.FC = () => {
               </div>
             </>
           ) : (
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-auto">
               <SeasonalCalendar 
                 events={mockSeasonalEvents}
                 regions={eventRegions}
@@ -161,7 +148,6 @@ const NetworkNavigatorInterface: React.FC = () => {
           )}
         </div>
         
-        {/* Publisher Detail Slide-in */}
         {selectedPublisher && (
           <PublisherDetail 
             publisher={selectedPublisher} 

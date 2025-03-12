@@ -18,8 +18,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {/* Header */}
         <Header />
         
-        {/* Page Content */}
-        <main className="flex-1 overflow-auto p-6 bg-gray-50">
+        {/* Page Content - Main scrollable area */}
+        <main className="flex-1 overflow-auto bg-gray-50">
           {children}
         </main>
       </div>
