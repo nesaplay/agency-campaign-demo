@@ -104,7 +104,7 @@ const NetworkNavigatorInterface: React.FC = () => {
     setSelectedCollection(collection);
     
     const collectionPublishers = publishers.filter(
-      (_, index) => collection.publishers.includes(_.id)
+      pub => collection.publishers.includes(pub.id)
     );
     
     setFilteredPublishers(collectionPublishers);
@@ -124,32 +124,33 @@ const NetworkNavigatorInterface: React.FC = () => {
   
   return (
     <div className="flex flex-col h-full relative overflow-hidden">
-      {/* Filter panel with overlay */}
-      <div 
-        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300 ${
-          showFilters ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-        onClick={() => setShowFilters(false)}
-      ></div>
-      
-      {/* Filter panel - fixed positioning instead of absolute */}
-      <div 
-        className={`fixed top-0 left-0 h-full z-30 transition-transform duration-300 transform ${
-          showFilters ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <FilterPanel 
-          selectedStates={selectedStates}
-          toggleState={toggleState}
-          selectedCategories={selectedCategories}
-          toggleCategory={toggleCategory}
-          handleFilter={handleFilter}
-          clearFilters={clearFilters}
-          states={states}
-          categories={categories}
-          closeFilters={() => setShowFilters(false)}
-        />
-      </div>
+      {/* Filter panel as modal/dialog */}
+      {showFilters && (
+        <>
+          {/* Semi-transparent overlay */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowFilters(false)}
+          ></div>
+          
+          {/* Central filter dialog */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <FilterPanel 
+                selectedStates={selectedStates}
+                toggleState={toggleState}
+                selectedCategories={selectedCategories}
+                toggleCategory={toggleCategory}
+                handleFilter={handleFilter}
+                clearFilters={clearFilters}
+                states={states}
+                categories={categories}
+                closeFilters={() => setShowFilters(false)}
+              />
+            </div>
+          </div>
+        </>
+      )}
       
       {/* Collections */}
       <div className="bg-gray-50 p-4 border-b border-gray-200">

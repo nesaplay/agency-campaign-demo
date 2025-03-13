@@ -259,7 +259,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   };
   
   return (
-    <div className="fixed inset-y-0 left-0 z-30 w-80 bg-white shadow-xl transform transition-transform ease-in-out duration-300 overflow-y-auto">
+    <div className="w-full max-h-[90vh] overflow-y-auto rounded-lg">
       <div className="sticky top-0 bg-white z-10 border-b border-gray-200">
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center gap-2">
@@ -289,7 +289,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         {/* Preset filter sets */}
         <div className="px-4 pb-2 overflow-x-auto">
           <p className="text-xs text-gray-500 mb-2">Preset Filters</p>
-          <div className="flex space-x-2 pb-2">
+          <div className="flex space-x-2 pb-2 overflow-x-auto">
             {PRESET_FILTER_SETS.map(preset => (
               <button
                 key={preset.name}
@@ -423,7 +423,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       )}
       
-      <div className="p-4">
+      <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Location Section */}
         <div className="mb-4">
           <button 
