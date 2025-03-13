@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye } from 'lucide-react';
+import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye, MessageCircleQuestion } from 'lucide-react';
 import { Publisher } from './types';
 import { useToast } from "@/hooks/use-toast";
 
@@ -42,6 +42,15 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDel
     }
   };
   
+  const handleAskLassie = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toast({
+      title: "Lassie activated",
+      description: `Now chatting about ${publisher.name}`,
+    });
+    // In a real implementation, this would trigger the Lassie chat panel
+  };
+  
   return (
     <div 
       className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative"
@@ -75,16 +84,34 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDel
         )}
       </div>
       
-      {/* Logo */}
+      {/* Logo & Website Preview */}
       <div 
-        className="h-32 bg-gray-100 flex items-center justify-center"
+        className="h-40 bg-gray-100 flex items-center justify-center relative"
         onClick={onClick}
       >
         <img
           src={publisher.logo}
           alt={`${publisher.name} logo`}
-          className="max-h-full max-w-full object-contain p-4"
+          className="max-h-full max-w-full object-contain p-4 z-10 relative"
         />
+        
+        {/* Website preview background */}
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&auto=format&fit=crop" 
+            alt="Website preview" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        {/* Performance badge */}
+        <div className={`absolute top-2 left-2 px-2 py-0.5 text-xs font-medium rounded-full z-10 ${
+          publisher.performance === 'Excellent' ? 'bg-green-100 text-green-700' :
+          publisher.performance === 'Good' ? 'bg-blue-100 text-blue-700' :
+          'bg-yellow-100 text-yellow-700'
+        }`}>
+          {publisher.performance}
+        </div>
       </div>
       
       {/* Content */}
@@ -128,17 +155,27 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDel
           )}
         </div>
         
-        {/* Action Button */}
-        <button 
-          className="mt-3 w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center justify-center gap-1 transition-colors"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-        >
-          <Plus className="h-4 w-4" />
-          Add to Campaign
-        </button>
+        {/* Action Buttons */}
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button 
+            className="py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center justify-center gap-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+          >
+            <Plus className="h-4 w-4" />
+            Add to Campaign
+          </button>
+          
+          <button 
+            className="py-2 bg-white border border-empowerlocal-blue/30 text-empowerlocal-blue hover:bg-empowerlocal-blue/5 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors"
+            onClick={handleAskLassie}
+          >
+            <MessageCircleQuestion className="h-4 w-4" />
+            Ask Lassie
+          </button>
+        </div>
       </div>
     </div>
   );

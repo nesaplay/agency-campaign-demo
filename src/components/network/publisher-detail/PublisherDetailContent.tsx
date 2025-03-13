@@ -8,6 +8,10 @@ import PerformanceMetrics from './PerformanceMetrics';
 import AudienceDemographics from './AudienceDemographics';
 import AvailableInventory from './AvailableInventory';
 import { getPerformanceColor } from './utils/colorUtils';
+import ContentPreviewGallery from './ContentPreviewGallery';
+import PublisherSeasonality from './PublisherSeasonality';
+import AiInsights from './AiInsights';
+import PublisherSpotlight from './PublisherSpotlight';
 
 interface PublisherDetailContentProps {
   publisher: Publisher;
@@ -16,14 +20,26 @@ interface PublisherDetailContentProps {
 const PublisherDetailContent: React.FC<PublisherDetailContentProps> = ({ publisher }) => {
   return (
     <div className="flex-1 p-6 overflow-auto">
-      {/* Logo and Info */}
+      {/* Enhanced Logo and Info */}
       <PublisherHeader 
         publisher={publisher} 
         getPerformanceColor={getPerformanceColor} 
       />
       
+      {/* AI Insights Section */}
+      <AiInsights publisher={publisher} />
+      
+      {/* Publisher Spotlight */}
+      <PublisherSpotlight publisher={publisher} />
+      
+      {/* Content Preview Gallery */}
+      <ContentPreviewGallery publisher={publisher} />
+      
       {/* Key Metrics */}
       <KeyMetrics publisher={publisher} />
+      
+      {/* Seasonality Calendar */}
+      <PublisherSeasonality publisher={publisher} />
       
       {/* Categories */}
       <ContentCategories categories={publisher.categories} />
@@ -31,7 +47,7 @@ const PublisherDetailContent: React.FC<PublisherDetailContentProps> = ({ publish
       {/* Performance Metrics */}
       <PerformanceMetrics />
       
-      {/* Audience Demographics */}
+      {/* Enhanced Audience Demographics */}
       <AudienceDemographics />
       
       {/* Available Inventory */}
