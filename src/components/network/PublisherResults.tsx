@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Grid2X2, LayoutList } from 'lucide-react';
 import { Publisher } from './types';
@@ -7,6 +8,7 @@ import SortControls from './SortControls';
 import { PublisherList } from '../lists/types';
 import EnhancedPublisherCard from './EnhancedPublisherCard';
 import EnhancedPublisherListItem from './EnhancedPublisherListItem';
+
 interface PublisherResultsProps {
   publishers: Publisher[];
   viewMode: 'grid' | 'list';
@@ -17,6 +19,7 @@ interface PublisherResultsProps {
   handleSaveToList?: (publisher: Publisher) => void;
   getPublisherLists?: (publisherId: string) => PublisherList[];
 }
+
 const PublisherResults: React.FC<PublisherResultsProps> = ({
   publishers,
   viewMode,
@@ -34,10 +37,11 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
 
   // Determine if we're using the enhanced components with list functionality
   const hasListFunctionality = !!togglePublisherSelection && !!handleSaveToList && !!getPublisherLists;
+  
   return <div className="h-full flex flex-col">
       {/* Controls */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white sticky top-0 z-10">
-        
+        <div className="flex-1"></div> {/* Empty div to push the controls to the right */}
         
         <div className="flex items-center gap-4">
           <SortControls onSortChange={handleSortChange} />
@@ -65,4 +69,5 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
       </div>
     </div>;
 };
+
 export default PublisherResults;
