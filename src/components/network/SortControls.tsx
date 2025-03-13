@@ -1,8 +1,11 @@
+
 import React from 'react';
 import { ArrowUpDown } from 'lucide-react';
+
 interface SortControlsProps {
   onSortChange: (value: string) => void;
 }
+
 const SortControls: React.FC<SortControlsProps> = ({
   onSortChange
 }) => {
@@ -13,7 +16,7 @@ const SortControls: React.FC<SortControlsProps> = ({
         <option value="audience">Audience Size</option>
         <option value="performance">Performance</option>
       </select>
-      
     </div>;
 };
+
 export default SortControls;

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Grid2X2, LayoutList } from 'lucide-react';
 import { Publisher } from './types';
@@ -7,6 +8,7 @@ import SortControls from './SortControls';
 import { PublisherList } from '../lists/types';
 import EnhancedPublisherCard from './EnhancedPublisherCard';
 import EnhancedPublisherListItem from './EnhancedPublisherListItem';
+
 interface PublisherResultsProps {
   publishers: Publisher[];
   viewMode: 'grid' | 'list';
@@ -16,7 +18,9 @@ interface PublisherResultsProps {
   selectedPublishers?: string[];
   handleSaveToList?: (publisher: Publisher) => void;
   getPublisherLists?: (publisherId: string) => PublisherList[];
+  publisherCount?: number;
 }
+
 const PublisherResults: React.FC<PublisherResultsProps> = ({
   publishers,
   viewMode,
@@ -25,7 +29,8 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
   togglePublisherSelection,
   selectedPublishers = [],
   handleSaveToList,
-  getPublisherLists
+  getPublisherLists,
+  publisherCount
 }) => {
   const handleSortChange = (sortBy: string) => {
     // Sort functionality will be implemented when needed
@@ -34,22 +39,29 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
 
   // Determine if we're using the enhanced components with list functionality
   const hasListFunctionality = !!togglePublisherSelection && !!handleSaveToList && !!getPublisherLists;
+  
   return <div className="h-full flex flex-col">
       {/* Controls */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white sticky top-0 z-10">
-        
-        
-        <div className="flex items-center gap-4">
+        {/* Left side - Sort controls and publisher count */}
+        <div className="flex items-center space-x-6">
           <SortControls onSortChange={handleSortChange} />
           
-          <div className="flex bg-gray-100 rounded-lg shadow-sm">
-            <button onClick={() => setViewMode('grid')} className={`p-2 rounded-l-lg ${viewMode === 'grid' ? 'bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white shadow-inner' : 'text-gray-600 hover:bg-gray-200'}`}>
-              <Grid2X2 className="h-4 w-4" />
-            </button>
-            <button onClick={() => setViewMode('list')} className={`p-2 rounded-r-lg ${viewMode === 'list' ? 'bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white shadow-inner' : 'text-gray-600 hover:bg-gray-200'}`}>
-              <LayoutList className="h-4 w-4" />
-            </button>
-          </div>
+          {publisherCount !== undefined && (
+            <div className="text-sm text-gray-500">
+              {publisherCount} publishers found
+            </div>
+          )}
+        </div>
+        
+        {/* Right side - View mode toggle */}
+        <div className="flex bg-gray-100 rounded-lg shadow-sm">
+          <button onClick={() => setViewMode('grid')} className={`p-2 rounded-l-lg ${viewMode === 'grid' ? 'bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white shadow-inner' : 'text-gray-600 hover:bg-gray-200'}`}>
+            <Grid2X2 className="h-4 w-4" />
+          </button>
+          <button onClick={() => setViewMode('list')} className={`p-2 rounded-r-lg ${viewMode === 'list' ? 'bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white shadow-inner' : 'text-gray-600 hover:bg-gray-200'}`}>
+            <LayoutList className="h-4 w-4" />
+          </button>
         </div>
       </div>
       
@@ -65,4 +77,5 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
       </div>
     </div>;
 };
+
 export default PublisherResults;
