@@ -52,7 +52,7 @@ const discoveryCards = [
     icon: <Network className="h-5 w-5" />,
     title: 'Network Update',
     subtitle: '12 New Publishers',
-    description: 'We've added 12 new publishers across the Southwest region specializing in hispanic audiences.',
+    description: 'We\'ve added 12 new publishers across the Southwest region specializing in hispanic audiences.',
     image: '/placeholder.svg',
     cta: 'Explore New Publishers',
     ctaLink: '/network-navigator',
