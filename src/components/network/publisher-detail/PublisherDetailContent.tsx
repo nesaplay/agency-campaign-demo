@@ -24,7 +24,7 @@ const PublisherDetailContent: React.FC<PublisherDetailContentProps> = ({
   setShowLassieChat
 }) => {
   return (
-    <ScrollArea className="flex-1 h-full">
+    <ScrollArea className="h-[calc(90vh-130px)]">
       <div className="p-6">
         {/* Enhanced Logo and Info */}
         <div className="flex justify-between items-start mb-6">

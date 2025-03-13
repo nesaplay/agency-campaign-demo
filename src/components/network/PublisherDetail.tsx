@@ -19,10 +19,12 @@ const PublisherDetail: React.FC<PublisherDetailProps> = ({ publisher, onClose })
     <PublisherModal onClose={onClose}>
       <div className="flex h-full">
         <div className={`flex-1 flex flex-col transition-all duration-300 ${showLassieChat ? 'w-2/3' : 'w-full'}`}>
-          <PublisherDetailContent 
-            publisher={publisher} 
-            setShowLassieChat={setShowLassieChat}
-          />
+          <div className="flex-1 overflow-hidden">
+            <PublisherDetailContent 
+              publisher={publisher} 
+              setShowLassieChat={setShowLassieChat}
+            />
+          </div>
           <PublisherActions />
         </div>
         
