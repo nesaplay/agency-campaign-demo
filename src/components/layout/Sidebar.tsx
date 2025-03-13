@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
     { icon: Bot, label: 'Ask Lassie', href: '/conversations' },
     { icon: MapPin, label: 'Explore Media', href: '/network-navigator' },
     { icon: ListChecks, label: 'My Lists', href: '/lists' },
-    { icon: LineChart, label: 'Campaigns', href: '/campaigns' },
+    { icon: LineChart, label: 'My Campaigns', href: '/campaigns' },
     { icon: BarChart3, label: 'Data & Analytics', href: '/analytics' },
     { icon: Settings, label: 'Settings', href: '/settings' },
   ];
