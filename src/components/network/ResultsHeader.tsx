@@ -6,20 +6,29 @@ interface ResultsHeaderProps {
   activeBrowseMethod: string;
   resultsDisplayMode: 'list' | 'grid' | 'map';
   setResultsDisplayMode: (mode: 'list' | 'grid' | 'map') => void;
+  publisherCount?: number;
 }
 
 const ResultsHeader: React.FC<ResultsHeaderProps> = ({ 
   activeBrowseMethod,
   resultsDisplayMode,
-  setResultsDisplayMode
+  setResultsDisplayMode,
+  publisherCount
 }) => {
   return (
     <div className="p-4 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center">
-      <h2 className="text-lg font-medium text-empowerlocal-navy">
-        {activeBrowseMethod}
-      </h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-medium text-empowerlocal-navy">
+          {activeBrowseMethod}
+        </h2>
+        {publisherCount !== undefined && (
+          <span className="text-sm text-gray-500 ml-2">
+            ({publisherCount} publishers found)
+          </span>
+        )}
+      </div>
       
-      {/* View controls moved up here */}
+      {/* View controls */}
       <div className="flex bg-gray-100 rounded-lg">
         <button 
           onClick={() => setResultsDisplayMode('list')} 

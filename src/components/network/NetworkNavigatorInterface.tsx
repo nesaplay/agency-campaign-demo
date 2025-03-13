@@ -92,6 +92,7 @@ const NetworkNavigatorInterface: React.FC = () => {
         activeBrowseMethod={getActiveBrowseMethod()} 
         resultsDisplayMode={resultsDisplayMode}
         setResultsDisplayMode={setResultsDisplayMode}
+        publisherCount={filteredPublishers.length}
       />
       
       {/* Selected publishers action bar */}

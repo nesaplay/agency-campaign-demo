@@ -97,14 +97,6 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
           <SortControls onSortChange={() => {}} />
         </div>
       </div>
-      
-      {/* Second row: Publisher count only */}
-      <div className="px-4 py-2 border-t border-gray-100">
-        {/* Left-aligned publisher count */}
-        <div className="text-sm text-gray-500 ml-2">
-          {publisherCount} publishers found
-        </div>
-      </div>
     </div>
   );
 };
