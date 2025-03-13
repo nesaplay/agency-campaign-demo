@@ -6,10 +6,8 @@ import ResultsControls from './results/ResultsControls';
 import ResultsContent from './results/ResultsContent';
 
 interface ResultsDisplayProps {
-  resultsDisplayMode: 'list' | 'map';
+  resultsDisplayMode: 'list' | 'grid' | 'map';
   filteredPublishers: Publisher[];
-  viewMode: 'grid' | 'list';
-  setViewMode: (mode: 'grid' | 'list') => void;
   selectedPublisher: Publisher | null;
   onPublisherSelect: (publisher: Publisher) => void;
   // Search props
@@ -18,7 +16,7 @@ interface ResultsDisplayProps {
   publisherCount: number;
   showFilters: boolean;
   toggleFilters: () => void;
-  setResultsDisplayMode: (mode: 'list' | 'map') => void;
+  setResultsDisplayMode: (mode: 'list' | 'grid' | 'map') => void;
   // List functionality props
   togglePublisherSelection?: (publisherId: string) => void;
   selectedPublishers?: string[];
@@ -34,8 +32,6 @@ interface ResultsDisplayProps {
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   resultsDisplayMode,
   filteredPublishers,
-  viewMode,
-  setViewMode,
   selectedPublisher,
   onPublisherSelect,
   searchQuery,
@@ -72,14 +68,13 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       <ResultsContent 
         resultsDisplayMode={resultsDisplayMode}
         filteredPublishers={filteredPublishers}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
         selectedPublisher={selectedPublisher}
         onPublisherSelect={onPublisherSelect}
         togglePublisherSelection={togglePublisherSelection}
         selectedPublishers={selectedPublishers}
         handleSaveToList={handleSaveToList}
         getPublisherLists={getPublisherLists}
+        publisherCount={publisherCount}
       />
     </div>
   );

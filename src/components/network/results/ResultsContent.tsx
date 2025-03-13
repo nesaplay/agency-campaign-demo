@@ -6,10 +6,8 @@ import MapView from '../MapView';
 import { PublisherList } from '@/components/lists/types';
 
 interface ResultsContentProps {
-  resultsDisplayMode: 'list' | 'map';
+  resultsDisplayMode: 'list' | 'grid' | 'map';
   filteredPublishers: Publisher[];
-  viewMode: 'grid' | 'list';
-  setViewMode: (mode: 'grid' | 'list') => void;
   selectedPublisher: Publisher | null;
   onPublisherSelect: (publisher: Publisher) => void;
   togglePublisherSelection?: (publisherId: string) => void;
@@ -22,8 +20,6 @@ interface ResultsContentProps {
 const ResultsContent: React.FC<ResultsContentProps> = ({
   resultsDisplayMode,
   filteredPublishers,
-  viewMode,
-  setViewMode,
   selectedPublisher,
   onPublisherSelect,
   togglePublisherSelection,
@@ -34,23 +30,22 @@ const ResultsContent: React.FC<ResultsContentProps> = ({
 }) => {
   return (
     <div className="flex-1 h-0">
-      {resultsDisplayMode === 'list' ? (
+      {resultsDisplayMode === 'map' ? (
+        <MapView 
+          publishers={filteredPublishers}
+          selectedPublisher={selectedPublisher}
+          onPublisherSelect={onPublisherSelect}
+        />
+      ) : (
         <PublisherResults 
           publishers={filteredPublishers}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
+          viewMode={resultsDisplayMode}
           onPublisherSelect={onPublisherSelect}
           togglePublisherSelection={togglePublisherSelection}
           selectedPublishers={selectedPublishers}
           handleSaveToList={handleSaveToList}
           getPublisherLists={getPublisherLists}
           publisherCount={publisherCount !== undefined ? publisherCount : filteredPublishers.length}
-        />
-      ) : (
-        <MapView 
-          publishers={filteredPublishers}
-          selectedPublisher={selectedPublisher}
-          onPublisherSelect={onPublisherSelect}
         />
       )}
     </div>

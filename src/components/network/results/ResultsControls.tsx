@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Filter, Map, List, X } from 'lucide-react';
+import { Filter, Map, Grid2X2, List, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface ResultsControlsProps {
@@ -9,8 +9,8 @@ interface ResultsControlsProps {
   publisherCount: number;
   showFilters: boolean;
   toggleFilters: () => void;
-  resultsDisplayMode: 'list' | 'map';
-  setResultsDisplayMode: (mode: 'list' | 'map') => void;
+  resultsDisplayMode: 'list' | 'grid' | 'map';
+  setResultsDisplayMode: (mode: 'list' | 'grid' | 'map') => void;
   selectedStates: string[];
   selectedCategories: string[];
   toggleState?: (state: string) => void;
@@ -25,7 +25,8 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
   selectedStates,
   selectedCategories,
   toggleState,
-  toggleCategory
+  toggleCategory,
+  publisherCount
 }) => {
   const hasActiveFilters = selectedStates.length > 0 || selectedCategories.length > 0;
   
@@ -43,8 +44,11 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
         </button>
         
         <div className="flex-1 flex items-center gap-2 overflow-x-auto px-2 py-1 scrollbar-hide">
+          {/* Show publisher count */}
+          <span className="text-sm text-gray-500">{publisherCount} publishers found</span>
+          
           {/* Active filter tags */}
-          {hasActiveFilters ? (
+          {hasActiveFilters && (
             <>
               {selectedStates.map(state => (
                 <Badge 
@@ -84,8 +88,6 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
                 </Badge>
               ))}
             </>
-          ) : (
-            <span className="text-sm text-gray-500">No filters applied</span>
           )}
         </div>
       </div>
@@ -100,6 +102,15 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
           >
             <List className="h-4 w-4" />
             <span className="text-sm">List</span>
+          </button>
+          <button 
+            onClick={() => setResultsDisplayMode('grid')} 
+            className={`p-2 flex items-center gap-1 transition-colors ${
+              resultsDisplayMode === 'grid' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <Grid2X2 className="h-4 w-4" />
+            <span className="text-sm">Grid</span>
           </button>
           <button 
             onClick={() => setResultsDisplayMode('map')} 
