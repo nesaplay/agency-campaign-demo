@@ -107,6 +107,22 @@
   background: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
 }
 
+/* Navigation styles */
+.nav-active-indicator {
+  position: relative;
+}
+
+.nav-active-indicator::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #25A87E;
+  border-radius: 0 2px 2px 0;
+}
+
 /* Animation for typing indicator */
 @keyframes pulse {
   0%, 100% {
