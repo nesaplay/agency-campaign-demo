@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import CampaignCommandCenter from './command-center/CampaignCommandCenter';
 import OpportunitySpotting from './opportunity-spotting/OpportunitySpotting';
 import PersonalizedDiscovery from './personalized-discovery/PersonalizedDiscovery';
-import BrandContextModule from '@/components/brands/BrandContextModule';
+import BrandContextModule from '@/components/brands/context-module/BrandContextModule';
 import { Button } from '@/components/ui/button';
 
 const DashboardContent: React.FC = () => {
