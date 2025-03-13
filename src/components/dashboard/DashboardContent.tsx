@@ -20,7 +20,7 @@ const DashboardContent: React.FC = () => {
             <p className="mt-1 text-gray-500">Your campaign command center</p>
           </div>
           <Button asChild className="bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue hover:from-empowerlocal-green/90 hover:to-empowerlocal-blue/90">
-            <Link to="/campaigns/create">
+            <Link to="/network-navigator">
               <PlusCircle className="h-4 w-4 mr-2" />
               Create Campaign
             </Link>
