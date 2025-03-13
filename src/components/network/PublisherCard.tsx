@@ -1,41 +1,90 @@
 
-import React from 'react';
-import { MapPin, Users, BarChart2, DollarSign, Plus } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye } from 'lucide-react';
 import { Publisher } from './types';
+import { useToast } from "@/hooks/use-toast";
 
 interface PublisherCardProps {
   publisher: Publisher;
   onClick: () => void;
+  onDelete?: () => void;
+  onViewDetails?: () => void;
 }
 
-const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick }) => {
-  // Helper function to get performance color
-  const getPerformanceColor = (performance: string) => {
-    switch (performance) {
-      case 'Excellent':
-        return 'bg-green-100 text-green-600';
-      case 'Good':
-        return 'bg-blue-100 text-blue-600';
-      default:
-        return 'bg-yellow-100 text-yellow-600';
+const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDelete, onViewDetails }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { toast } = useToast();
+  
+  const handleMenuToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(!menuOpen);
+  };
+  
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    
+    if (onDelete) {
+      onDelete();
+      toast({
+        title: "Publisher removed",
+        description: `${publisher.name} has been removed from this list`,
+      });
+    }
+  };
+  
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    
+    if (onViewDetails) {
+      onViewDetails();
     }
   };
   
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-      onClick={onClick}
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative"
     >
+      {/* Options Menu */}
+      <div className="absolute top-2 right-2 z-10">
+        <button 
+          onClick={handleMenuToggle}
+          className="p-1.5 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-sm"
+        >
+          <MoreVertical className="h-4 w-4 text-gray-500" />
+        </button>
+        
+        {menuOpen && (
+          <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-20">
+            <button 
+              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm"
+              onClick={handleViewDetails}
+            >
+              <Eye className="h-4 w-4 text-gray-500" />
+              View Details
+            </button>
+            <button 
+              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm text-red-500"
+              onClick={handleDelete}
+            >
+              <Trash2 className="h-4 w-4" />
+              Remove
+            </button>
+          </div>
+        )}
+      </div>
+      
       {/* Logo */}
-      <div className="h-32 bg-gray-100 flex items-center justify-center relative">
+      <div 
+        className="h-32 bg-gray-100 flex items-center justify-center"
+        onClick={onClick}
+      >
         <img
           src={publisher.logo}
           alt={`${publisher.name} logo`}
           className="max-h-full max-w-full object-contain p-4"
         />
-        <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${getPerformanceColor(publisher.performance)}`}>
-          {publisher.performance}
-        </div>
       </div>
       
       {/* Content */}
@@ -80,7 +129,13 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick }) => 
         </div>
         
         {/* Action Button */}
-        <button className="mt-3 w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center justify-center gap-1 transition-colors">
+        <button 
+          className="mt-3 w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center justify-center gap-1 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+        >
           <Plus className="h-4 w-4" />
           Add to Campaign
         </button>

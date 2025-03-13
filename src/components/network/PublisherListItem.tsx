@@ -1,31 +1,80 @@
 
-import React from 'react';
-import { MapPin, Users, BarChart2, DollarSign, Plus } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye } from 'lucide-react';
 import { Publisher } from './types';
+import { useToast } from "@/hooks/use-toast";
 
 interface PublisherListItemProps {
   publisher: Publisher;
   onClick: () => void;
+  onDelete?: () => void;
+  onViewDetails?: () => void;
 }
 
-const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClick }) => {
-  // Helper function to get performance color
-  const getPerformanceColor = (performance: string) => {
-    switch (performance) {
-      case 'Excellent':
-        return 'bg-green-100 text-green-600';
-      case 'Good':
-        return 'bg-blue-100 text-blue-600';
-      default:
-        return 'bg-yellow-100 text-yellow-600';
+const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClick, onDelete, onViewDetails }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { toast } = useToast();
+  
+  const handleMenuToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(!menuOpen);
+  };
+  
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    
+    if (onDelete) {
+      onDelete();
+      toast({
+        title: "Publisher removed",
+        description: `${publisher.name} has been removed from this list`,
+      });
+    }
+  };
+  
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    
+    if (onViewDetails) {
+      onViewDetails();
     }
   };
   
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer"
-      onClick={onClick}
+      className="bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer relative"
     >
+      {/* Options Menu */}
+      <div className="absolute top-4 right-4 z-10">
+        <button 
+          onClick={handleMenuToggle}
+          className="p-1.5 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-sm"
+        >
+          <MoreVertical className="h-4 w-4 text-gray-500" />
+        </button>
+        
+        {menuOpen && (
+          <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-20">
+            <button 
+              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm"
+              onClick={handleViewDetails}
+            >
+              <Eye className="h-4 w-4 text-gray-500" />
+              View Details
+            </button>
+            <button 
+              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm text-red-500"
+              onClick={handleDelete}
+            >
+              <Trash2 className="h-4 w-4" />
+              Remove
+            </button>
+          </div>
+        )}
+      </div>
+      
       {/* Logo */}
       <div className="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md">
         <img
@@ -36,13 +85,8 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
       </div>
       
       {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between">
-          <h3 className="font-medium text-empowerlocal-navy">{publisher.name}</h3>
-          <div className={`px-2 py-1 rounded-full text-xs font-medium ${getPerformanceColor(publisher.performance)}`}>
-            {publisher.performance}
-          </div>
-        </div>
+      <div className="flex-1 min-w-0" onClick={onClick}>
+        <h3 className="font-medium text-empowerlocal-navy">{publisher.name}</h3>
         
         <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1 flex-shrink-0" />
@@ -92,7 +136,13 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
       </div>
       
       {/* Action Button */}
-      <button className="ml-4 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center gap-1 transition-colors">
+      <button 
+        className="ml-4 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center gap-1 transition-colors"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+      >
         <Plus className="h-4 w-4" />
         Add
       </button>
