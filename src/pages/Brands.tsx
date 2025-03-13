@@ -54,7 +54,7 @@ const Brands: React.FC = () => {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-empowerlocal-navy">My Brands</h1>
             <button 
-              className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors animate-pulse"
+              className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
             >
               <Plus className="h-5 w-5" />
               Add New Brand

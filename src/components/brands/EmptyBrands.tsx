@@ -28,7 +28,7 @@ const EmptyBrands: React.FC<EmptyBrandsProps> = ({ isFiltered }) => {
           <p className="text-gray-500 max-w-md mb-6">
             You haven't created any brands yet. Brands help you organize campaigns and audiences for different clients.
           </p>
-          <button className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors animate-pulse">
+          <button className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors">
             <Plus className="h-5 w-5" />
             Add Your First Brand
           </button>
