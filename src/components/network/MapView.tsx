@@ -20,7 +20,7 @@ const MapView: React.FC<MapViewProps> = ({
   onPublisherSelect 
 }) => {
   return (
-    <div className="relative min-h-[calc(100vh-200px)] h-full bg-[#f2f7fd] overflow-auto">
+    <div className="relative h-[calc(100vh-300px)] bg-[#f2f7fd] overflow-auto">
       {/* Map Placeholder */}
       <div className="absolute inset-0 z-0">
         <MapBackground />
