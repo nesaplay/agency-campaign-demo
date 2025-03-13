@@ -1,2 +1,3 @@
 
-export { default } from './ConversationInterface';
+import ConversationInterface from './ConversationInterface';
+export default ConversationInterface;

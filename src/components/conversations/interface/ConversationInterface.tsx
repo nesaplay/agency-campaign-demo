@@ -78,7 +78,7 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
         <MessageInput 
           inputValue={inputValue}
           setInputValue={setInputValue}
-          handleSendMessage={() => handleSendMessage()}
+          handleSendMessage={handleSendMessage}
         />
       </div>
       
