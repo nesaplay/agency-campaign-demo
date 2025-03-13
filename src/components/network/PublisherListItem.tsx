@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
-import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye, ExternalLink, Star } from 'lucide-react';
+import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye, ExternalLink, Star, ChevronRight } from 'lucide-react';
 import { Publisher } from './types';
 import { useToast } from "@/hooks/use-toast";
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { Separator } from '../ui/separator';
 
 interface PublisherListItemProps {
   publisher: Publisher;
@@ -13,18 +15,11 @@ interface PublisherListItemProps {
 }
 
 const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClick, onDelete, onViewDetails }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { toast } = useToast();
   
-  const handleMenuToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setMenuOpen(!menuOpen);
-  };
-  
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setMenuOpen(false);
     
     if (onDelete) {
       onDelete();
@@ -37,7 +32,6 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
   
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setMenuOpen(false);
     
     if (onViewDetails) {
       onViewDetails();
@@ -74,71 +68,103 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
     }
   };
   
+  // Function to derive publisher brand color
+  const getPublisherBrandColor = () => {
+    // This is a simplified approach - in production, you'd have actual brand colors stored
+    const nameHash = publisher.name.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    // Generate vibrant but not too bright colors
+    const hue = Math.abs(nameHash) % 360;
+    return `hsl(${hue}, 70%, 60%)`;
+  };
+  
+  const brandColor = getPublisherBrandColor();
   const isPremium = publisher.performance === 'Excellent';
   
   return (
     <div 
       className={cn(
-        "bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 transition-all duration-200 cursor-pointer relative",
-        isHovered ? "shadow-md transform translate-x-0.5" : "shadow-sm",
+        "relative h-[110px] bg-white rounded-lg transition-all duration-150 cursor-pointer group",
+        isHovered ? "shadow-md translate-x-0.5" : "shadow-sm border border-gray-200",
         isPremium && "ring-1 ring-amber-200"
       )}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Options Menu */}
-      <div className="absolute top-4 right-4 z-10">
-        <button 
-          onClick={handleMenuToggle}
-          className="p-1.5 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-sm"
-        >
-          <MoreVertical className="h-4 w-4 text-gray-500" />
-        </button>
-        
-        {menuOpen && (
-          <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-20">
-            <button 
-              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm"
-              onClick={handleViewDetails}
-            >
-              <Eye className="h-4 w-4 text-gray-500" />
-              View Details
-            </button>
-            <button 
-              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm text-red-500"
-              onClick={handleDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-              Remove
-            </button>
+      {/* Publisher brand color strip */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-1 rounded-t-lg" 
+        style={{ backgroundColor: brandColor }}
+      />
+      
+      <div className="flex items-center h-full px-4 py-3">
+        {/* SECTION: Identity & Information */}
+        <div className="flex items-center gap-4 w-[35%]">
+          {/* Logo */}
+          <div className="h-16 w-16 flex-shrink-0 bg-white flex items-center justify-center rounded-md shadow-sm border border-gray-100 overflow-hidden">
+            <img
+              src={publisher.logo}
+              alt={`${publisher.name} logo`}
+              className="max-h-full max-w-full object-contain p-2"
+            />
           </div>
-        )}
-      </div>
-      
-      {/* Logo */}
-      <div className="h-20 w-20 bg-white flex items-center justify-center rounded-md shadow-sm border border-gray-100 overflow-hidden">
-        <img
-          src={publisher.logo}
-          alt={`${publisher.name} logo`}
-          className="max-h-full max-w-full object-contain p-2"
-        />
-      </div>
-      
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-lg text-empowerlocal-navy">{publisher.name}</h3>
-          {isPremium && <Star className="h-4 w-4 text-amber-500 fill-amber-500" />}
+          
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <h3 className="font-medium text-empowerlocal-navy text-lg truncate">{publisher.name}</h3>
+              {isPremium && <Star className="h-4 w-4 text-amber-500 fill-amber-500 flex-shrink-0" />}
+            </div>
+            
+            <div className="flex items-center text-sm text-gray-500 mt-1">
+              <MapPin className="h-3.5 w-3.5 mr-1 flex-shrink-0" />
+              <span className="truncate">{publisher.location}</span>
+            </div>
+            
+            {/* Content preview */}
+            <div className="mt-1 flex items-center">
+              <div className="w-6 h-6 rounded bg-gray-100 flex-shrink-0 mr-2">
+                <img src="https://source.unsplash.com/random/100x100/?newspaper" alt="" className="w-full h-full object-cover rounded" />
+              </div>
+              <p className="text-xs text-gray-600 line-clamp-1">Latest: "Local businesses thrive despite economic challenges."</p>
+            </div>
+          </div>
         </div>
         
-        <div className="flex items-center text-sm text-gray-500 mt-1">
-          <MapPin className="h-3.5 w-3.5 mr-1 flex-shrink-0" />
-          <span className="truncate">{publisher.location}</span>
+        {/* SECTION: Categories & performance */}
+        <div className="flex flex-col gap-1 w-[25%]">
+          <div className={`self-start px-2.5 py-1 rounded-full text-xs font-medium shadow-sm ${getPerformanceBadgeStyle(publisher.performance)}`}>
+            {publisher.performance === 'Excellent' && (
+              <span className="flex items-center gap-1">
+                <Star className="h-3 w-3 inline fill-current" />
+                {publisher.performance}
+              </span>
+            ) || publisher.performance}
+          </div>
+          
+          {/* Categories */}
+          <div className="flex flex-wrap gap-1 mt-1">
+            {publisher.categories.slice(0, 3).map((category, index) => (
+              <span 
+                key={index} 
+                className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}
+              >
+                {category}
+              </span>
+            ))}
+            {publisher.categories.length > 3 && (
+              <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
+                +{publisher.categories.length - 3}
+              </span>
+            )}
+          </div>
           
           <a 
             href="#" 
-            className="ml-2 text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline"
+            className="text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline w-fit"
             onClick={(e) => e.stopPropagation()}
           >
             <ExternalLink className="h-3 w-3" />
@@ -146,77 +172,61 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
           </a>
         </div>
         
-        {/* Content preview */}
-        <div className="mt-2 text-xs text-gray-600">
-          <p className="line-clamp-1">Latest: "Local businesses thrive despite economic challenges."</p>
+        {/* SECTION: Metrics */}
+        <div className="flex gap-5 w-[25%]">
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1 text-gray-500 text-xs">
+              <Users className="h-3.5 w-3.5" />
+              <span>Subscribers</span>
+            </div>
+            <span className="font-semibold text-empowerlocal-navy">{publisher.subscribers}</span>
+          </div>
+          
+          <Separator orientation="vertical" className="h-10 bg-gray-200" />
+          
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1 text-gray-500 text-xs">
+              <BarChart2 className="h-3.5 w-3.5" />
+              <span>Engagement</span>
+            </div>
+            <span className="font-semibold text-empowerlocal-navy">{publisher.engagement}</span>
+          </div>
+          
+          <Separator orientation="vertical" className="h-10 bg-gray-200" />
+          
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1 text-gray-500 text-xs">
+              <DollarSign className="h-3.5 w-3.5" />
+              <span>CPM</span>
+            </div>
+            <span className="font-semibold text-empowerlocal-navy">{publisher.cpm}</span>
+          </div>
         </div>
         
-        {/* Categories */}
-        <div className="mt-2 flex flex-wrap gap-1">
-          {publisher.categories.slice(0, 4).map((category, index) => (
-            <span 
-              key={index} 
-              className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}
-            >
-              {category}
-            </span>
-          ))}
-          {publisher.categories.length > 4 && (
-            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
-              +{publisher.categories.length - 4}
-            </span>
-          )}
+        {/* SECTION: Actions */}
+        <div className="flex items-center gap-2 ml-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={handleViewDetails}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+          
+          <Button
+            size="sm"
+            className="bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add
+          </Button>
         </div>
       </div>
-      
-      {/* Performance badge */}
-      <div className={`px-2.5 py-1 rounded-full text-xs font-medium shadow-sm ${getPerformanceBadgeStyle(publisher.performance)}`}>
-        {publisher.performance === 'Excellent' && (
-          <span className="flex items-center gap-1">
-            <Star className="h-3 w-3 inline fill-current" />
-            {publisher.performance}
-          </span>
-        ) || publisher.performance}
-      </div>
-      
-      {/* Metrics */}
-      <div className="flex gap-6 text-sm">
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-1 text-gray-500 text-xs">
-            <Users className="h-3.5 w-3.5" />
-            <span>Subscribers</span>
-          </div>
-          <span className="font-semibold text-empowerlocal-navy">{publisher.subscribers}</span>
-        </div>
-        
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-1 text-gray-500 text-xs">
-            <BarChart2 className="h-3.5 w-3.5" />
-            <span>Engagement</span>
-          </div>
-          <span className="font-semibold text-empowerlocal-navy">{publisher.engagement}</span>
-        </div>
-        
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-1 text-gray-500 text-xs">
-            <DollarSign className="h-3.5 w-3.5" />
-            <span>CPM</span>
-          </div>
-          <span className="font-semibold text-empowerlocal-navy">{publisher.cpm}</span>
-        </div>
-      </div>
-      
-      {/* Action Button */}
-      <button 
-        className="ml-4 py-2 px-4 bg-gradient-to-r from-gray-50 to-gray-100 hover:to-gray-200 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium flex items-center gap-1 transition-colors shadow-sm"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick();
-        }}
-      >
-        <Plus className="h-4 w-4" />
-        Add
-      </button>
     </div>
   );
 };

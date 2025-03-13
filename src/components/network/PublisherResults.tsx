@@ -94,8 +94,8 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
           </div>
         ) : (
           <div className="space-y-3">
-            {publishers.map((publisher, index) => (
-              <div key={publisher.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+            {publishers.map(publisher => (
+              <div key={publisher.id}>
                 {hasListFunctionality ? (
                   <EnhancedPublisherListItem 
                     publisher={publisher}
