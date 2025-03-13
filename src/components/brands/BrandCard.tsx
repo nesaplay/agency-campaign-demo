@@ -115,7 +115,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onSetActive }) => {
             "w-full py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1.5 transition-colors",
             brand.isActive
               ? "text-white"
-              : "bg-empowerlocal-blue text-white hover:bg-empowerlocal-navy"
+              : "bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50"
           )}
           onClick={(e) => {
             e.stopPropagation();
