@@ -14,8 +14,10 @@ import BrandDetail from "./pages/BrandDetail";
 import ListDetail from "./pages/ListDetail";
 import NotFound from "./pages/NotFound";
 
+// Create QueryClient outside the component
 const queryClient = new QueryClient();
 
+// React Router v6 requires BrowserRouter to be outside of other components that use hooks
 const App = () => {
   return (
     <BrowserRouter>
