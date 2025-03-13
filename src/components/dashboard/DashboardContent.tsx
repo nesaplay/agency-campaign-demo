@@ -1,88 +1,46 @@
 
 import React from 'react';
-import { Bot, MapPin, Activity, Users } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import CampaignCommandCenter from './command-center/CampaignCommandCenter';
+import OpportunitySpotting from './opportunity-spotting/OpportunitySpotting';
+import PersonalizedDiscovery from './personalized-discovery/PersonalizedDiscovery';
+import { Button } from '@/components/ui/button';
 
 const DashboardContent: React.FC = () => {
-  // Placeholder data
-  const stats = [
-    { 
-      title: 'Total Publishers', 
-      value: '1,245', 
-      change: '+12%',
-      icon: Users,
-      color: 'bg-blue-50 text-empowerlocal-blue'
-    },
-    { 
-      title: 'Active Campaigns', 
-      value: '36', 
-      change: '+5%',
-      icon: Activity,
-      color: 'bg-green-50 text-empowerlocal-green'
-    },
-    { 
-      title: 'Markets', 
-      value: '178', 
-      change: '+8%',
-      icon: MapPin,
-      color: 'bg-purple-50 text-purple-600'
-    },
-  ];
-
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
+    <div className="space-y-8">
+      {/* Welcome Section with Create Campaign Button */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-semibold text-empowerlocal-navy">Welcome, Jane</h1>
-            <p className="mt-1 text-gray-500">Discover and plan your next multi-local campaign</p>
+            <p className="mt-1 text-gray-500">Your campaign command center</p>
           </div>
-          <Link to="/conversations" className="px-4 py-2 bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue text-white rounded-lg flex items-center gap-2 font-medium">
-            <Bot className="h-4 w-4" />
-            <span>Ask Lassie AI</span>
-          </Link>
+          <Button asChild className="bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue hover:from-empowerlocal-green/90 hover:to-empowerlocal-blue/90">
+            <Link to="/campaigns/create">
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Create Campaign
+            </Link>
+          </Button>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                <div className="mt-1 flex items-baseline">
-                  <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
-                  <span className="ml-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded">
-                    {stat.change}
-                  </span>
-                </div>
-              </div>
-              <div className={cn("p-3 rounded-lg", stat.color)}>
-                <stat.icon className="h-5 w-5" />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Campaign Performance Command Center (Highest Priority) */}
+      <section aria-labelledby="campaign-performance-heading">
+        <CampaignCommandCenter />
+      </section>
 
-      {/* Network Navigator Card */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-80 flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="empowerlocal-gradient inline-flex h-12 w-12 rounded-lg items-center justify-center text-white mb-4">
-            <MapPin className="h-6 w-6" />
-          </div>
-          <h2 className="text-xl font-semibold text-empowerlocal-navy">Network Navigator</h2>
-          <p className="mt-2 text-gray-500">
-            Explore our network of 1000+ trusted local publishers across the United States
-          </p>
-          <Link to="/network-navigator" className="mt-4 px-4 py-2 bg-gradient-to-r from-empowerlocal-green to-empowerlocal-blue text-white rounded-lg inline-flex items-center gap-2 font-medium">
-            Explore Network
-          </Link>
-        </div>
-      </div>
+      {/* Seasonal & Trend Opportunity Spotting (Middle Priority) */}
+      <section aria-labelledby="opportunity-spotting-heading">
+        <OpportunitySpotting />
+      </section>
+
+      {/* Personalized Discovery & Learning (Lower Priority) */}
+      <section aria-labelledby="personalized-discovery-heading">
+        <PersonalizedDiscovery />
+      </section>
     </div>
   );
 };
