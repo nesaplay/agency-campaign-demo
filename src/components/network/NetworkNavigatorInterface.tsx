@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -122,35 +123,32 @@ const NetworkNavigatorInterface: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full relative overflow-hidden">
       {/* Filter panel with overlay */}
       <div 
         className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300 ${
-          showFilters ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          showFilters ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={() => setShowFilters(false)}
       ></div>
       
-      {/* Filter panel */}
+      {/* Filter panel - fixed positioning instead of absolute */}
       <div 
-        className={`transition-transform duration-300 transform ${
+        className={`fixed top-0 left-0 h-full z-30 transition-transform duration-300 transform ${
           showFilters ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ position: 'absolute', zIndex: 30 }}
       >
-        {showFilters && (
-          <FilterPanel 
-            selectedStates={selectedStates}
-            toggleState={toggleState}
-            selectedCategories={selectedCategories}
-            toggleCategory={toggleCategory}
-            handleFilter={handleFilter}
-            clearFilters={clearFilters}
-            states={states}
-            categories={categories}
-            closeFilters={() => setShowFilters(false)}
-          />
-        )}
+        <FilterPanel 
+          selectedStates={selectedStates}
+          toggleState={toggleState}
+          selectedCategories={selectedCategories}
+          toggleCategory={toggleCategory}
+          handleFilter={handleFilter}
+          clearFilters={clearFilters}
+          states={states}
+          categories={categories}
+          closeFilters={() => setShowFilters(false)}
+        />
       </div>
       
       {/* Collections */}
@@ -165,20 +163,22 @@ const NetworkNavigatorInterface: React.FC = () => {
       <ResultsHeader activeBrowseMethod={getActiveBrowseMethod()} />
       
       {/* Results display - Map or List */}
-      <ResultsDisplay 
-        resultsDisplayMode={resultsDisplayMode}
-        filteredPublishers={filteredPublishers}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        selectedPublisher={selectedPublisher}
-        onPublisherSelect={handlePublisherSelect}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearch}
-        publisherCount={filteredPublishers.length}
-        showFilters={showFilters}
-        toggleFilters={toggleFilters}
-        setResultsDisplayMode={setResultsDisplayMode}
-      />
+      <div className="flex-1 overflow-hidden">
+        <ResultsDisplay 
+          resultsDisplayMode={resultsDisplayMode}
+          filteredPublishers={filteredPublishers}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          selectedPublisher={selectedPublisher}
+          onPublisherSelect={handlePublisherSelect}
+          searchQuery={searchQuery}
+          onSearchChange={handleSearch}
+          publisherCount={filteredPublishers.length}
+          showFilters={showFilters}
+          toggleFilters={toggleFilters}
+          setResultsDisplayMode={setResultsDisplayMode}
+        />
+      </div>
       
       {/* Detail view overlay */}
       {selectedPublisher && (

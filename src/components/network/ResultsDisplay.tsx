@@ -36,7 +36,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   setResultsDisplayMode
 }) => {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Controls bar */}
       <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10">
         <div className="relative flex-1 max-w-md">
@@ -87,24 +87,22 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       </div>
 
       {/* Results content */}
-      {resultsDisplayMode === 'list' ? (
-        <div className="flex-1">
+      <div className="flex-1 overflow-auto">
+        {resultsDisplayMode === 'list' ? (
           <PublisherResults 
             publishers={filteredPublishers} 
             viewMode={viewMode} 
             setViewMode={setViewMode} 
             onPublisherSelect={onPublisherSelect} 
           />
-        </div>
-      ) : (
-        <div className="flex-1">
+        ) : (
           <MapView 
             publishers={filteredPublishers} 
             selectedPublisher={selectedPublisher} 
             onPublisherSelect={onPublisherSelect} 
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
