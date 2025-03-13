@@ -1,37 +1,13 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Mail, 
-  HelpCircle, 
-  BookOpen, 
-  FileText, 
-  Video, 
-  TrendingUp, 
-  Calendar, 
-  Calculator, 
-  Users, 
-  DollarSign,
-  ChevronUp,
-  ChevronDown,
-  X
-} from 'lucide-react';
+import { Mail, HelpCircle, BookOpen, FileText, Video, TrendingUp, Calendar, Calculator, Users, DollarSign, ChevronUp, ChevronDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 const Footer: React.FC = () => {
   const [isSeasonalAlertVisible, setIsSeasonalAlertVisible] = useState(true);
-
-  return (
-    <>
+  return <>
       {/* Seasonal Alert Banner */}
-      {isSeasonalAlertVisible && (
-        <div className="bg-gradient-to-r from-amber-50 to-amber-100 border-t border-amber-200 px-6 py-3 flex items-center justify-between">
+      {isSeasonalAlertVisible && <div className="bg-gradient-to-r from-amber-50 to-amber-100 border-t border-amber-200 px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="bg-amber-200 p-2 rounded-full">
               <Calendar className="h-5 w-5 text-amber-700" />
@@ -42,25 +18,18 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Link 
-              to="/network-navigator" 
-              className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors"
-            >
+            <Link to="/network-navigator" className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors">
               Explore Publishers
             </Link>
-            <button 
-              onClick={() => setIsSeasonalAlertVisible(false)}
-              className="text-amber-700 hover:text-amber-900"
-            >
+            <button onClick={() => setIsSeasonalAlertVisible(false)} className="text-amber-700 hover:text-amber-900">
               <X className="h-5 w-5" />
             </button>
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Main Footer */}
       <footer className="bg-gradient-to-r from-empowerlocal-navy to-[#1a3a6c] text-white border-t border-gray-700/20">
-        <div className="container mx-auto py-8 px-4">
+        <div className="container mx-auto py-8 px-4 bg-empowerlocal-navy">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Company Information */}
             <div className="space-y-4">
@@ -148,8 +117,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </footer>
-    </>
-  );
+    </>;
 };
-
 export default Footer;
