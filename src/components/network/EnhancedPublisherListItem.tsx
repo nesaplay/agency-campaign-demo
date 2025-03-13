@@ -37,9 +37,10 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
   return (
     <div 
       className={cn(
-        "bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:shadow-md transition-shadow",
+        "bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer",
         isSelected && "border-empowerlocal-blue bg-empowerlocal-blue/5"
       )}
+      onClick={onClick}
     >
       {/* Selection Checkbox */}
       <div 
@@ -57,10 +58,7 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
       </div>
       
       {/* Logo */}
-      <div 
-        className="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md cursor-pointer"
-        onClick={onClick}
-      >
+      <div className="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md">
         <img
           src={publisher.logo}
           alt={`${publisher.name} logo`}
@@ -69,10 +67,7 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
       </div>
       
       {/* Content */}
-      <div 
-        className="flex-1 min-w-0 cursor-pointer"
-        onClick={onClick}
-      >
+      <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-empowerlocal-navy">{publisher.name}</h3>
           <div className={`px-2 py-1 rounded-full text-xs font-medium ${getPerformanceColor(publisher.performance)}`}>

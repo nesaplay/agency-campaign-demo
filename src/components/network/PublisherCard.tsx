@@ -53,7 +53,8 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDel
   
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative"
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative cursor-pointer"
+      onClick={onClick}
     >
       {/* Options Menu */}
       <div className="absolute top-2 right-2 z-10">
@@ -85,10 +86,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({ publisher, onClick, onDel
       </div>
       
       {/* Logo & Website Preview */}
-      <div 
-        className="h-40 bg-gray-100 flex items-center justify-center relative"
-        onClick={onClick}
-      >
+      <div className="h-40 bg-gray-100 flex items-center justify-center relative">
         <img
           src={publisher.logo}
           alt={`${publisher.name} logo`}

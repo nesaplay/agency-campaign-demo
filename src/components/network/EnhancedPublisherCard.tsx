@@ -36,7 +36,8 @@ const EnhancedPublisherCard: React.FC<EnhancedPublisherCardProps> = ({
   
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative"
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative cursor-pointer"
+      onClick={onClick}
     >
       {/* Selection Checkbox */}
       <div 
@@ -54,10 +55,7 @@ const EnhancedPublisherCard: React.FC<EnhancedPublisherCardProps> = ({
       </div>
       
       {/* Logo */}
-      <div 
-        className="h-32 bg-gray-100 flex items-center justify-center relative"
-        onClick={onClick}
-      >
+      <div className="h-32 bg-gray-100 flex items-center justify-center relative">
         <img
           src={publisher.logo}
           alt={`${publisher.name} logo`}
@@ -70,26 +68,17 @@ const EnhancedPublisherCard: React.FC<EnhancedPublisherCardProps> = ({
       
       {/* Content */}
       <div className="p-4">
-        <h3 
-          className="font-medium text-empowerlocal-navy cursor-pointer"
-          onClick={onClick}
-        >
+        <h3 className="font-medium text-empowerlocal-navy">
           {publisher.name}
         </h3>
         
-        <div 
-          className="flex items-center text-sm text-gray-500 mt-1 cursor-pointer"
-          onClick={onClick}
-        >
+        <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1 flex-shrink-0" />
           <span className="truncate">{publisher.location}</span>
         </div>
         
         {/* Metrics */}
-        <div 
-          className="grid grid-cols-3 gap-2 mt-3 cursor-pointer"
-          onClick={onClick}
-        >
+        <div className="grid grid-cols-3 gap-2 mt-3">
           <div className="flex flex-col items-center p-1 rounded-md bg-gray-50">
             <Users className="h-3.5 w-3.5 text-gray-400 mb-1" />
             <span className="text-xs font-medium">{publisher.subscribers}</span>
@@ -119,10 +108,7 @@ const EnhancedPublisherCard: React.FC<EnhancedPublisherCardProps> = ({
         )}
         
         {/* Categories */}
-        <div 
-          className="mt-2 flex flex-wrap gap-1 cursor-pointer"
-          onClick={onClick}
-        >
+        <div className="mt-2 flex flex-wrap gap-1">
           {publisher.categories.slice(0, 3).map((category, index) => (
             <span key={index} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
               {category}

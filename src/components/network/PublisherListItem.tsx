@@ -45,6 +45,7 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
   return (
     <div 
       className="bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer relative"
+      onClick={onClick}
     >
       {/* Options Menu */}
       <div className="absolute top-4 right-4 z-10">
@@ -85,7 +86,7 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
       </div>
       
       {/* Content */}
-      <div className="flex-1 min-w-0" onClick={onClick}>
+      <div className="flex-1 min-w-0">
         <h3 className="font-medium text-empowerlocal-navy">{publisher.name}</h3>
         
         <div className="flex items-center text-sm text-gray-500 mt-1">
