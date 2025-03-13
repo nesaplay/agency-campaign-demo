@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { mockLists } from '../lists/mockListsData';
 import { PublisherList } from '../lists/types';
-import SaveToListModal from '../lists/SaveToListModal';
+import SaveToListModal from '../lists/save-to-list-modal';
 
 const NetworkNavigatorInterface: React.FC = () => {
   // Data state
