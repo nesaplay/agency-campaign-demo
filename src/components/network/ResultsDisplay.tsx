@@ -49,6 +49,11 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   toggleState,
   toggleCategory
 }) => {
+  const handleSortChange = (sortBy: string) => {
+    // Sort functionality will be implemented when needed
+    console.log('Sorting by:', sortBy);
+  };
+
   return (
     <div className="flex flex-col h-full">
       <ResultsControls 

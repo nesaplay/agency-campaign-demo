@@ -3,7 +3,6 @@ import React from 'react';
 import { Publisher } from './types';
 import PublisherCard from './PublisherCard';
 import PublisherListItem from './PublisherListItem';
-import SortControls from './SortControls';
 import { PublisherList } from '../lists/types';
 import EnhancedPublisherCard from './EnhancedPublisherCard';
 import EnhancedPublisherListItem from './EnhancedPublisherListItem';
@@ -26,26 +25,13 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
   togglePublisherSelection,
   selectedPublishers = [],
   handleSaveToList,
-  getPublisherLists,
-  publisherCount
+  getPublisherLists
 }) => {
-  const handleSortChange = (sortBy: string) => {
-    // Sort functionality will be implemented when needed
-    console.log('Sorting by:', sortBy);
-  };
-
   // Determine if we're using the enhanced components with list functionality
   const hasListFunctionality = !!togglePublisherSelection && !!handleSaveToList && !!getPublisherLists;
   
-  return <div className="h-full flex flex-col">
-      {/* Controls */}
-      <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white sticky top-0 z-10">
-        {/* Left side - Sort controls */}
-        <div className="flex items-center space-x-6">
-          <SortControls onSortChange={handleSortChange} />
-        </div>
-      </div>
-      
+  return (
+    <div className="h-full flex flex-col">
       {/* Results */}
       <div className="flex-1 p-4 overflow-auto bg-gray-50">
         {viewMode === 'grid' ? (
@@ -94,7 +80,8 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
           </div>
         )}
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default PublisherResults;
