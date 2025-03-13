@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +5,7 @@ import { PublisherList, ListCategory } from '@/components/lists/types';
 import { mockLists } from '@/components/lists/mockListsData';
 import ListCard from '@/components/lists/ListCard';
 import { Plus, Search } from 'lucide-react';
-import CreateListModal from '@/components/lists/CreateListModal';
+import CreateListModal from '@/components/lists/create-modal/CreateListModal';
 
 const MyLists: React.FC = () => {
   const navigate = useNavigate();
