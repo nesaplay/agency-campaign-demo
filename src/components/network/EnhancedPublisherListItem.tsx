@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Users, BarChart2, DollarSign, Plus, CheckSquare, Square, ListPlus, Check, Star, ExternalLink, Eye } from 'lucide-react';
 import { Publisher } from './types';
@@ -6,7 +5,6 @@ import { PublisherList } from '../lists/types';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
-
 interface EnhancedPublisherListItemProps {
   publisher: Publisher;
   onClick: () => void;
@@ -15,10 +13,9 @@ interface EnhancedPublisherListItemProps {
   onSaveToList: () => void;
   inLists: PublisherList[];
 }
-
-const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({ 
-  publisher, 
-  onClick, 
+const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
+  publisher,
+  onClick,
   isSelected,
   onToggleSelect,
   onSaveToList,
@@ -40,10 +37,9 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
       'Education': 'bg-cyan-100 text-cyan-700 border-cyan-200',
       'Food': 'bg-orange-100 text-orange-700 border-orange-200'
     };
-    
     return colorMap[category] || 'bg-gray-100 text-gray-700 border-gray-200';
   };
-  
+
   // Helper function to get performance color
   const getPerformanceColor = (performance: string) => {
     switch (performance) {
@@ -55,72 +51,45 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
         return 'bg-gradient-to-r from-yellow-50 to-yellow-100 text-yellow-600 border border-yellow-200';
     }
   };
-  
+
   // Function to derive publisher brand color
   const getPublisherBrandColor = () => {
     // This is a simplified approach - in production, you'd have actual brand colors stored
     const nameHash = publisher.name.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
+      a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
     }, 0);
-    
+
     // Generate vibrant but not too bright colors
     const hue = Math.abs(nameHash) % 360;
     return `hsl(${hue}, 70%, 60%)`;
   };
-  
   const brandColor = getPublisherBrandColor();
   const isPremium = publisher.performance === 'Excellent';
-  
-  return (
-    <div 
-      className={cn(
-        "relative h-[110px] rounded-lg transition-all duration-150 cursor-pointer group",
-        isSelected 
-          ? "bg-empowerlocal-blue/5 border border-empowerlocal-blue shadow-md" 
-          : "bg-white border border-gray-200 shadow-sm hover:shadow-md",
-        isHovered && !isSelected && "translate-x-0.5",
-        isPremium && !isSelected && "ring-1 ring-amber-200"
-      )}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+  return <div className={cn("relative h-[110px] rounded-lg transition-all duration-150 cursor-pointer group", isSelected ? "bg-empowerlocal-blue/5 border border-empowerlocal-blue shadow-md" : "bg-white border border-gray-200 shadow-sm hover:shadow-md", isHovered && !isSelected && "translate-x-0.5", isPremium && !isSelected && "ring-1 ring-amber-200")} onClick={onClick} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       {/* Publisher brand color strip */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-1 rounded-t-lg" 
-        style={{ backgroundColor: brandColor }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-1 rounded-t-lg" style={{
+      backgroundColor: brandColor
+    }} />
       
       <div className="flex items-center h-full px-4 py-3">
         {/* Selection Checkbox */}
-        <div 
-          className="cursor-pointer mr-3"
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleSelect();
-          }}
-        >
-          {isSelected ? (
-            <div className="p-1 bg-empowerlocal-blue rounded-md shadow-sm">
+        <div className="cursor-pointer mr-3" onClick={e => {
+        e.stopPropagation();
+        onToggleSelect();
+      }}>
+          {isSelected ? <div className="p-1 bg-empowerlocal-blue rounded-md shadow-sm">
               <CheckSquare className="h-5 w-5 text-white" />
-            </div>
-          ) : (
-            <div className="p-1 bg-white rounded-md shadow-sm border border-gray-200">
+            </div> : <div className="p-1 bg-white rounded-md shadow-sm border border-gray-200">
               <Square className="h-5 w-5 text-gray-400" />
-            </div>
-          )}
+            </div>}
         </div>
         
         {/* SECTION: Identity & Information */}
         <div className="flex items-center gap-4 w-[30%]">
           {/* Logo */}
           <div className="h-16 w-16 flex-shrink-0 bg-white flex items-center justify-center rounded-md shadow-sm border border-gray-100 overflow-hidden">
-            <img
-              src={publisher.logo}
-              alt={`${publisher.name} logo`}
-              className="max-h-full max-w-full object-contain p-2"
-            />
+            <img src={publisher.logo} alt={`${publisher.name} logo`} className="max-h-full max-w-full object-contain p-2" />
           </div>
           
           <div className="min-w-0">
@@ -135,60 +104,28 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
             </div>
             
             {/* Content preview and lists */}
-            <div className="mt-1 flex items-center">
-              <div className="w-6 h-6 rounded bg-gray-100 flex-shrink-0 mr-2">
-                <img src="https://source.unsplash.com/random/100x100/?newspaper" alt="" className="w-full h-full object-cover rounded" />
-              </div>
-              <p className="text-xs text-gray-600 line-clamp-1">Latest: "Local businesses thrive despite economic challenges."</p>
-            </div>
+            
           </div>
         </div>
         
         {/* SECTION: Categories, performance, lists */}
         <div className="flex flex-col gap-1 w-[25%]">
-          <div className={`self-start px-2.5 py-1 rounded-full text-xs font-medium ${getPerformanceColor(publisher.performance)}`}>
-            {publisher.performance === 'Excellent' && (
-              <span className="flex items-center gap-1">
-                <Star className="h-3 w-3 inline fill-current" />
-                {publisher.performance}
-              </span>
-            ) || publisher.performance}
-          </div>
+          
           
           {/* Categories */}
           <div className="flex flex-wrap gap-1 mt-1">
-            {publisher.categories.slice(0, 3).map((category, index) => (
-              <span 
-                key={index} 
-                className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}
-              >
+            {publisher.categories.slice(0, 3).map((category, index) => <span key={index} className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}>
                 {category}
-              </span>
-            ))}
-            {publisher.categories.length > 3 && (
-              <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
+              </span>)}
+            {publisher.categories.length > 3 && <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
                 +{publisher.categories.length - 3}
-              </span>
-            )}
+              </span>}
           </div>
           
           {/* Lists */}
-          {inLists.length > 0 && (
-            <div className="mt-1 text-xs inline-flex items-center px-2 py-0.5 bg-empowerlocal-blue/10 border border-empowerlocal-blue/20 rounded-md text-empowerlocal-blue">
-              <span className="mr-1">In</span>
-              {inLists.length === 1 ? (
-                <span className="font-medium">{inLists[0].name}</span>
-              ) : (
-                <span className="font-medium">{inLists.length} lists</span>
-              )}
-            </div>
-          )}
+          {inLists.length > 0}
           
-          <a 
-            href="#" 
-            className="text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline w-fit"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <a href="#" className="text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline w-fit" onClick={e => e.stopPropagation()}>
             <ExternalLink className="h-3 w-3" />
             Visit Site
           </a>
@@ -227,51 +164,30 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
         
         {/* SECTION: Actions */}
         <div className="flex items-center gap-2 ml-auto">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-          >
+          <Button variant="outline" size="sm" className="h-9 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => {
+          e.stopPropagation();
+          onClick();
+        }}>
             <Eye className="h-4 w-4" />
           </Button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            className="bg-white border-gray-200"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSaveToList();
-            }}
-          >
+          <Button variant="outline" size="sm" className="bg-white border-gray-200" onClick={e => {
+          e.stopPropagation();
+          onSaveToList();
+        }}>
             <ListPlus className="h-4 w-4 mr-1" />
             Save
           </Button>
           
-          <Button
-            size="sm"
-            className={cn(
-              "transition-colors",
-              isSelected 
-                ? "bg-empowerlocal-blue/20 text-empowerlocal-blue border border-empowerlocal-blue/30 hover:bg-empowerlocal-blue/30" 
-                : "bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white"
-            )}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleSelect();
-            }}
-          >
+          <Button size="sm" className={cn("transition-colors", isSelected ? "bg-empowerlocal-blue/20 text-empowerlocal-blue border border-empowerlocal-blue/30 hover:bg-empowerlocal-blue/30" : "bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-green text-white")} onClick={e => {
+          e.stopPropagation();
+          onToggleSelect();
+        }}>
             {isSelected ? <Check className="h-4 w-4 mr-1" /> : <Plus className="h-4 w-4 mr-1" />}
             {isSelected ? 'Selected' : 'Select'}
           </Button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default EnhancedPublisherListItem;
