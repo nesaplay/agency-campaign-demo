@@ -3,7 +3,8 @@ import React from 'react';
 import PublisherResults from './PublisherResults';
 import MapView from './MapView';
 import { Publisher } from './types';
-import { Filter, Map, List } from 'lucide-react';
+import { Filter, Map, List, Search } from 'lucide-react';
+import { PublisherList } from '../lists/types';
 
 interface ResultsDisplayProps {
   resultsDisplayMode: 'list' | 'map';
@@ -19,6 +20,11 @@ interface ResultsDisplayProps {
   showFilters: boolean;
   toggleFilters: () => void;
   setResultsDisplayMode: (mode: 'list' | 'map') => void;
+  // List functionality props
+  togglePublisherSelection?: (publisherId: string) => void;
+  selectedPublishers?: string[];
+  handleSaveToList?: (publisher: Publisher) => void;
+  getPublisherLists?: (publisherId: string) => PublisherList[];
 }
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
@@ -28,10 +34,16 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   setViewMode,
   selectedPublisher,
   onPublisherSelect,
+  searchQuery,
+  onSearchChange,
   publisherCount,
   showFilters,
   toggleFilters,
-  setResultsDisplayMode
+  setResultsDisplayMode,
+  togglePublisherSelection,
+  selectedPublishers = [],
+  handleSaveToList,
+  getPublisherLists
 }) => {
   return (
     <div className="flex flex-col h-full">
@@ -50,6 +62,17 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           <Filter className="h-4 w-4" />
           <span className="text-sm">Filters</span>
         </button>
+        
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search publishers..."
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-empowerlocal-blue focus:border-transparent"
+            value={searchQuery}
+            onChange={onSearchChange}
+          />
+        </div>
         
         <div className="flex bg-gray-100 rounded-lg ml-auto">
           <button
@@ -80,7 +103,11 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             publishers={filteredPublishers} 
             viewMode={viewMode} 
             setViewMode={setViewMode} 
-            onPublisherSelect={onPublisherSelect} 
+            onPublisherSelect={onPublisherSelect}
+            togglePublisherSelection={togglePublisherSelection}
+            selectedPublishers={selectedPublishers}
+            handleSaveToList={handleSaveToList}
+            getPublisherLists={getPublisherLists}
           />
         ) : (
           <MapView 

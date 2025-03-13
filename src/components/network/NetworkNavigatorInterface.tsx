@@ -8,6 +8,21 @@ import { mockCollections } from './mockCollectionsData';
 import FilterPanel from './FilterPanel';
 import ResultsHeader from './ResultsHeader';
 import ResultsDisplay from './ResultsDisplay';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { 
+  ListPlus, 
+  Search, 
+  PlusCircle,
+  Check
+} from 'lucide-react';
+import { mockLists } from '../lists/mockListsData';
+import { PublisherList } from '../lists/types';
+import SaveToListModal from '../lists/SaveToListModal';
 
 const NetworkNavigatorInterface: React.FC = () => {
   // Data state
@@ -15,12 +30,16 @@ const NetworkNavigatorInterface: React.FC = () => {
   const [filteredPublishers, setFilteredPublishers] = useState<Publisher[]>(mockPublishers);
   const [selectedPublisher, setSelectedPublisher] = useState<Publisher | null>(null);
   const [selectedCollection, setSelectedCollection] = useState<PublisherCollection | null>(null);
+  const [lists] = useState<PublisherList[]>(mockLists);
   
   // UI state
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [resultsDisplayMode, setResultsDisplayMode] = useState<'list' | 'map'>('list');
+  const [showSaveToListModal, setShowSaveToListModal] = useState(false);
+  const [publisherToSave, setPublisherToSave] = useState<Publisher | null>(null);
+  const [selectedPublishers, setSelectedPublishers] = useState<string[]>([]);
   
   // Filter states
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
@@ -110,6 +129,34 @@ const NetworkNavigatorInterface: React.FC = () => {
     setFilteredPublishers(collectionPublishers);
   };
   
+  // List handlers
+  const handleSaveToList = (publisher: Publisher) => {
+    setPublisherToSave(publisher);
+    setShowSaveToListModal(true);
+  };
+  
+  const handleAddToList = (listId: string, publisherIds: string[]) => {
+    console.log(`Adding publishers ${publisherIds.join(', ')} to list ${listId}`);
+    // In a real app, this would update the list in the database
+    
+    // Clear selection after adding
+    setSelectedPublishers([]);
+    setShowSaveToListModal(false);
+  };
+  
+  const togglePublisherSelection = (publisherId: string) => {
+    setSelectedPublishers(prev => 
+      prev.includes(publisherId) 
+        ? prev.filter(id => id !== publisherId) 
+        : [...prev, publisherId]
+    );
+  };
+  
+  // Check if a publisher is in any list
+  const getPublisherLists = (publisherId: string): PublisherList[] => {
+    return lists.filter(list => list.publishers.includes(publisherId));
+  };
+  
   // Active browsing tab name
   const getActiveBrowseMethod = () => {
     if (activeSource === 'collection' && selectedCollection) {
@@ -152,6 +199,16 @@ const NetworkNavigatorInterface: React.FC = () => {
         </>
       )}
       
+      {/* Save to List Modal */}
+      {showSaveToListModal && (
+        <SaveToListModal
+          onClose={() => setShowSaveToListModal(false)}
+          onSave={handleAddToList}
+          publisherIds={publisherToSave ? [publisherToSave.id] : selectedPublishers}
+          lists={lists}
+        />
+      )}
+      
       {/* Collections */}
       <div className="bg-gray-50 p-4 border-b border-gray-200">
         <PublisherCollections 
@@ -162,6 +219,31 @@ const NetworkNavigatorInterface: React.FC = () => {
       
       {/* Results area with active tab title */}
       <ResultsHeader activeBrowseMethod={getActiveBrowseMethod()} />
+      
+      {/* Selected publishers action bar */}
+      {selectedPublishers.length > 0 && (
+        <div className="bg-empowerlocal-blue text-white py-2 px-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Check className="h-4 w-4" />
+            <span>{selectedPublishers.length} publishers selected</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button 
+              className="flex items-center gap-2 px-3 py-1.5 bg-white text-empowerlocal-blue rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
+              onClick={() => setShowSaveToListModal(true)}
+            >
+              <ListPlus className="h-4 w-4" />
+              Add to List
+            </button>
+            <button 
+              className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              onClick={() => setSelectedPublishers([])}
+            >
+              Clear Selection
+            </button>
+          </div>
+        </div>
+      )}
       
       {/* Results display - Map or List */}
       <div className="flex-1">
@@ -178,6 +260,11 @@ const NetworkNavigatorInterface: React.FC = () => {
           showFilters={showFilters}
           toggleFilters={toggleFilters}
           setResultsDisplayMode={setResultsDisplayMode}
+          // New props for list functionality
+          togglePublisherSelection={togglePublisherSelection}
+          selectedPublishers={selectedPublishers}
+          handleSaveToList={handleSaveToList}
+          getPublisherLists={getPublisherLists}
         />
       </div>
       

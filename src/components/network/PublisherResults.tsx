@@ -1,27 +1,42 @@
+
 import React from 'react';
 import { Grid2X2, LayoutList } from 'lucide-react';
 import { Publisher } from './types';
 import PublisherCard from './PublisherCard';
 import PublisherListItem from './PublisherListItem';
 import SortControls from './SortControls';
+import { PublisherList } from '../lists/types';
+import EnhancedPublisherCard from './EnhancedPublisherCard';
+import EnhancedPublisherListItem from './EnhancedPublisherListItem';
 
 interface PublisherResultsProps {
   publishers: Publisher[];
   viewMode: 'grid' | 'list';
   setViewMode: (mode: 'grid' | 'list') => void;
   onPublisherSelect: (publisher: Publisher) => void;
+  togglePublisherSelection?: (publisherId: string) => void;
+  selectedPublishers?: string[];
+  handleSaveToList?: (publisher: Publisher) => void;
+  getPublisherLists?: (publisherId: string) => PublisherList[];
 }
 
 const PublisherResults: React.FC<PublisherResultsProps> = ({ 
   publishers, 
   viewMode, 
   setViewMode,
-  onPublisherSelect
+  onPublisherSelect,
+  togglePublisherSelection,
+  selectedPublishers = [],
+  handleSaveToList,
+  getPublisherLists
 }) => {
   const handleSortChange = (sortBy: string) => {
     // Sort functionality will be implemented when needed
     console.log('Sorting by:', sortBy);
   };
+
+  // Determine if we're using the enhanced components with list functionality
+  const hasListFunctionality = !!togglePublisherSelection && !!handleSaveToList && !!getPublisherLists;
 
   return (
     <div className="h-full flex flex-col">
@@ -54,21 +69,45 @@ const PublisherResults: React.FC<PublisherResultsProps> = ({
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {publishers.map(publisher => (
-              <PublisherCard 
-                key={publisher.id} 
-                publisher={publisher}
-                onClick={() => onPublisherSelect(publisher)}
-              />
+              hasListFunctionality ? (
+                <EnhancedPublisherCard 
+                  key={publisher.id} 
+                  publisher={publisher}
+                  onClick={() => onPublisherSelect(publisher)}
+                  isSelected={selectedPublishers.includes(publisher.id)}
+                  onToggleSelect={() => togglePublisherSelection!(publisher.id)}
+                  onSaveToList={() => handleSaveToList!(publisher)}
+                  inLists={getPublisherLists!(publisher.id)}
+                />
+              ) : (
+                <PublisherCard 
+                  key={publisher.id} 
+                  publisher={publisher}
+                  onClick={() => onPublisherSelect(publisher)}
+                />
+              )
             ))}
           </div>
         ) : (
           <div className="space-y-4">
             {publishers.map(publisher => (
-              <PublisherListItem 
-                key={publisher.id} 
-                publisher={publisher}
-                onClick={() => onPublisherSelect(publisher)}
-              />
+              hasListFunctionality ? (
+                <EnhancedPublisherListItem 
+                  key={publisher.id} 
+                  publisher={publisher}
+                  onClick={() => onPublisherSelect(publisher)}
+                  isSelected={selectedPublishers.includes(publisher.id)}
+                  onToggleSelect={() => togglePublisherSelection!(publisher.id)}
+                  onSaveToList={() => handleSaveToList!(publisher)}
+                  inLists={getPublisherLists!(publisher.id)}
+                />
+              ) : (
+                <PublisherListItem 
+                  key={publisher.id} 
+                  publisher={publisher}
+                  onClick={() => onPublisherSelect(publisher)}
+                />
+              )
             ))}
           </div>
         )}

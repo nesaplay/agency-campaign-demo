@@ -7,7 +7,8 @@ import {
   Settings, 
   LineChart,
   ChevronLeft,
-  MapPin
+  MapPin,
+  ListChecks
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from 'react-router-dom';
@@ -24,6 +25,7 @@ const Sidebar: React.FC = () => {
     { icon: Home, label: 'Home', href: '/' },
     { icon: Bot, label: 'Ask Lassie', href: '/conversations' },
     { icon: MapPin, label: 'Explore Media', href: '/network-navigator' },
+    { icon: ListChecks, label: 'My Lists', href: '/lists' },
     { icon: LineChart, label: 'Campaigns', href: '/campaigns' },
     { icon: BarChart3, label: 'Data & Analytics', href: '/analytics' },
     { icon: Settings, label: 'Settings', href: '/settings' },
@@ -55,7 +57,8 @@ const Sidebar: React.FC = () => {
       <nav className="flex-1 py-6">
         <ul className="space-y-1 px-2">
           {navItems.map((item, index) => {
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.href || 
+                            (item.href !== '/' && location.pathname.startsWith(item.href));
             return (
               <li key={index}>
                 <Link
@@ -73,7 +76,9 @@ const Sidebar: React.FC = () => {
                     isActive && "text-empowerlocal-blue",
                     !isActive && (index === 0 && "text-empowerlocal-green" || 
                              index === 1 && "text-empowerlocal-blue" ||
-                             index !== 0 && index !== 1 && "text-gray-500")
+                             index === 2 && "text-empowerlocal-navy" ||
+                             index === 3 && "text-empowerlocal-green" ||
+                             index !== 0 && index !== 1 && index !== 2 && index !== 3 && "text-gray-500")
                   )} />
                   {!collapsed && <span>{item.label}</span>}
                 </Link>
