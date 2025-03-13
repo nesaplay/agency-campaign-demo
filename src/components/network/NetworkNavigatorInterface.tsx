@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -103,8 +102,6 @@ const NetworkNavigatorInterface: React.FC = () => {
     setActiveSource('collection');
     setSelectedCollection(collection);
     
-    // In a real app, you would filter publishers based on the collection
-    // For now, we'll just simulate it with a basic filter
     const collectionPublishers = publishers.filter(
       (_, index) => collection.publishers.includes(_.id)
     );
@@ -125,20 +122,36 @@ const NetworkNavigatorInterface: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
+      {/* Filter panel with overlay */}
+      <div 
+        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300 ${
+          showFilters ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setShowFilters(false)}
+      ></div>
+      
       {/* Filter panel */}
-      {showFilters && (
-        <FilterPanel 
-          selectedStates={selectedStates}
-          toggleState={toggleState}
-          selectedCategories={selectedCategories}
-          toggleCategory={toggleCategory}
-          handleFilter={handleFilter}
-          clearFilters={clearFilters}
-          states={states}
-          categories={categories}
-        />
-      )}
+      <div 
+        className={`transition-transform duration-300 transform ${
+          showFilters ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        style={{ position: 'absolute', zIndex: 30 }}
+      >
+        {showFilters && (
+          <FilterPanel 
+            selectedStates={selectedStates}
+            toggleState={toggleState}
+            selectedCategories={selectedCategories}
+            toggleCategory={toggleCategory}
+            handleFilter={handleFilter}
+            clearFilters={clearFilters}
+            states={states}
+            categories={categories}
+            closeFilters={() => setShowFilters(false)}
+          />
+        )}
+      </div>
       
       {/* Collections */}
       <div className="bg-gray-50 p-4 border-b border-gray-200">
