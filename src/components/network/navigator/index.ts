@@ -1,2 +1,3 @@
 
-export { default } from './NetworkNavigatorInterface';
+import NetworkNavigatorInterface from './NetworkNavigatorInterface';
+export default NetworkNavigatorInterface;

@@ -8,7 +8,6 @@ import FilterModalWrapper from './FilterModalWrapper';
 import { Publisher as NetworkPublisher } from '../types';
 import { Publisher as ConversationPublisher } from '@/components/conversations/types';
 import { adaptConversationPublisher } from './utils/publisherAdapter';
-import ConversationInterface from '@/components/conversations/interface';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [isTabsSticky, setIsTabsSticky] = useState(false);
@@ -65,6 +64,8 @@ const NetworkNavigatorInterface: React.FC = () => {
     const networkPublisher = adaptConversationPublisher(publisher);
     handlePublisherSelect(networkPublisher);
   };
+
+  console.log("NetworkNavigatorInterface rendering", { filteredPublishers: filteredPublishers.length });
 
   return (
     <div className="flex flex-col h-full">
