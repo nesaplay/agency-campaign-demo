@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
     }, 
     {
       icon: MapPin,
-      label: 'Explore Media',
+      label: 'Explore',
       href: '/network-navigator'
     }, 
     {
