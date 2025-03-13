@@ -6,7 +6,7 @@ import NetworkNavigatorInterface from '@/components/network/NetworkNavigatorInte
 const NetworkNavigator: React.FC = () => {
   return (
     <MainLayout>
-      <div className="h-full overflow-hidden">
+      <div className="h-full overflow-auto">
         <NetworkNavigatorInterface />
       </div>
     </MainLayout>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -123,7 +122,7 @@ const NetworkNavigatorInterface: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col h-full relative overflow-hidden">
+    <div className="flex flex-col h-full">
       {/* Filter panel as modal/dialog */}
       {showFilters && (
         <>
@@ -164,7 +163,7 @@ const NetworkNavigatorInterface: React.FC = () => {
       <ResultsHeader activeBrowseMethod={getActiveBrowseMethod()} />
       
       {/* Results display - Map or List */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-auto">
         <ResultsDisplay 
           resultsDisplayMode={resultsDisplayMode}
           filteredPublishers={filteredPublishers}
