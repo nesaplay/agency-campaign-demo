@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, Bot, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -68,21 +67,6 @@ const Sidebar: React.FC = () => {
           {!collapsed && <span className="text-white font-semibold text-xl">EmpowerLocal</span>}
         </div>
       </div>
-
-      {/* Active Brand Indicator */}
-      {activeBrand && !collapsed && (
-        <div className="px-4 py-2 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-2">
-            <div 
-              className="h-5 w-5 rounded-full flex items-center justify-center text-white text-xs"
-              style={{ backgroundColor: activeBrand.color }}
-            >
-              {activeBrand.name.charAt(0)}
-            </div>
-            <span className="text-sm text-white/80">{activeBrand.name}</span>
-          </div>
-        </div>
-      )}
 
       {/* Navigation Links */}
       <nav className="flex-1 py-6 bg-empowerlocal-navy">
