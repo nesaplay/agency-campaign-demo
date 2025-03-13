@@ -18,7 +18,6 @@ interface ResultsControlsProps {
 }
 
 const ResultsControls: React.FC<ResultsControlsProps> = ({
-  publisherCount,
   showFilters,
   toggleFilters,
   resultsDisplayMode,
@@ -92,10 +91,6 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
       </div>
       
       <div className="flex items-center gap-4">
-        <div className="text-sm font-medium text-gray-500 whitespace-nowrap">
-          {publisherCount} publishers found
-        </div>
-        
         <div className="flex bg-gray-100 rounded-lg">
           <button 
             onClick={() => setResultsDisplayMode('list')} 

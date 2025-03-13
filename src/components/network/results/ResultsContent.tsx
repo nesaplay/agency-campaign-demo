@@ -1,9 +1,9 @@
 
 import React from 'react';
+import { Publisher } from '../types';
 import PublisherResults from '../PublisherResults';
 import MapView from '../MapView';
-import { Publisher } from '../types';
-import { PublisherList } from '../../lists/types';
+import { PublisherList } from '@/components/lists/types';
 
 interface ResultsContentProps {
   resultsDisplayMode: 'list' | 'map';
@@ -31,23 +31,24 @@ const ResultsContent: React.FC<ResultsContentProps> = ({
   getPublisherLists
 }) => {
   return (
-    <div className="flex-1 overflow-auto">
+    <div className="flex-1 h-0">
       {resultsDisplayMode === 'list' ? (
         <PublisherResults 
-          publishers={filteredPublishers} 
-          viewMode={viewMode} 
-          setViewMode={setViewMode} 
+          publishers={filteredPublishers}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
           onPublisherSelect={onPublisherSelect}
           togglePublisherSelection={togglePublisherSelection}
           selectedPublishers={selectedPublishers}
           handleSaveToList={handleSaveToList}
           getPublisherLists={getPublisherLists}
+          publisherCount={filteredPublishers.length}
         />
       ) : (
         <MapView 
-          publishers={filteredPublishers} 
-          selectedPublisher={selectedPublisher} 
-          onPublisherSelect={onPublisherSelect} 
+          publishers={filteredPublishers}
+          selectedPublisher={selectedPublisher}
+          onPublisherSelect={onPublisherSelect}
         />
       )}
     </div>
