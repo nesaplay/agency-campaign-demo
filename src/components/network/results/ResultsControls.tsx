@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Filter, Map, Grid2X2, List, X } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import SortControls from '../SortControls';
 
@@ -33,7 +33,7 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
   
   return (
     <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-      {/* First row: Just the filters */}
+      {/* First row: Filters and sort controls */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button 
@@ -98,42 +98,11 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
         </div>
       </div>
       
-      {/* Second row: Publisher count and view toggle (moved up) */}
-      <div className="px-4 py-2 border-t border-gray-100 flex justify-between items-center">
+      {/* Second row: Publisher count only */}
+      <div className="px-4 py-2 border-t border-gray-100">
         {/* Left-aligned publisher count */}
         <div className="text-sm text-gray-500 ml-2">
           {publisherCount} publishers found
-        </div>
-        
-        {/* View controls moved here */}
-        <div className="flex bg-gray-100 rounded-lg">
-          <button 
-            onClick={() => setResultsDisplayMode('list')} 
-            className={`p-2 flex items-center gap-1 transition-colors ${
-              resultsDisplayMode === 'list' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
-            } rounded-l-lg`}
-          >
-            <List className="h-4 w-4" />
-            <span className="text-sm">List</span>
-          </button>
-          <button 
-            onClick={() => setResultsDisplayMode('grid')} 
-            className={`p-2 flex items-center gap-1 transition-colors ${
-              resultsDisplayMode === 'grid' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            <Grid2X2 className="h-4 w-4" />
-            <span className="text-sm">Grid</span>
-          </button>
-          <button 
-            onClick={() => setResultsDisplayMode('map')} 
-            className={`p-2 flex items-center gap-1 transition-colors ${
-              resultsDisplayMode === 'map' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
-            } rounded-r-lg`}
-          >
-            <Map className="h-4 w-4" />
-            <span className="text-sm">Map</span>
-          </button>
         </div>
       </div>
     </div>

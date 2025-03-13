@@ -88,7 +88,11 @@ const NetworkNavigatorInterface: React.FC = () => {
       </div>
       
       {/* Results area with active tab title */}
-      <ResultsHeader activeBrowseMethod={getActiveBrowseMethod()} />
+      <ResultsHeader 
+        activeBrowseMethod={getActiveBrowseMethod()} 
+        resultsDisplayMode={resultsDisplayMode}
+        setResultsDisplayMode={setResultsDisplayMode}
+      />
       
       {/* Selected publishers action bar */}
       <SelectedPublishersBar 
