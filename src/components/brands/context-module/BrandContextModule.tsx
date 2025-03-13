@@ -52,20 +52,20 @@ const BrandContextModule: React.FC = () => {
             <Button 
               variant="ghost" 
               size="sm"
-              className="border border-gray-200 flex-shrink-0"
+              className="border border-gray-200 flex-shrink-0 transition-transform duration-300 hover:scale-105"
               aria-label={isOpen ? "Collapse brand details" : "Expand brand details"}
             >
               {isOpen ? (
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4 w-4 transition-transform duration-300" />
               ) : (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 transition-transform duration-300" />
               )}
             </Button>
           </CollapsibleTrigger>
         </div>
 
         {/* Expanded State Content */}
-        <CollapsibleContent>
+        <CollapsibleContent className="transition-all duration-300 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
           <Separator className="mb-4" />
           <MetricsSection />
           <ActionBar brand={activeBrand} />
