@@ -3,6 +3,7 @@ import React from 'react';
 import { Bell, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import BrandSelector from '@/components/brands/BrandSelector';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 const Header: React.FC = () => {
   return (
@@ -23,6 +24,9 @@ const Header: React.FC = () => {
       <div className="flex items-center gap-4">
         {/* Brand Selector */}
         <BrandSelector />
+        
+        {/* Theme Toggle */}
+        <ThemeToggle />
         
         {/* Notification Bell */}
         <button className="p-2 rounded-full hover:bg-white/10 relative">

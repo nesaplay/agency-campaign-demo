@@ -21,7 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         
         {/* Page Content - Main scrollable area */}
         <div className="flex flex-col flex-1 overflow-auto">
-          <main className="flex-1 bg-gray-50">
+          <main className="flex-1 bg-background">
             {children}
           </main>
           
