@@ -1,10 +1,9 @@
 
 import React from 'react';
-import PublisherResults from './PublisherResults';
-import MapView from './MapView';
 import { Publisher } from './types';
-import { Filter, Map, List, Search } from 'lucide-react';
 import { PublisherList } from '../lists/types';
+import ResultsControls from './results/ResultsControls';
+import ResultsContent from './results/ResultsContent';
 
 interface ResultsDisplayProps {
   resultsDisplayMode: 'list' | 'map';
@@ -47,76 +46,28 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
 }) => {
   return (
     <div className="flex flex-col h-full">
-      {/* Controls bar */}
-      <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10">
-        <div className="text-sm font-medium text-gray-500">
-          {publisherCount} publishers found
-        </div>
-        
-        <button 
-          onClick={toggleFilters} 
-          className={`p-2 rounded-lg flex items-center gap-1 transition-colors ${
-            showFilters ? 'bg-empowerlocal-blue text-white' : 'hover:bg-gray-100'
-          }`}
-        >
-          <Filter className="h-4 w-4" />
-          <span className="text-sm">Filters</span>
-        </button>
-        
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search publishers..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-empowerlocal-blue focus:border-transparent"
-            value={searchQuery}
-            onChange={onSearchChange}
-          />
-        </div>
-        
-        <div className="flex bg-gray-100 rounded-lg ml-auto">
-          <button
-            onClick={() => setResultsDisplayMode('list')}
-            className={`p-2 flex items-center gap-1 transition-colors ${
-              resultsDisplayMode === 'list' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
-            } rounded-l-lg`}
-          >
-            <List className="h-4 w-4" />
-            <span className="text-sm">List</span>
-          </button>
-          <button
-            onClick={() => setResultsDisplayMode('map')}
-            className={`p-2 flex items-center gap-1 transition-colors ${
-              resultsDisplayMode === 'map' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'
-            } rounded-r-lg`}
-          >
-            <Map className="h-4 w-4" />
-            <span className="text-sm">Map</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Results content */}
-      <div className="flex-1 overflow-auto">
-        {resultsDisplayMode === 'list' ? (
-          <PublisherResults 
-            publishers={filteredPublishers} 
-            viewMode={viewMode} 
-            setViewMode={setViewMode} 
-            onPublisherSelect={onPublisherSelect}
-            togglePublisherSelection={togglePublisherSelection}
-            selectedPublishers={selectedPublishers}
-            handleSaveToList={handleSaveToList}
-            getPublisherLists={getPublisherLists}
-          />
-        ) : (
-          <MapView 
-            publishers={filteredPublishers} 
-            selectedPublisher={selectedPublisher} 
-            onPublisherSelect={onPublisherSelect} 
-          />
-        )}
-      </div>
+      <ResultsControls 
+        searchQuery={searchQuery}
+        onSearchChange={onSearchChange}
+        publisherCount={publisherCount}
+        showFilters={showFilters}
+        toggleFilters={toggleFilters}
+        resultsDisplayMode={resultsDisplayMode}
+        setResultsDisplayMode={setResultsDisplayMode}
+      />
+      
+      <ResultsContent 
+        resultsDisplayMode={resultsDisplayMode}
+        filteredPublishers={filteredPublishers}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        selectedPublisher={selectedPublisher}
+        onPublisherSelect={onPublisherSelect}
+        togglePublisherSelection={togglePublisherSelection}
+        selectedPublishers={selectedPublishers}
+        handleSaveToList={handleSaveToList}
+        getPublisherLists={getPublisherLists}
+      />
     </div>
   );
 };
