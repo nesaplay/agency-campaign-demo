@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -37,18 +36,15 @@ const ListDetail: React.FC = () => {
   const [selectedPublisher, setSelectedPublisher] = useState<Publisher | null>(null);
   
   useEffect(() => {
-    // Find the list in our mock data
     const foundList = mockLists.find(l => l.id === id);
     if (foundList) {
       setList(foundList);
       setEditedName(foundList.name);
       setEditedDescription(foundList.description);
       
-      // Get publishers that are in this list
       const listPublishers = mockPublishers.filter(p => foundList.publishers.includes(p.id));
       setPublishers(listPublishers);
     } else {
-      // List not found, navigate back
       navigate('/lists');
     }
   }, [id, navigate]);
@@ -56,7 +52,6 @@ const ListDetail: React.FC = () => {
   const handleSaveEdit = () => {
     if (!list) return;
     
-    // In a real app, you'd send this to an API
     setList({
       ...list,
       name: editedName,
@@ -70,11 +65,9 @@ const ListDetail: React.FC = () => {
   const handleRemovePublisher = (publisherId: string) => {
     if (!list) return;
     
-    // Filter out the publisher from our list
     const updatedPublishers = publishers.filter(p => p.id !== publisherId);
     setPublishers(updatedPublishers);
     
-    // Update the list as well
     setList({
       ...list,
       publishers: list.publishers.filter(id => id !== publisherId),
@@ -88,7 +81,6 @@ const ListDetail: React.FC = () => {
   };
   
   const handleCreateCampaign = () => {
-    // In a real app, this would navigate to campaign creation with prefilled list
     console.log('Creating campaign from list', list?.id);
     alert('Creating a new campaign with this publisher list!');
   };
@@ -106,7 +98,6 @@ const ListDetail: React.FC = () => {
   return (
     <MainLayout>
       <div className="flex flex-col h-full bg-gray-50">
-        {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center mb-4">
             <button 
@@ -159,7 +150,6 @@ const ListDetail: React.FC = () => {
             </div>
           </div>
           
-          {/* Description & Stats */}
           <div className="flex flex-col md:flex-row md:items-start gap-6">
             <div className="flex-1">
               {isEditing ? (
@@ -217,85 +207,82 @@ const ListDetail: React.FC = () => {
           </div>
         </div>
         
-        {/* Publishers */}
-        <div className="flex-1 overflow-auto flex">
-          <div className="flex-1">
-            <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between sticky top-0 z-10">
-              <h2 className="font-medium text-empowerlocal-navy">Publishers in this list</h2>
-              
-              <div className="flex bg-gray-100 rounded-lg">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-l-lg ${viewMode === 'grid' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'}`}
-                >
-                  <Grid className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-r-lg ${viewMode === 'list' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'}`}
-                >
-                  <ListIcon className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+        <div className="flex-1 overflow-auto">
+          <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between sticky top-0 z-10">
+            <h2 className="font-medium text-empowerlocal-navy">Publishers in this list</h2>
             
-            {publishers.length > 0 ? (
-              <div className="p-6">
-                {viewMode === 'grid' ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {publishers.map(publisher => (
-                      <div key={publisher.id}>
-                        <PublisherCard 
-                          publisher={publisher}
-                          onClick={() => handleViewPublisherDetails(publisher)}
-                          onDelete={() => handleRemovePublisher(publisher.id)}
-                          onViewDetails={() => handleViewPublisherDetails(publisher)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {publishers.map(publisher => (
-                      <div key={publisher.id}>
-                        <PublisherListItem 
-                          publisher={publisher}
-                          onClick={() => handleViewPublisherDetails(publisher)}
-                          onDelete={() => handleRemovePublisher(publisher.id)}
-                          onViewDetails={() => handleViewPublisherDetails(publisher)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="h-64 flex flex-col items-center justify-center text-gray-500 p-6">
-                <div className="bg-gray-100 p-6 rounded-full">
-                  <Users className="h-12 w-12 text-gray-400" />
-                </div>
-                <h3 className="mt-4 text-lg font-medium">No publishers in this list</h3>
-                <p className="mt-2 text-sm">Browse the Network Navigator to add publishers</p>
-                <button 
-                  className="mt-6 flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
-                  onClick={() => navigate('/network-navigator')}
-                >
-                  <MapPin className="h-4 w-4" />
-                  Explore Media
-                </button>
-              </div>
-            )}
+            <div className="flex bg-gray-100 rounded-lg">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-l-lg ${viewMode === 'grid' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'}`}
+              >
+                <Grid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-r-lg ${viewMode === 'list' ? 'bg-empowerlocal-blue text-white' : 'text-gray-600 hover:bg-gray-200'}`}
+              >
+                <ListIcon className="h-4 w-4" />
+              </button>
+            </div>
           </div>
           
-          {/* Publisher Detail Sidebar */}
-          {selectedPublisher && (
-            <PublisherDetail 
-              publisher={selectedPublisher} 
-              onClose={() => setSelectedPublisher(null)} 
-            />
+          {publishers.length > 0 ? (
+            <div className="p-6">
+              {viewMode === 'grid' ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {publishers.map(publisher => (
+                    <div key={publisher.id}>
+                      <PublisherCard 
+                        publisher={publisher}
+                        onClick={() => handleViewPublisherDetails(publisher)}
+                        onDelete={() => handleRemovePublisher(publisher.id)}
+                        onViewDetails={() => handleViewPublisherDetails(publisher)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {publishers.map(publisher => (
+                    <div key={publisher.id}>
+                      <PublisherListItem 
+                        publisher={publisher}
+                        onClick={() => handleViewPublisherDetails(publisher)}
+                        onDelete={() => handleRemovePublisher(publisher.id)}
+                        onViewDetails={() => handleViewPublisherDetails(publisher)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="h-64 flex flex-col items-center justify-center text-gray-500 p-6">
+              <div className="bg-gray-100 p-6 rounded-full">
+                <Users className="h-12 w-12 text-gray-400" />
+              </div>
+              <h3 className="mt-4 text-lg font-medium">No publishers in this list</h3>
+              <p className="mt-2 text-sm">Browse the Network Navigator to add publishers</p>
+              <button 
+                className="mt-6 flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
+                onClick={() => navigate('/network-navigator')}
+              >
+                <MapPin className="h-4 w-4" />
+                Explore Media
+              </button>
+            </div>
           )}
         </div>
       </div>
+      
+      {selectedPublisher && (
+        <PublisherDetail 
+          publisher={selectedPublisher} 
+          onClose={() => setSelectedPublisher(null)} 
+        />
+      )}
+      
       <Toaster />
     </MainLayout>
   );

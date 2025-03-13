@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -268,7 +267,7 @@ const NetworkNavigatorInterface: React.FC = () => {
         />
       </div>
       
-      {/* Detail view overlay */}
+      {/* Publisher Detail Modal */}
       {selectedPublisher && (
         <PublisherDetail publisher={selectedPublisher} onClose={handleCloseDetail} />
       )}
