@@ -16,6 +16,7 @@ interface ResultsContentProps {
   selectedPublishers?: string[];
   handleSaveToList?: (publisher: Publisher) => void;
   getPublisherLists?: (publisherId: string) => PublisherList[];
+  publisherCount?: number;
 }
 
 const ResultsContent: React.FC<ResultsContentProps> = ({
@@ -28,7 +29,8 @@ const ResultsContent: React.FC<ResultsContentProps> = ({
   togglePublisherSelection,
   selectedPublishers = [],
   handleSaveToList,
-  getPublisherLists
+  getPublisherLists,
+  publisherCount
 }) => {
   return (
     <div className="flex-1 h-0">
@@ -42,7 +44,7 @@ const ResultsContent: React.FC<ResultsContentProps> = ({
           selectedPublishers={selectedPublishers}
           handleSaveToList={handleSaveToList}
           getPublisherLists={getPublisherLists}
-          publisherCount={filteredPublishers.length}
+          publisherCount={publisherCount !== undefined ? publisherCount : filteredPublishers.length}
         />
       ) : (
         <MapView 
