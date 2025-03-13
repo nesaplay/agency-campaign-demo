@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Publisher, PublisherCollection } from '../types';
 import { mockPublishers } from '../mockData';
@@ -18,7 +17,7 @@ export const useNetworkNavigator = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
-  const [resultsDisplayMode, setResultsDisplayMode] = useState<'list' | 'map'>('list');
+  const [resultsDisplayMode, setResultsDisplayMode] = useState<'list' | 'grid' | 'map'>('list');
   const [showSaveToListModal, setShowSaveToListModal] = useState(false);
   const [publisherToSave, setPublisherToSave] = useState<Publisher | null>(null);
   const [selectedPublishers, setSelectedPublishers] = useState<string[]>([]);
