@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface PublisherModalProps {
   onClose: () => void;
@@ -14,8 +15,14 @@ const PublisherModal: React.FC<PublisherModalProps> = ({
   title = "Publisher Details"
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-xl w-[90%] max-w-5xl max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-hidden">
+      <div 
+        className={cn(
+          "fixed inset-y-0 right-0 w-[90%] max-w-6xl bg-white shadow-xl",
+          "transform transition-transform duration-300 ease-in-out",
+          "flex flex-col h-full"
+        )}
+      >
         {/* Header */}
         <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white z-10 sticky top-0">
           <h3 className="font-medium text-empowerlocal-navy text-xl">{title}</h3>
