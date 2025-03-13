@@ -1,8 +1,7 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Settings, LineChart, Globe, Tabs } from 'lucide-react';
+import { ChevronLeft, Settings, LineChart, Globe, LayoutGrid } from 'lucide-react';
 import { useBrand } from '@/components/brands/BrandContext';
 import { Brand } from '@/components/brands/types';
 import { cn } from '@/lib/utils';
@@ -12,7 +11,6 @@ const BrandDetail: React.FC = () => {
   const { brands, setActiveBrand } = useBrand();
   const [activeTab, setActiveTab] = React.useState('overview');
   
-  // Find the brand by ID
   const brand = brands.find(b => b.id === id) || null;
   
   if (!brand) {
@@ -32,7 +30,6 @@ const BrandDetail: React.FC = () => {
   return (
     <MainLayout>
       <div className="flex flex-col h-full bg-gray-50">
-        {/* Header with back button */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center gap-4 mb-5">
             <Link 
@@ -44,7 +41,6 @@ const BrandDetail: React.FC = () => {
             </Link>
           </div>
           
-          {/* Brand header */}
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div 
@@ -84,7 +80,6 @@ const BrandDetail: React.FC = () => {
           </div>
         </div>
         
-        {/* Tabs */}
         <div className="bg-white border-b border-gray-200">
           <div className="flex items-center px-6">
             <button 
@@ -134,7 +129,6 @@ const BrandDetail: React.FC = () => {
           </div>
         </div>
         
-        {/* Content */}
         <div className="flex-1 p-6 overflow-auto">
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -160,7 +154,7 @@ const BrandDetail: React.FC = () => {
               
               <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <Tabs className="h-5 w-5 text-empowerlocal-blue" />
+                  <LayoutGrid className="h-5 w-5 text-empowerlocal-blue" />
                   <h3 className="font-medium text-gray-800">Recent Activity</h3>
                 </div>
                 <div className="space-y-3">
