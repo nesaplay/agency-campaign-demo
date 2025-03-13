@@ -10,10 +10,11 @@ import SelectedPublishersBar from './SelectedPublishersBar';
 import { useNetworkNavigator } from './hooks/useNetworkNavigator';
 import { mockCollections } from './mockCollectionsData';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ListFilter, Grid3X3 } from 'lucide-react';
+import { ListFilter, Grid3X3, MessageSquare } from 'lucide-react';
+import ConversationInterface from '../conversations/ConversationInterface';
 
 const NetworkNavigatorInterface: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'publishers' | 'collections'>('publishers');
+  const [activeTab, setActiveTab] = useState<'lassie' | 'publishers' | 'collections'>('lassie');
   
   const {
     // Data
@@ -87,12 +88,16 @@ const NetworkNavigatorInterface: React.FC = () => {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs 
-            defaultValue="publishers" 
+            defaultValue="lassie" 
             value={activeTab} 
-            onValueChange={(value) => setActiveTab(value as 'publishers' | 'collections')}
+            onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections')}
             className="w-full"
           >
-            <TabsList className="grid w-full max-w-md grid-cols-2 mb-2 mt-4 bg-gray-100">
+            <TabsList className="grid w-full max-w-md grid-cols-3 mb-2 mt-4 bg-gray-100">
+              <TabsTrigger value="lassie" className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4" />
+                <span>Ask Lassie</span>
+              </TabsTrigger>
               <TabsTrigger value="publishers" className="flex items-center gap-2">
                 <ListFilter className="h-4 w-4" />
                 <span>Explore All</span>
@@ -102,6 +107,12 @@ const NetworkNavigatorInterface: React.FC = () => {
                 <span>Curated Collections</span>
               </TabsTrigger>
             </TabsList>
+            
+            <TabsContent value="lassie" className="mt-0">
+              <div className="py-4">
+                <ConversationInterface />
+              </div>
+            </TabsContent>
             
             <TabsContent value="publishers" className="mt-0">
               {/* Results header for publishers tab */}
