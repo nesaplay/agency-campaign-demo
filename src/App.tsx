@@ -16,28 +16,30 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <BrandProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/conversations" element={<Conversations />} />
-            <Route path="/network-navigator" element={<NetworkNavigator />} />
-            <Route path="/lists" element={<MyLists />} />
-            <Route path="/lists/:id" element={<ListDetail />} />
-            <Route path="/brands" element={<Brands />} />
-            <Route path="/brands/:id" element={<BrandDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </BrandProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrandProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/conversations" element={<Conversations />} />
+              <Route path="/network-navigator" element={<NetworkNavigator />} />
+              <Route path="/lists" element={<MyLists />} />
+              <Route path="/lists/:id" element={<ListDetail />} />
+              <Route path="/brands" element={<Brands />} />
+              <Route path="/brands/:id" element={<BrandDetail />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </TooltipProvider>
+        </BrandProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
