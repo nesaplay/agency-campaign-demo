@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, MapPin, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
 import MapView from '../MapView';
-import SeasonalCalendar from '../SeasonalCalendar';
+import SeasonalCalendar from '../seasonal-calendar';
 import { mockPublishers } from '../mockData';
 import { SeasonalEvent } from '../types';
 
