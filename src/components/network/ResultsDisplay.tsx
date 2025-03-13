@@ -34,7 +34,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   setResultsDisplayMode
 }) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       {/* Controls bar */}
       <div className="bg-white p-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10">
         <div className="text-sm font-medium text-gray-500">
@@ -74,7 +74,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       </div>
 
       {/* Results content */}
-      <div className="flex-1 overflow-auto">
+      <div className="overflow-auto">
         {resultsDisplayMode === 'list' ? (
           <PublisherResults 
             publishers={filteredPublishers} 
