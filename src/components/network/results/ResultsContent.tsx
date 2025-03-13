@@ -39,7 +39,7 @@ const ResultsContent: React.FC<ResultsContentProps> = ({
       ) : (
         <PublisherResults 
           publishers={filteredPublishers}
-          viewMode={resultsDisplayMode}
+          viewMode={resultsDisplayMode as 'list' | 'grid'}
           onPublisherSelect={onPublisherSelect}
           togglePublisherSelection={togglePublisherSelection}
           selectedPublishers={selectedPublishers}

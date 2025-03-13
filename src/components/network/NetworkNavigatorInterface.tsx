@@ -102,8 +102,6 @@ const NetworkNavigatorInterface: React.FC = () => {
         <ResultsDisplay 
           resultsDisplayMode={resultsDisplayMode}
           filteredPublishers={filteredPublishers}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
           selectedPublisher={selectedPublisher}
           onPublisherSelect={handlePublisherSelect}
           searchQuery={searchQuery}
