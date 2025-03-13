@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { Calendar, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import { format } from 'date-fns';
-
 interface CalendarHeaderProps {
   currentMonth: Date;
   navigateMonth: (direction: 'prev' | 'next') => void;
@@ -13,7 +11,6 @@ interface CalendarHeaderProps {
   regions: string[];
   categories: string[];
 }
-
 const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   currentMonth,
   navigateMonth,
@@ -24,29 +21,19 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   regions,
   categories
 }) => {
-  return (
-    <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-      <div className="flex items-center">
-        <Calendar className="h-5 w-5 text-empowerlocal-blue mr-2" />
-        <h3 className="font-medium text-empowerlocal-navy">Seasonal Opportunity Calendar</h3>
-      </div>
+  return <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+      
       
       <div className="flex items-center gap-4">
         {/* Month Navigation */}
         <div className="flex items-center gap-2">
-          <button 
-            onClick={() => navigateMonth('prev')}
-            className="p-1 rounded-lg hover:bg-gray-100"
-          >
+          <button onClick={() => navigateMonth('prev')} className="p-1 rounded-lg hover:bg-gray-100">
             <ChevronLeft className="h-5 w-5 text-gray-500" />
           </button>
           <span className="font-medium min-w-24 text-center">
             {format(currentMonth, 'MMMM yyyy')}
           </span>
-          <button 
-            onClick={() => navigateMonth('next')}
-            className="p-1 rounded-lg hover:bg-gray-100"
-          >
+          <button onClick={() => navigateMonth('next')} className="p-1 rounded-lg hover:bg-gray-100">
             <ChevronRight className="h-5 w-5 text-gray-500" />
           </button>
         </div>
@@ -55,34 +42,20 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         <div className="flex items-center gap-3">
           <div className="flex items-center">
             <Filter className="h-4 w-4 text-gray-400 mr-1" />
-            <select 
-              className="text-sm border-0 focus:ring-0 py-1"
-              value={selectedRegion}
-              onChange={(e) => setSelectedRegion(e.target.value)}
-            >
+            <select className="text-sm border-0 focus:ring-0 py-1" value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
               <option>All Regions</option>
-              {regions.map(region => (
-                <option key={region} value={region}>{region}</option>
-              ))}
+              {regions.map(region => <option key={region} value={region}>{region}</option>)}
             </select>
           </div>
           
           <div className="flex items-center">
-            <select 
-              className="text-sm border-0 focus:ring-0 py-1"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
+            <select className="text-sm border-0 focus:ring-0 py-1" value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
               <option>All Categories</option>
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
+              {categories.map(category => <option key={category} value={category}>{category}</option>)}
             </select>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CalendarHeader;
