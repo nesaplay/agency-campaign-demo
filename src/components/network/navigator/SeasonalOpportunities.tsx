@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, MapPin, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -8,7 +7,6 @@ import SeasonalCalendar from '../SeasonalCalendar';
 import { mockPublishers } from '../mockData';
 import { SeasonalEvent } from '../types';
 
-// Sample data for seasonal events
 const seasonalEvents: SeasonalEvent[] = [
   {
     id: '1',
@@ -105,7 +103,6 @@ const seasonalEvents: SeasonalEvent[] = [
   }
 ];
 
-// Available region and category filters
 const regions = ['National', 'Northeast', 'Southeast', 'Midwest', 'Southwest', 'West Coast', 'Mountain Regions', 'Coastal', 'Urban Centers', 'Rural', 'Suburban'];
 const categories = ['Retail', 'Entertainment', 'Travel', 'Food & Beverage', 'Finance', 'Business', 'Education', 'Technology', 'Outdoor Recreation'];
 
@@ -157,7 +154,6 @@ const SeasonalOpportunities: React.FC = () => {
             </p>
             
             <div className="flex flex-wrap gap-2 mb-3">
-              {/* Event Type Filters */}
               <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                 Retail Events
               </span>
