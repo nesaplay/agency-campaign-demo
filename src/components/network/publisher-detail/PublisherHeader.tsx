@@ -2,27 +2,18 @@
 import React from 'react';
 import { MapPin, MessageCircleQuestion } from 'lucide-react';
 import { Publisher } from '../types';
-import { useToast } from "@/hooks/use-toast";
 
 interface PublisherHeaderProps {
   publisher: Publisher;
   getPerformanceColor: (performance: string) => string;
+  onAskLassie: () => void;
 }
 
 const PublisherHeader: React.FC<PublisherHeaderProps> = ({ 
   publisher, 
-  getPerformanceColor 
+  getPerformanceColor,
+  onAskLassie
 }) => {
-  const { toast } = useToast();
-  
-  const handleAskLassie = () => {
-    toast({
-      title: "Lassie activated",
-      description: `Now chatting about ${publisher.name}`,
-    });
-    // In a real implementation, this would trigger the Lassie chat panel
-  };
-
   return (
     <div className="relative mb-8 bg-gradient-to-r from-gray-100 to-white rounded-xl p-6 shadow-sm border border-gray-200">
       <div className="flex items-start gap-6">
@@ -55,7 +46,7 @@ const PublisherHeader: React.FC<PublisherHeaderProps> = ({
         </div>
         
         <button 
-          onClick={handleAskLassie}
+          onClick={onAskLassie}
           className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 bg-white text-empowerlocal-blue border border-empowerlocal-blue/30 rounded-full text-sm font-medium shadow-sm hover:bg-empowerlocal-blue/5 transition-colors"
         >
           <MessageCircleQuestion className="h-4 w-4" />

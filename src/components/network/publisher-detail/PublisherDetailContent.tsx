@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Publisher } from '../types';
 import PublisherHeader from './PublisherHeader';
@@ -12,21 +13,26 @@ import PublisherSeasonality from './PublisherSeasonality';
 import AiInsights from './AiInsights';
 import PublisherSpotlight from './PublisherSpotlight';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle } from 'lucide-react';
+
 interface PublisherDetailContentProps {
   publisher: Publisher;
   setShowLassieChat: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const PublisherDetailContent: React.FC<PublisherDetailContentProps> = ({
   publisher,
   setShowLassieChat
 }) => {
-  return <ScrollArea className="flex-1 h-full">
+  return (
+    <ScrollArea className="flex-1 h-full">
       <div className="p-6">
         {/* Enhanced Logo and Info */}
         <div className="flex justify-between items-start mb-6">
-          <PublisherHeader publisher={publisher} getPerformanceColor={getPerformanceColor} />
-          
+          <PublisherHeader 
+            publisher={publisher} 
+            getPerformanceColor={getPerformanceColor} 
+            onAskLassie={() => setShowLassieChat(true)}
+          />
         </div>
         
         {/* AI Insights Section */}
@@ -56,6 +62,8 @@ const PublisherDetailContent: React.FC<PublisherDetailContentProps> = ({
         {/* Available Inventory */}
         <AvailableInventory />
       </div>
-    </ScrollArea>;
+    </ScrollArea>
+  );
 };
+
 export default PublisherDetailContent;
