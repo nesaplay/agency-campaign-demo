@@ -2,6 +2,7 @@
 import React from 'react';
 import { Bell, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import BrandSelector from '@/components/brands/BrandSelector';
 
 const Header: React.FC = () => {
   return (
@@ -20,6 +21,9 @@ const Header: React.FC = () => {
 
       {/* Right Side Controls */}
       <div className="flex items-center gap-4">
+        {/* Brand Selector */}
+        <BrandSelector />
+        
         {/* Notification Bell */}
         <button className="p-2 rounded-full hover:bg-white/10 relative">
           <Bell className="h-5 w-5 text-white" />
