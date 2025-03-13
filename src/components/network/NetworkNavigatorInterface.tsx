@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
 import FilterModal from './FilterModal';
@@ -15,6 +15,8 @@ import ConversationInterface from '../conversations/ConversationInterface';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'lassie' | 'publishers' | 'collections'>('lassie');
+  const [isTabsSticky, setIsTabsSticky] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
   
   const {
     // Data
@@ -57,6 +59,19 @@ const NetworkNavigatorInterface: React.FC = () => {
     setShowSaveToListModal,
     setSelectedPublishers
   } = useNetworkNavigator();
+  
+  // Set up scroll event listener to detect when tabs should become sticky
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tabsRef.current) {
+        const tabsPosition = tabsRef.current.getBoundingClientRect().top;
+        setIsTabsSticky(tabsPosition <= 0);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="flex flex-col h-full">
@@ -85,8 +100,11 @@ const NetworkNavigatorInterface: React.FC = () => {
       )}
       
       {/* Main tabs for exploration modes */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div 
+        ref={tabsRef} 
+        className={`bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30' : ''}`}
+      >
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isTabsSticky ? 'shadow-md' : ''}`}>
           <Tabs 
             defaultValue="lassie" 
             value={activeTab} 
