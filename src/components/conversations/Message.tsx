@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ThumbsUp, ThumbsDown, Info, X, MessageCircle, Map, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -38,10 +37,6 @@ const Message: React.FC<MessageProps> = ({
   const handlePublisherCardClick = (publisherId: string) => {
     if (onPublisherSelect) {
       onPublisherSelect(publisherId);
-      toast({
-        title: "Publisher details",
-        description: "Viewing detailed publisher information",
-      });
     }
   };
   
@@ -57,7 +52,6 @@ const Message: React.FC<MessageProps> = ({
   
   const isAssistant = message.sender === 'assistant';
   
-  // Contextual insights based on conversation content
   const getContextualInsight = () => {
     if (message.content.includes('ice cream') || message.content.includes('summer')) {
       return "Summer ice cream campaigns perform best when launched 2-3 weeks before seasonal temperature increases. Consider starting in late April or early May for maximum impact.";

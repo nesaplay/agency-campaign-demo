@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -12,6 +11,7 @@ import { mockCollections } from './mockCollectionsData';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, Grid3X3, MessageSquare } from 'lucide-react';
 import ConversationInterface from '../conversations/ConversationInterface';
+import { Publisher } from './types';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'lassie' | 'publishers' | 'collections'>('lassie');
@@ -128,7 +128,9 @@ const NetworkNavigatorInterface: React.FC = () => {
             
             <TabsContent value="lassie" className="mt-0">
               <div className="py-4">
-                <ConversationInterface />
+                <ConversationInterface 
+                  onPublisherSelect={(publisher: Publisher) => handlePublisherSelect(publisher)}
+                />
               </div>
             </TabsContent>
             

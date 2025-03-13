@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, CircleEllipsis, Upload, PlusCircle, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -11,7 +10,11 @@ import { Message as MessageType, Publisher } from './types';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ConversationInterface: React.FC = () => {
+interface ConversationInterfaceProps {
+  onPublisherSelect?: (publisher: Publisher) => void;
+}
+
+const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublisherSelect }) => {
   const [messages, setMessages] = useState<MessageType[]>([
     {
       id: '1',
@@ -40,7 +43,6 @@ const ConversationInterface: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  // Sample publishers data
   const publishers: Publisher[] = [
     {
       id: '1',
@@ -68,7 +70,6 @@ const ConversationInterface: React.FC = () => {
     }
   ];
 
-  // Scroll to bottom of messages
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -82,26 +83,27 @@ const ConversationInterface: React.FC = () => {
   };
 
   const handlePublisherSelect = (publisherId: string) => {
-    // Get publisher details
     const publisher = publishers.find(p => p.id === publisherId);
-    if (publisher && !selectedPublishers.some(p => p.id === publisherId)) {
-      setSelectedPublishers(prev => [...prev, publisher]);
-      toast({
-        title: "Publisher added",
-        description: `${publisher.name} has been added to your campaign`,
-      });
+    if (publisher) {
+      if (onPublisherSelect) {
+        onPublisherSelect(publisher);
+      } else {
+        setSelectedPublishers(prev => [...prev.filter(p => p.id !== publisherId), publisher]);
+        toast({
+          title: "Publisher details",
+          description: "Viewing detailed publisher information",
+        });
+      }
     }
   };
   
   const handleAddAllPublishers = () => {
-    // Add all publishers that aren't already in the selection
     const newPublishers = publishers.filter(
       p => !selectedPublishers.some(sp => sp.id === p.id)
     );
     
     if (newPublishers.length > 0) {
       setSelectedPublishers(prev => [...prev, ...newPublishers]);
-      // Open summary panel
       setShowSummaryPanel(true);
     }
   };
@@ -109,7 +111,6 @@ const ConversationInterface: React.FC = () => {
   const handleSendMessage = (content: string = inputValue) => {
     if (!content.trim()) return;
 
-    // Add user message
     const userMessage: MessageType = {
       id: Date.now().toString(),
       content,
@@ -119,10 +120,8 @@ const ConversationInterface: React.FC = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
 
-    // Simulate Lassie thinking
     setIsTyping(true);
     
-    // Process response based on conversation flow
     setTimeout(() => {
       let response: MessageType;
       
@@ -167,7 +166,6 @@ const ConversationInterface: React.FC = () => {
         setMessages(prev => [...prev, response]);
         setIsTyping(false);
         
-        // Add a follow-up message with publisher recommendations after showing the map
         setTimeout(() => {
           setIsTyping(true);
           setTimeout(() => {
@@ -192,7 +190,6 @@ const ConversationInterface: React.FC = () => {
             setMessages(prev => [...prev, recommendationsResponse]);
             setIsTyping(false);
             
-            // Show summary panel after recommendations
             setTimeout(() => {
               setShowSummaryPanel(true);
             }, 1000);
@@ -252,8 +249,6 @@ const ConversationInterface: React.FC = () => {
 
   const handleFeedback = (messageId: string, isPositive: boolean) => {
     console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'}`);
-    // Here you would typically send this feedback to your backend
-    
     toast({
       title: isPositive ? "Thanks for your feedback" : "We'll improve this response",
       description: isPositive ? "Your feedback helps us improve Lassie" : "We'll use your feedback to make Lassie better",
@@ -280,7 +275,6 @@ const ConversationInterface: React.FC = () => {
             <h1 className="text-xl font-semibold text-empowerlocal-navy">Lassie AI Assistant</h1>
           </div>
           
-          {/* Campaign progress indicator */}
           {campaignStage > 0 && (
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2">
@@ -379,7 +373,6 @@ const ConversationInterface: React.FC = () => {
         </div>
       </div>
       
-      {/* Campaign Summary Panel */}
       <CampaignSummaryPanel 
         isExpanded={showSummaryPanel}
         onToggle={() => setShowSummaryPanel(!showSummaryPanel)}
