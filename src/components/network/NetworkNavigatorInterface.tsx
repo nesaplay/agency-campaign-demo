@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import PublisherDetail from './PublisherDetail';
 import PublisherCollections from './PublisherCollections';
@@ -11,7 +12,27 @@ import { mockCollections } from './mockCollectionsData';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, Grid3X3, MessageSquare } from 'lucide-react';
 import ConversationInterface from '../conversations/ConversationInterface';
-import { Publisher } from './types';
+import { Publisher as NetworkPublisher } from './types';
+import { Publisher as ConversationPublisher } from '../conversations/types';
+
+// Adapter function to convert between Publisher types
+const convertToNetworkPublisher = (publisher: ConversationPublisher): NetworkPublisher => {
+  return {
+    id: publisher.id,
+    name: publisher.name,
+    logo: publisher.image,
+    location: publisher.location,
+    coverage: publisher.location,
+    subscribers: publisher.reach,
+    engagement: "4.0%", // Default values for required fields
+    cpm: "$15",
+    categories: ["News"],
+    performance: "Good",
+    latitude: 0,
+    longitude: 0,
+    audienceSize: parseInt(publisher.reach.replace(/[^0-9]/g, '')) || 10000
+  };
+};
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'lassie' | 'publishers' | 'collections'>('lassie');
@@ -73,6 +94,14 @@ const NetworkNavigatorInterface: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle publisher selection from conversation interface
+  const handleConversationPublisherSelect = (publisher: ConversationPublisher) => {
+    // Convert the conversation publisher to a network publisher
+    const networkPublisher = convertToNetworkPublisher(publisher);
+    // Then pass it to the regular publisher select handler
+    handlePublisherSelect(networkPublisher);
+  };
+
   return (
     <div className="flex flex-col h-full">
       {/* Filter modal */}
@@ -129,7 +158,7 @@ const NetworkNavigatorInterface: React.FC = () => {
             <TabsContent value="lassie" className="mt-0">
               <div className="py-4">
                 <ConversationInterface 
-                  onPublisherSelect={(publisher: Publisher) => handlePublisherSelect(publisher)}
+                  onPublisherSelect={handleConversationPublisherSelect}
                 />
               </div>
             </TabsContent>
