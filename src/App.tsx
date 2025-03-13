@@ -10,6 +10,7 @@ import Conversations from "./pages/Conversations";
 import NetworkNavigator from "./pages/NetworkNavigator";
 import MyLists from "./pages/MyLists";
 import Brands from "./pages/Brands";
+import BrandDetail from "./pages/BrandDetail";
 import ListDetail from "./pages/ListDetail";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/lists" element={<MyLists />} />
             <Route path="/lists/:id" element={<ListDetail />} />
             <Route path="/brands" element={<Brands />} />
+            <Route path="/brands/:id" element={<BrandDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
