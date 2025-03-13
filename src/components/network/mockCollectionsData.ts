@@ -9,7 +9,7 @@ export const mockCollections: PublisherCollection[] = [
     description: 'A collection of parenting blogs and lifestyle sites focused on family content.',
     publisherCount: 32,
     thumbnail: '/placeholder.svg',
-    coverageMapThumbnail: 'https://placehold.co/600x400/f0f7ff/2868C3?text=Family+Coverage',
+    coverageMapThumbnail: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     publishers: ['pub1', 'pub2', 'pub3']
   },
   {
@@ -18,7 +18,7 @@ export const mockCollections: PublisherCollection[] = [
     description: 'Publishers covering SEC college sports with passionate fan followings.',
     publisherCount: 24,
     thumbnail: '/placeholder.svg',
-    coverageMapThumbnail: 'https://placehold.co/600x400/fff7e0/FFA500?text=SEC+Coverage',
+    coverageMapThumbnail: 'https://images.unsplash.com/photo-1471295253337-3ceaaedca402?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     publishers: ['pub4', 'pub5', 'pub6']
   },
   {
@@ -27,7 +27,7 @@ export const mockCollections: PublisherCollection[] = [
     description: 'Local food & dining publications with engaged audiences of food enthusiasts.',
     publisherCount: 18,
     thumbnail: '/placeholder.svg',
-    coverageMapThumbnail: 'https://placehold.co/600x400/fffbf0/FFD700?text=Foodie+Coverage',
+    coverageMapThumbnail: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     publishers: ['pub7', 'pub8', 'pub9']
   },
   {
@@ -36,7 +36,7 @@ export const mockCollections: PublisherCollection[] = [
     description: 'Publications covering hiking, camping, and outdoor recreational activities.',
     publisherCount: 27,
     thumbnail: '/placeholder.svg',
-    coverageMapThumbnail: 'https://placehold.co/600x400/f0fff7/25A87E?text=Outdoor+Coverage',
+    coverageMapThumbnail: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     publishers: ['pub10', 'pub11', 'pub12']
   },
   {
@@ -45,7 +45,7 @@ export const mockCollections: PublisherCollection[] = [
     description: 'Publishers focused on technology news and innovation in major tech regions.',
     publisherCount: 15,
     thumbnail: '/placeholder.svg',
-    coverageMapThumbnail: 'https://placehold.co/600x400/f7f0ff/6A26CD?text=Tech+Coverage',
+    coverageMapThumbnail: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     publishers: ['pub13', 'pub14', 'pub15']
   }
 ];

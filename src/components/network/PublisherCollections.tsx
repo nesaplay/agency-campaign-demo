@@ -45,18 +45,18 @@ const PublisherCollections: React.FC<PublisherCollectionsProps> = ({
               className="w-64 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
               onClick={() => onExploreCollection(collection)}
             >
-              <div className="relative h-28 bg-gray-100 rounded-t-lg overflow-hidden">
+              <div className="relative h-32 bg-gray-100 rounded-t-lg overflow-hidden">
                 <img 
                   src={collection.coverageMapThumbnail} 
-                  alt={`${collection.name} coverage map`}
+                  alt={`${collection.name} collection`}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-800 opacity-60"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-3 text-white">
                   <div className="font-medium">{collection.name}</div>
                   <div className="text-xs">{collection.publisherCount} publishers</div>
                 </div>
-                <div className="absolute top-3 right-3 p-2 bg-white rounded-full">
+                <div className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md">
                   {getCollectionIcon(collection.name)}
                 </div>
               </div>
