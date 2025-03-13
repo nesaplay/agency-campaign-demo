@@ -2,7 +2,7 @@
 import React, { forwardRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, Grid3X3, MessageSquare } from 'lucide-react';
-import ConversationInterface from '@/components/conversations/ConversationInterface';
+import ConversationInterface from '@/components/conversations/interface';
 import PublisherCollections from '../PublisherCollections';
 import ResultsHeader from '../ResultsHeader';
 import SelectedPublishersBar from '../SelectedPublishersBar';
