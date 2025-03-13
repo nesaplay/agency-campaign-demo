@@ -37,7 +37,7 @@ const Sidebar: React.FC = () => {
     }, 
     {
       icon: LineChart,
-      label: 'My Campaigns',
+      label: 'Campaigns',
       href: '/campaigns'
     },
     {
