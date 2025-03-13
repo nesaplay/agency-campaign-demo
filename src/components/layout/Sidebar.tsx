@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
   const navItems = [
     { icon: Home, label: 'Home', href: '/' },
     { icon: Bot, label: 'Ask Lassie', href: '/conversations' },
-    { icon: MapPin, label: 'Network Navigator', href: '/network-navigator' },
+    { icon: MapPin, label: 'Explore Media', href: '/network-navigator' },
     { icon: LineChart, label: 'Campaigns', href: '/campaigns' },
     { icon: BarChart3, label: 'Data & Analytics', href: '/analytics' },
     { icon: Settings, label: 'Settings', href: '/settings' },
