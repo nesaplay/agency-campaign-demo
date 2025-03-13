@@ -33,7 +33,7 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
   
   return (
     <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-      {/* First row: Filters, display mode controls and sort */}
+      {/* First row: Filters and view controls */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button 
@@ -93,7 +93,7 @@ const ResultsControls: React.FC<ResultsControlsProps> = ({
         </div>
         
         <div className="flex items-center gap-4">
-          {/* Sort controls moved up to this row */}
+          {/* Sort controls - moved to match the image */}
           <SortControls onSortChange={() => {}} />
           
           <div className="flex bg-gray-100 rounded-lg">
