@@ -18,7 +18,7 @@ const PublisherDetail: React.FC<PublisherDetailProps> = ({ publisher, onClose })
   return (
     <PublisherModal onClose={onClose}>
       <div className="flex h-full">
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${showLassieChat ? 'w-2/3' : 'w-full'}`}>
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${showLassieChat ? 'w-3/4' : 'w-full'}`}>
           <div className="flex-1 overflow-hidden">
             <PublisherDetailContent 
               publisher={publisher} 
@@ -29,8 +29,8 @@ const PublisherDetail: React.FC<PublisherDetailProps> = ({ publisher, onClose })
         </div>
         
         {showLassieChat && (
-          <div className="w-1/3 border-l border-gray-200 bg-gray-50 relative flex flex-col">
-            <div className="absolute top-2 right-2">
+          <div className="w-1/4 border-l border-gray-200 bg-gray-50 relative flex flex-col">
+            <div className="absolute top-2 right-2 z-10">
               <button 
                 onClick={() => setShowLassieChat(false)} 
                 className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"

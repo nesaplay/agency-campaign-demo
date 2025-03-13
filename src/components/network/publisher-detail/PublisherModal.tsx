@@ -15,9 +15,9 @@ const PublisherModal: React.FC<PublisherModalProps> = ({
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg shadow-xl w-[90%] max-w-5xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white z-10">
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white z-10 sticky top-0">
           <h3 className="font-medium text-empowerlocal-navy text-xl">{title}</h3>
           <button 
             onClick={onClose}
