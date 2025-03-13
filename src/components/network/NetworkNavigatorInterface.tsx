@@ -95,7 +95,7 @@ const NetworkNavigatorInterface: React.FC = () => {
             <TabsList className="grid w-full max-w-md grid-cols-2 mb-2 mt-4 bg-gray-100">
               <TabsTrigger value="publishers" className="flex items-center gap-2">
                 <ListFilter className="h-4 w-4" />
-                <span>All Publishers</span>
+                <span>Explore All</span>
               </TabsTrigger>
               <TabsTrigger value="collections" className="flex items-center gap-2">
                 <Grid3X3 className="h-4 w-4" />
