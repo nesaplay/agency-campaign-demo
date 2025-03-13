@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
     }, 
     {
       icon: ListChecks,
-      label: 'My Lists',
+      label: 'Lists',
       href: '/lists'
     }, 
     {
