@@ -116,6 +116,10 @@ const NetworkNavigatorInterface: React.FC = () => {
           selectedPublishers={selectedPublishers}
           handleSaveToList={handleSaveToList}
           getPublisherLists={getPublisherLists}
+          selectedStates={selectedStates}
+          selectedCategories={selectedCategories}
+          toggleState={toggleState}
+          toggleCategory={toggleCategory}
         />
       </div>
       

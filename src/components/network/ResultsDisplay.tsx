@@ -24,6 +24,11 @@ interface ResultsDisplayProps {
   selectedPublishers?: string[];
   handleSaveToList?: (publisher: Publisher) => void;
   getPublisherLists?: (publisherId: string) => PublisherList[];
+  // Filter props
+  selectedStates?: string[];
+  selectedCategories?: string[];
+  toggleState?: (state: string) => void;
+  toggleCategory?: (category: string) => void;
 }
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
@@ -42,7 +47,11 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   togglePublisherSelection,
   selectedPublishers = [],
   handleSaveToList,
-  getPublisherLists
+  getPublisherLists,
+  selectedStates = [],
+  selectedCategories = [],
+  toggleState,
+  toggleCategory
 }) => {
   return (
     <div className="flex flex-col h-full">
@@ -54,6 +63,10 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
         toggleFilters={toggleFilters}
         resultsDisplayMode={resultsDisplayMode}
         setResultsDisplayMode={setResultsDisplayMode}
+        selectedStates={selectedStates}
+        selectedCategories={selectedCategories}
+        toggleState={toggleState}
+        toggleCategory={toggleCategory}
       />
       
       <ResultsContent 
