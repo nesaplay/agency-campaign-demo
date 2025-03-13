@@ -1,12 +1,13 @@
 
 import React, { forwardRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ListFilter, Grid3X3, MessageSquare } from 'lucide-react';
+import { ListFilter, Grid3X3, MessageSquare, Calendar } from 'lucide-react';
 import ConversationInterface from '@/components/conversations/interface';
 import PublisherCollections from '../PublisherCollections';
 import ResultsHeader from '../ResultsHeader';
 import SelectedPublishersBar from '../SelectedPublishersBar';
 import ResultsDisplay from '../ResultsDisplay';
+import SeasonalOpportunities from './SeasonalOpportunities';
 import { Publisher } from '../types';
 import { Publisher as ConversationPublisher } from '@/components/conversations/types';
 import { PublisherList } from '@/components/lists/types';
@@ -63,7 +64,7 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
   setShowSaveToListModal,
   setSelectedPublishers
 }, ref) => {
-  const [activeTab, setActiveTab] = React.useState<'lassie' | 'publishers' | 'collections'>('lassie');
+  const [activeTab, setActiveTab] = React.useState<'lassie' | 'publishers' | 'collections' | 'seasonal'>('lassie');
 
   return (
     <div 
@@ -74,30 +75,37 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
         <Tabs 
           defaultValue="lassie" 
           value={activeTab} 
-          onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections')}
+          onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections' | 'seasonal')}
           className="w-full"
         >
-          <TabsList className="w-full flex justify-start mb-0 mt-4 bg-transparent p-0 border-b border-gray-200">
+          <TabsList className="w-full flex justify-start mb-0 mt-4 bg-transparent p-0 border-b border-gray-200 overflow-x-auto">
             <TabsTrigger 
               value="lassie" 
-              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
             >
               <MessageSquare className="h-5 w-5" />
               <span>Ask Lassie</span>
             </TabsTrigger>
             <TabsTrigger 
               value="publishers" 
-              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
             >
               <ListFilter className="h-5 w-5" />
               <span>Explore All</span>
             </TabsTrigger>
             <TabsTrigger 
               value="collections" 
-              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
             >
               <Grid3X3 className="h-5 w-5" />
               <span>Curated Collections</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="seasonal" 
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
+            >
+              <Calendar className="h-5 w-5" />
+              <span>Seasonal Opportunities</span>
             </TabsTrigger>
           </TabsList>
           
@@ -162,6 +170,10 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
                 displayMode="grid"
               />
             </div>
+          </TabsContent>
+          
+          <TabsContent value="seasonal" className="mt-0 pb-8">
+            <SeasonalOpportunities />
           </TabsContent>
         </Tabs>
       </div>
