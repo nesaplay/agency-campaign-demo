@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNetworkNavigator } from '../hooks/useNetworkNavigator';
 import NavigatorTabs from './NavigatorTabs';
@@ -8,13 +7,13 @@ import FilterModalWrapper from './FilterModalWrapper';
 import { Publisher as NetworkPublisher } from '../types';
 import { Publisher as ConversationPublisher } from '@/components/conversations/types';
 import { adaptConversationPublisher } from './utils/publisherAdapter';
+import ConversationInterface from '@/components/conversations/interface';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [isTabsSticky, setIsTabsSticky] = useState(false);
   const tabsRef = useRef<HTMLDivElement>(null);
   
   const {
-    // Data and UI state
     filteredPublishers,
     selectedPublisher,
     selectedPublishers,
@@ -25,13 +24,11 @@ const NetworkNavigatorInterface: React.FC = () => {
     showSaveToListModal,
     publisherToSave,
     
-    // Filter state
     selectedStates,
     selectedCategories,
     states,
     categories,
     
-    // Handlers
     handleSearch,
     toggleState,
     toggleCategory,
@@ -51,7 +48,6 @@ const NetworkNavigatorInterface: React.FC = () => {
     setSelectedPublishers
   } = useNetworkNavigator();
   
-  // Set up scroll event listener to detect when tabs should become sticky
   useEffect(() => {
     const handleScroll = () => {
       if (tabsRef.current) {
@@ -64,17 +60,13 @@ const NetworkNavigatorInterface: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle publisher selection from conversation interface
   const handleConversationPublisherSelect = (publisher: ConversationPublisher) => {
-    // Convert the conversation publisher to a network publisher
     const networkPublisher = adaptConversationPublisher(publisher);
-    // Then pass it to the regular publisher select handler
     handlePublisherSelect(networkPublisher);
   };
 
   return (
     <div className="flex flex-col h-full">
-      {/* Filter modal and Save to List Modal */}
       <FilterModalWrapper
         showFilters={showFilters}
         toggleFilters={toggleFilters}
@@ -97,7 +89,6 @@ const NetworkNavigatorInterface: React.FC = () => {
         lists={lists}
       />
       
-      {/* Main navigation tabs */}
       <NavigatorTabs
         ref={tabsRef}
         isTabsSticky={isTabsSticky}
@@ -125,7 +116,6 @@ const NetworkNavigatorInterface: React.FC = () => {
         setSelectedPublishers={setSelectedPublishers}
       />
       
-      {/* Publisher Detail Modal */}
       <PublisherDetailModal 
         selectedPublisher={selectedPublisher}
         onClose={handleCloseDetail}
