@@ -125,10 +125,7 @@ const EnhancedPublisherListItem: React.FC<EnhancedPublisherListItemProps> = ({
           {/* Lists */}
           {inLists.length > 0}
           
-          <a href="#" className="text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline w-fit" onClick={e => e.stopPropagation()}>
-            <ExternalLink className="h-3 w-3" />
-            Visit Site
-          </a>
+          
         </div>
         
         {/* SECTION: Metrics */}
