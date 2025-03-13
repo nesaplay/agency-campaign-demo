@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNetworkNavigator } from '../hooks/useNetworkNavigator';
 import NavigatorTabs from './NavigatorTabs';
