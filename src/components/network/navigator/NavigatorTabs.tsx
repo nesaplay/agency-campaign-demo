@@ -68,26 +68,35 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
   return (
     <div 
       ref={ref} 
-      className={`bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30' : ''}`}
+      className={`bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30 shadow-md' : ''}`}
     >
-      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isTabsSticky ? 'shadow-md' : ''}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Tabs 
           defaultValue="lassie" 
           value={activeTab} 
           onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections')}
           className="w-full"
         >
-          <TabsList className="grid w-full max-w-md grid-cols-3 mb-2 mt-4 bg-gray-100">
-            <TabsTrigger value="lassie" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
+          <TabsList className="w-full flex justify-start mb-0 mt-4 bg-transparent p-0 border-b border-gray-200">
+            <TabsTrigger 
+              value="lassie" 
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+            >
+              <MessageSquare className="h-5 w-5" />
               <span>Ask Lassie</span>
             </TabsTrigger>
-            <TabsTrigger value="publishers" className="flex items-center gap-2">
-              <ListFilter className="h-4 w-4" />
+            <TabsTrigger 
+              value="publishers" 
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+            >
+              <ListFilter className="h-5 w-5" />
               <span>Explore All</span>
             </TabsTrigger>
-            <TabsTrigger value="collections" className="flex items-center gap-2">
-              <Grid3X3 className="h-4 w-4" />
+            <TabsTrigger 
+              value="collections" 
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent"
+            >
+              <Grid3X3 className="h-5 w-5" />
               <span>Curated Collections</span>
             </TabsTrigger>
           </TabsList>

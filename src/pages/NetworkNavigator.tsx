@@ -7,7 +7,7 @@ const NetworkNavigator: React.FC = () => {
   console.log("Rendering NetworkNavigator page");
   return (
     <MainLayout>
-      <div className="h-full w-full">
+      <div className="h-full w-full relative">
         <NetworkNavigatorInterface />
       </div>
     </MainLayout>

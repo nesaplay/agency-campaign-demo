@@ -68,7 +68,7 @@ const NetworkNavigatorInterface: React.FC = () => {
   console.log("NetworkNavigatorInterface rendering", { filteredPublishers: filteredPublishers.length });
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col min-h-full">
       <FilterModalWrapper
         showFilters={showFilters}
         toggleFilters={toggleFilters}
