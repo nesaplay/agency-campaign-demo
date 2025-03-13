@@ -1,4 +1,3 @@
-
 import React, { forwardRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, Grid3X3, MessageSquare, Calendar } from 'lucide-react';
@@ -7,7 +6,7 @@ import PublisherCollections from '../PublisherCollections';
 import ResultsHeader from '../ResultsHeader';
 import SelectedPublishersBar from '../SelectedPublishersBar';
 import ResultsDisplay from '../ResultsDisplay';
-import SeasonalOpportunities from './SeasonalOpportunities';
+import SeasonalOpportunities from '../seasonal';
 import { Publisher } from '../types';
 import { Publisher as ConversationPublisher } from '@/components/conversations/types';
 import { PublisherList } from '@/components/lists/types';
