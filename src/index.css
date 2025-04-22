@@ -29,12 +29,20 @@
   --radius: 0.5rem;
 }
 
+/* Main background */
+body {
+  background-color: var(--empowerlocal-bg);
+  color: var(--empowerlocal-navy);
+  font-family: 'Inter', sans-serif;
+}
 
 /* EmpowerLocal brand-gradient for backgrounds and buttons */
 .bg-empowerlocal-gradient {
-  background-image: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
+  background-image: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
   color: #fff !important;
 }
+
+/* Text colors */
 .text-empowerlocal-navy { color: var(--empowerlocal-navy); }
 .text-empowerlocal-blue { color: var(--empowerlocal-blue); }
 .text-empowerlocal-teal { color: var(--empowerlocal-teal); }
@@ -42,12 +50,13 @@
 .text-empowerlocal-coral { color: var(--empowerlocal-coral); }
 .text-empowerlocal-terracotta { color: var(--empowerlocal-terracotta); }
 
-/* Key background and surface */
+/* Background colors */
 .bg-empowerlocal-background {
   background-color: var(--empowerlocal-bg);
 }
-
-/* Accent/CTA/Function */
+.bg-empowerlocal-navy { background-color: var(--empowerlocal-navy); }
+.bg-empowerlocal-blue { background-color: var(--empowerlocal-blue); }
+.bg-empowerlocal-teal { background-color: var(--empowerlocal-teal); }
 .bg-empowerlocal-gold { background-color: var(--empowerlocal-gold); }
 .bg-empowerlocal-coral { background-color: var(--empowerlocal-coral); }
 .bg-empowerlocal-terracotta { background-color: var(--empowerlocal-terracotta); }
@@ -58,12 +67,12 @@
 
 /* Button, card, sidebar dimensions */
 .sidebar {
-  background-image: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
+  background-image: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
   color: #fff;
 }
 .button-primary,
 .cta-primary {
-  background-image: linear-gradient(90deg, #F59E0B 0%, #F59E0B 100%);
+  background-color: var(--empowerlocal-gold);
   color: #fff;
 }
 
@@ -86,4 +95,3 @@ body {
   text-align: left;
   background: var(--empowerlocal-bg);
 }
-

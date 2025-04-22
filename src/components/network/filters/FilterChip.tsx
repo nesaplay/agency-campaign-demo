@@ -11,7 +11,7 @@ interface FilterChipProps {
 
 const FilterChip: React.FC<FilterChipProps> = ({
   label,
-  colorClass = "bg-blue-50 text-blue-700",
+  colorClass = "bg-empowerlocal-teal/10 text-empowerlocal-teal",
   onRemove
 }) => {
   return (

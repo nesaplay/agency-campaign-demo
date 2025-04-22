@@ -16,7 +16,7 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-2">
-        <Bot className="h-6 w-6 text-empowerlocal-blue" />
+        <Bot className="h-6 w-6 text-empowerlocal-teal" />
         <h1 className="text-xl font-semibold text-empowerlocal-navy">Lassie AI Assistant</h1>
       </div>
       
@@ -36,7 +36,7 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
             onClick={() => setShowSummaryPanel(!showSummaryPanel)}
             className={`text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 ${
               showSummaryPanel 
-                ? 'bg-empowerlocal-blue/10 text-empowerlocal-blue' 
+                ? 'bg-empowerlocal-teal/10 text-empowerlocal-teal' 
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

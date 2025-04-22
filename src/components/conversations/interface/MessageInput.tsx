@@ -59,7 +59,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         className={cn(
           "p-2 rounded-full",
           inputValue.trim() 
-            ? "bg-empowerlocal-blue text-white hover:bg-blue-600" 
+            ? "bg-empowerlocal-gold text-white hover:bg-amber-600" 
             : "bg-gray-100 text-gray-400"
         )}
       >
