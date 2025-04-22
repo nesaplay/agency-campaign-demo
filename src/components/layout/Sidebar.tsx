@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -48,7 +47,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className={cn("h-full bg-empowerlocal-gradient text-white border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
+    <aside className={cn("h-full bg-gradient-to-r from-empowerlocal-teal to-empowerlocal-navy border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       {/* Logo Area */}
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
