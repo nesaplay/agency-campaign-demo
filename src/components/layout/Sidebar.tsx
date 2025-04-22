@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -48,8 +47,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className={cn("h-full bg-gradient-to-l from-empowerlocal-blue to-empowerlocal-teal border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
-      {/* Logo Area */}
+    <aside className={cn("h-full bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-teal border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
           <div className="h-9 w-9 rounded-lg flex items-center justify-center text-empowerlocal-navy bg-white font-bold">
@@ -59,7 +57,6 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Navigation Links */}
       <nav className="flex-1 py-6">
         <ul className="space-y-1 px-2">
           {navItems.map((item, index) => {
@@ -74,7 +71,6 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
 
-      {/* Collapse Button */}
       <button onClick={toggleSidebar} className="absolute -right-3 top-20 bg-white border border-gray-200 rounded-full p-1 shadow-md">
         <ChevronLeft className={cn("h-4 w-4 text-empowerlocal-navy transition-transform duration-300", collapsed && "rotate-180")} />
       </button>
