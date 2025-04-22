@@ -40,7 +40,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-[22px] leading-[28px] font-bold tracking-tight heading-h3",
+      "text-[22px] leading-[28px] font-bold tracking-tight text-empowerlocal-navy heading-h3",
       className // for variants if needed
     )}
     {...props}
@@ -84,4 +84,3 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = "CardFooter"
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
-

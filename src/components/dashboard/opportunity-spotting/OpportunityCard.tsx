@@ -34,7 +34,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
               {opportunity.title}
             </h3>
             {isUrgent && (
-              <Badge className="bg-red-500">
+              <Badge className="bg-error">
                 <Clock className="h-3 w-3 mr-1" /> Urgent
               </Badge>
             )}
@@ -55,7 +55,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
           <div className="space-y-1">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Act within:</span>
-              <span className={`font-medium ${isUrgent ? 'text-red-600' : 'text-gray-700'}`}>
+              <span className={`font-medium ${isUrgent ? 'text-error' : 'text-gray-700'}`}>
                 {daysToStart} days
               </span>
             </div>
@@ -65,7 +65,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
           
           <div className="py-2 px-3 bg-gray-50 rounded-md">
             <div className="flex items-center mb-2">
-              <Zap className="h-4 w-4 text-amber-500 mr-2" />
+              <Zap className="h-4 w-4 text-empowerlocal-gold mr-2" />
               <span className="text-sm font-medium">Opportunity Highlights</span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">

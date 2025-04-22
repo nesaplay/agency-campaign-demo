@@ -38,22 +38,22 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
 
   const performanceColors = {
     good: {
-      bg: 'bg-green-50',
-      border: 'border-green-200',
-      text: 'text-green-700',
-      indicator: 'bg-green-500'
+      bg: 'bg-success/10',
+      border: 'border-success/20',
+      text: 'text-success',
+      indicator: 'bg-success'
     },
     warning: {
-      bg: 'bg-amber-50',
-      border: 'border-amber-200',
-      text: 'text-amber-700',
-      indicator: 'bg-amber-500'
+      bg: 'bg-warning/10',
+      border: 'border-warning/20',
+      text: 'text-warning',
+      indicator: 'bg-warning'
     },
     poor: {
-      bg: 'bg-red-50',
-      border: 'border-red-200',
-      text: 'text-red-700',
-      indicator: 'bg-red-500'
+      bg: 'bg-error/10',
+      border: 'border-error/20',
+      text: 'text-error',
+      indicator: 'bg-error'
     },
     'not-started': {
       bg: 'bg-gray-50',
@@ -73,15 +73,15 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
     <Card 
       className={cn(
         "w-[300px] min-w-[300px] cursor-pointer transition-all duration-200",
-        expanded ? "scale-[1.02]" : "",
-        campaign.needsAttention ? `${colors.border} ring-1 ring-amber-300` : ""
+        expanded ? "scale-[1.02] shadow-elevated" : "",
+        campaign.needsAttention ? `${colors.border} ring-1 ring-warning/30` : ""
       )}
       onClick={handleClick}
     >
       <CardContent className="p-0">
         <div className="relative">
           {campaign.needsAttention && (
-            <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-full">
+            <div className="absolute -top-1 -right-1 bg-warning text-white p-1 rounded-full">
               <AlertTriangle className="h-4 w-4" />
             </div>
           )}
@@ -108,18 +108,18 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
                   <span className="text-gray-500">{campaign.primaryTarget}</span>
                   
                   {campaign.primaryDifference > 0 ? (
-                    <TrendingUp className="h-3 w-3 ml-1 text-green-500" />
+                    <TrendingUp className="h-3 w-3 ml-1 text-success" />
                   ) : campaign.primaryDifference < 0 ? (
-                    <TrendingDown className="h-3 w-3 ml-1 text-red-500" />
+                    <TrendingDown className="h-3 w-3 ml-1 text-error" />
                   ) : null}
                 </div>
               </div>
               
               <div className="text-xs text-right mb-1">
                 {campaign.primaryDifference > 0 ? (
-                  <span className="text-green-600">+{campaign.primaryDifference}%</span>
+                  <span className="text-success">+{campaign.primaryDifference}%</span>
                 ) : (
-                  <span className="text-red-600">{campaign.primaryDifference}%</span>
+                  <span className="text-error">{campaign.primaryDifference}%</span>
                 )}
               </div>
             </div>
@@ -140,7 +140,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
             {expanded && (
               <div className="mt-4 pt-4 border-t border-gray-100 animate-fade-in">
                 {campaign.needsAttention && campaign.needsAttentionReason && (
-                  <div className="mb-4 p-2 bg-amber-50 text-amber-800 text-sm rounded-md flex items-start">
+                  <div className="mb-4 p-2 bg-warning/10 text-warning/80 text-sm rounded-md flex items-start">
                     <AlertTriangle className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                     <p>{campaign.needsAttentionReason}</p>
                   </div>

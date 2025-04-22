@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-empowerlocal-gold via-amber-400 to-amber-600 text-white shadow-[0_3px_8px_rgba(245,158,11,0.12)] hover:brightness-110 hover:shadow-lg active:brightness-95 active:shadow flex", // Gradient gold-amber, stronger shadow
+        default: "bg-gradient-to-r from-empowerlocal-gold via-amber-400 to-amber-600 text-white shadow-button-primary hover:brightness-110 hover:shadow-lg active:brightness-95 active:shadow flex", // Gradient gold-amber, stronger shadow
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-white text-empowerlocal-navy border border-gray-100 hover:bg-gray-50 shadow-none",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-empowerlocal-blue underline-offset-4 hover:underline",
-        gradient: "bg-empowerlocal-gradient hover:opacity-90 text-white",
+        gradient: "bg-empowerlocal-gradient text-white hover:opacity-90",
       },
       size: {
         default: "h-10 px-4",
@@ -56,4 +56,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-

@@ -2,10 +2,10 @@
 export const getPerformanceColor = (performance: string) => {
   switch (performance) {
     case 'Excellent':
-      return 'bg-empowerlocal-success/10 text-empowerlocal-success';
+      return 'bg-success/10 text-success';
     case 'Good':
-      return 'bg-empowerlocal-info/10 text-empowerlocal-info';
+      return 'bg-info/10 text-info';
     default:
-      return 'bg-empowerlocal-warning/10 text-empowerlocal-warning';
+      return 'bg-warning/10 text-warning';
   }
 };

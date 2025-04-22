@@ -212,3 +212,8 @@ h1, h2, h3, h4, h5, h6, .heading, .header-title {
   text-align: left;
   background: var(--empowerlocal-bg);
 }
+
+/* Custom EmpowerLocal gradient background */
+.bg-empowerlocal-gradient {
+  background: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
+}
