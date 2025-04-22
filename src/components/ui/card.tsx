@@ -10,7 +10,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "bg-white rounded-lg shadow-card px-6 py-6 flex flex-col gap-4", // padding & spacing
+      "bg-white rounded-lg shadow-lg border border-gray-200/50 px-6 py-6 flex flex-col gap-4", // Increased shadow and added border
       className
     )}
     {...props}
@@ -25,7 +25,7 @@ const CardHeader = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex flex-col space-y-1.5 pb-2",
+      "flex flex-col space-y-1.5 pb-4", // Increased padding
       className
     )}
     {...props}
@@ -40,8 +40,8 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-[22px] leading-[28px] font-bold tracking-tight text-empowerlocal-navy heading-h3",
-      className // for variants if needed
+      "text-[22px] leading-[28px] font-bold tracking-[-0.2px] text-empowerlocal-navy", // Added proper tracking
+      className
     )}
     {...props}
   />
@@ -55,7 +55,7 @@ const CardDescription = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      "text-gray-500 text-base body-md",
+      "text-gray-600 text-base leading-6", // Updated text color for better contrast
       className
     )}
     {...props}
@@ -67,7 +67,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("pt-0", className)} {...props} /> // top padding is zero, main padding handled by Card
+  <div ref={ref} className={cn("pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
@@ -77,7 +77,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center pt-0", className)}
+    className={cn("flex items-center pt-4 mt-2 border-t border-gray-100", className)} // Added border-top for separation
     {...props}
   />
 ))
