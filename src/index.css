@@ -1,247 +1,89 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* EmpowerLocal Brand Color System & Variables (light mode root) */
+:root {
+  --empowerlocal-teal: #25A87E;
+  --empowerlocal-blue: #2868C3;
+  --empowerlocal-navy: #0A2756;
+  --empowerlocal-bg: #F8FAFC;
+  --empowerlocal-gold: #F59E0B;
+  --empowerlocal-coral: #F97316;
+  --empowerlocal-terracotta: #C2410C;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  /* Functional palette */
+  --empowerlocal-success: #34D399;
+  --empowerlocal-warning: #FBBF24;
+  --empowerlocal-error: #EF4444;
+  --empowerlocal-info: #60A5FA;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+  /* System */
+  --border: 220, 13%, 91%;
+  --input: 220, 13%, 91%;
+  --ring: 222, 47%, 11%;
+  --background: 210, 20%, 99%;
+  --foreground: 220, 77%, 16%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+  --radius: 0.5rem;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
 
-  body {
-    @apply bg-background text-foreground font-sans;
-  }
+/* EmpowerLocal brand-gradient for backgrounds and buttons */
+.bg-empowerlocal-gradient {
+  background-image: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
+  color: #fff !important;
+}
+.text-empowerlocal-navy { color: var(--empowerlocal-navy); }
+.text-empowerlocal-blue { color: var(--empowerlocal-blue); }
+.text-empowerlocal-teal { color: var(--empowerlocal-teal); }
+.text-empowerlocal-gold { color: var(--empowerlocal-gold); }
+.text-empowerlocal-coral { color: var(--empowerlocal-coral); }
+.text-empowerlocal-terracotta { color: var(--empowerlocal-terracotta); }
+
+/* Key background and surface */
+.bg-empowerlocal-background {
+  background-color: var(--empowerlocal-bg);
 }
 
-.empowerlocal-gradient {
-  background: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
+/* Accent/CTA/Function */
+.bg-empowerlocal-gold { background-color: var(--empowerlocal-gold); }
+.bg-empowerlocal-coral { background-color: var(--empowerlocal-coral); }
+.bg-empowerlocal-terracotta { background-color: var(--empowerlocal-terracotta); }
+.bg-empowerlocal-success { background-color: var(--empowerlocal-success); }
+.bg-empowerlocal-warning { background-color: var(--empowerlocal-warning); }
+.bg-empowerlocal-error { background-color: var(--empowerlocal-error); }
+.bg-empowerlocal-info { background-color: var(--empowerlocal-info); }
+
+/* Button, card, sidebar dimensions */
+.sidebar {
+  background-image: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
+  color: #fff;
+}
+.button-primary,
+.cta-primary {
+  background-image: linear-gradient(90deg, #F59E0B 0%, #F59E0B 100%);
+  color: #fff;
 }
 
-/* Navigation styles */
-.nav-active-indicator {
-  position: relative;
+/* Headings */
+h1, h2, h3, h4, h5, h6, .heading, .header-title {
+  color: var(--empowerlocal-navy);
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.nav-active-indicator::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 3px;
-  background-color: #25A87E;
-  border-radius: 0 2px 2px 0;
+/* Global background */
+body {
+  background: var(--empowerlocal-bg);
 }
 
-/* Animation for typing indicator */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+/* General */
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background: var(--empowerlocal-bg);
 }
 
-.animate-pulse {
-  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Custom scrollbar for chat */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Custom scrollbar for horizontal scrolling */
-.overflow-x-auto::-webkit-scrollbar {
-  height: 6px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Horizontal card scrolling containers */
-.campaign-cards-scroll,
-.opportunity-cards-scroll {
-  scrollbar-width: thin;
-  -ms-overflow-style: none;
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-.campaign-cards-scroll::-webkit-scrollbar,
-.opportunity-cards-scroll::-webkit-scrollbar {
-  height: 4px;
-}
-
-.campaign-cards-scroll::-webkit-scrollbar-track,
-.opportunity-cards-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.campaign-cards-scroll::-webkit-scrollbar-thumb,
-.opportunity-cards-scroll::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 10px;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
-}
-
-/* Brand Context Module Animations */
-@keyframes accordion-down {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-}
-
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    opacity: 0;
-  }
-}
-
-.animate-accordion-down {
-  animation: accordion-down 0.3s ease-out;
-}
-
-.animate-accordion-up {
-  animation: accordion-up 0.3s ease-out;
-}
