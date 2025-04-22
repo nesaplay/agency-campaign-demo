@@ -1,6 +1,7 @@
 
-import * as React from "react"
+// Card component enhancements: elevation, hover, radius, internal padding, className for interactive cards
 
+import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
@@ -10,7 +11,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "card-component bg-white rounded-lg shadow-card border border-gray-200/50 px-6 py-6 flex flex-col gap-4",
+      "card-component",
       className
     )}
     {...props}
@@ -40,7 +41,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "heading-3 text-[22px] leading-[28px] font-bold tracking-[-0.2px] text-empowerlocal-navy", 
+      "heading-4", // use refined heading-4, see index.css
       className
     )}
     {...props}
@@ -55,7 +56,7 @@ const CardDescription = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      "body-text text-gray-600 text-base leading-6", 
+      "body-text text-gray-600", 
       className
     )}
     {...props}

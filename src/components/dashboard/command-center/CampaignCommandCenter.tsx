@@ -1,7 +1,8 @@
 
+// Refined dashboard with enhanced cards, typography, spacing, tabs, progress bars, and CTAs
+
 import React, { useState } from 'react';
 import { ArrowRight, SlidersHorizontal, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -136,14 +137,14 @@ const CampaignCommandCenter: React.FC = () => {
   });
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div className="p-6">
+    <div className="bg-white card-component rounded-xl overflow-hidden">
+      <div className="p-6 section">
         <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
           <div>
-            <h2 id="campaign-performance-heading" className="text-xl font-semibold text-empowerlocal-navy">
+            <h2 id="campaign-performance-heading" className="heading-2 mb-2">
               Active Campaigns
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="body-text text-gray-500 mt-1">
               Monitor and optimize your current campaign performance
             </p>
           </div>
@@ -159,15 +160,15 @@ const CampaignCommandCenter: React.FC = () => {
           </Tabs>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="card-grid mb-6">
           <Card>
             <CardContent className="p-4 flex items-center">
               <div className="h-10 w-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-4">
                 <TrendingUp className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Good Performance</p>
-                <p className="text-xl font-semibold">{goodPerformance}/{activeCampaigns.length}</p>
+                <p className="section-label text-gray-500">Good Performance</p>
+                <p className="data-text text-xl">{goodPerformance}/{activeCampaigns.length}</p>
               </div>
             </CardContent>
           </Card>
@@ -178,8 +179,8 @@ const CampaignCommandCenter: React.FC = () => {
                 <SlidersHorizontal className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Needs Optimization</p>
-                <p className="text-xl font-semibold">{warningPerformance}/{activeCampaigns.length}</p>
+                <p className="section-label text-gray-500">Needs Optimization</p>
+                <p className="data-text text-xl">{warningPerformance}/{activeCampaigns.length}</p>
               </div>
             </CardContent>
           </Card>
@@ -190,16 +191,16 @@ const CampaignCommandCenter: React.FC = () => {
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Poor Performance</p>
-                <p className="text-xl font-semibold">{poorPerformance}/{activeCampaigns.length}</p>
+                <p className="section-label text-gray-500">Poor Performance</p>
+                <p className="data-text text-xl">{poorPerformance}/{activeCampaigns.length}</p>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <Separator className="mb-6" />
+        <div className="section-divider" />
 
-        <div className="relative">
+        <div className="relative mt-6 mb-6">
           <div className="flex overflow-x-auto pb-2 space-x-4 campaign-cards-scroll">
             {sortedCampaigns.map(campaign => (
               <CampaignCard key={campaign.id} campaign={campaign} />
@@ -209,7 +210,7 @@ const CampaignCommandCenter: React.FC = () => {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <Button variant="outline" className="text-empowerlocal-blue">
+          <Button variant="default" className="cta-link-amber" size="lg">
             View All Campaigns <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
