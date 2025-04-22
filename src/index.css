@@ -1,4 +1,3 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -85,7 +84,7 @@
 /* --- Button System --- */
 .btn-primary {
   background-image: linear-gradient(90deg, var(--empowerlocal-gold) 0%, var(--empowerlocal-gold-dark) 100%);
-  color: #fff;
+  color: #fff !important;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   padding: 8px 16px;
@@ -245,4 +244,3 @@ input, select, textarea, label, th, td, .body-text, button, a, p, div, span {
   padding: 24px;
   color: #F8FAFC;
 }
-

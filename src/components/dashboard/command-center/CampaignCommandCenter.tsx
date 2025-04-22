@@ -1,14 +1,11 @@
-
-// Refined dashboard with enhanced cards, typography, spacing, tabs, progress bars, and CTAs
-
 import React, { useState } from 'react';
-import { ArrowRight, SlidersHorizontal, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import CampaignCard from './CampaignCard';
-import { Button } from '@/components/ui/button';
 
 // Mock data for campaigns
 const campaigns = [
@@ -213,7 +210,11 @@ const CampaignCommandCenter: React.FC = () => {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <Button variant="default" className="btn-primary cta-link-amber" size="lg">
+          <Button 
+            variant="default" 
+            className="btn-primary text-white" 
+            size="lg"
+          >
             View All Campaigns <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
