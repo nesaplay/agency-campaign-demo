@@ -77,8 +77,8 @@ const ListDetail: React.FC = () => {
   if (!list) {
     return (
       <MainLayout>
-        <div className="flex flex-col h-full items-center justify-center bg-gray-50">
-          <p>Loading...</p>
+        <div className="flex flex-col h-full items-center justify-center bg-empowerlocal-bg">
+          <p className="body-text">Loading...</p>
         </div>
       </MainLayout>
     );
@@ -86,7 +86,7 @@ const ListDetail: React.FC = () => {
   
   return (
     <MainLayout>
-      <div className="flex flex-col h-full bg-gray-50">
+      <div className="flex flex-col h-full bg-empowerlocal-bg">
         <ListDetailHeader 
           list={list}
           isEditing={isEditing}
@@ -121,4 +121,3 @@ const ListDetail: React.FC = () => {
 };
 
 export default ListDetail;
-

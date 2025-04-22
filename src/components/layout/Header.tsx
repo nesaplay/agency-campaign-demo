@@ -7,7 +7,7 @@ import ThemeToggle from '@/components/theme/ThemeToggle';
 
 const Header: React.FC = () => {
   return (
-    <header className="h-16 border-b border-white/10 bg-gradient-to-r from-empowerlocal-navy to-[#1A3766] px-6 flex items-center justify-between">
+    <header className="h-16 border-b border-white/10 bg-empowerlocal-gradient shadow-md px-6 flex items-center justify-between">
       {/* Search Bar */}
       <div className="relative flex-1 max-w-md">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-medium text-white">Jane Cooper</p>
-            <p className="text-xs text-white/70">Media Buyer</p>
+            <p className="text-xs text-white/70 small-text">Media Buyer</p>
           </div>
           <div className={cn(
             "h-9 w-9 rounded-full flex items-center justify-center text-empowerlocal-navy font-medium text-sm",

@@ -40,7 +40,7 @@ body {
 }
 
 /* Heading hierarchy utility classes */
-.el-h1, h1, .heading-h1 {
+.heading-1, h1, .el-h1 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 36px;
@@ -48,7 +48,7 @@ body {
   letter-spacing: -0.5px;
   color: var(--empowerlocal-navy);
 }
-.el-h2, h2, .heading-h2 {
+.heading-2, h2, .el-h2 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 28px;
@@ -56,7 +56,7 @@ body {
   letter-spacing: -0.3px;
   color: var(--empowerlocal-navy);
 }
-.el-h3, h3, .heading-h3 {
+.heading-3, h3, .el-h3 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 22px;
@@ -64,7 +64,7 @@ body {
   letter-spacing: -0.2px;
   color: var(--empowerlocal-navy);
 }
-.el-h4, h4, .heading-h4 {
+.heading-4, h4, .el-h4 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 18px;
@@ -72,19 +72,19 @@ body {
   letter-spacing: -0.1px;
   color: var(--empowerlocal-navy);
 }
-.body-lg, .body-md, p, .el-body {
+.body-text, p, .el-body {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
 }
-.data-point, .data-metric {
+.data-text, .data-point, .data-metric {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
 }
-.small-text, .el-small, small, label, .form-label {
+.small-text, small, .el-small, label, .form-label {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -92,46 +92,38 @@ body {
 }
 
 /* Card and base component elevation */
-.bg-card, .card, .shadow-card {
+.card-component, .bg-card, .card, .shadow-card {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0px 4px 6px -1px rgba(0,0,0,0.10), 0px 2px 4px -1px rgba(0,0,0,0.06);
+  padding: 24px;
 }
 .elevated, .shadow-elevated {
   box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -2px rgba(0,0,0,0.05);
 }
 
-/* Sidebar shadow for separation */
-.sidebar, .bg-empowerlocal-gradient {
-  box-shadow: 2px 0 16px 0 rgba(10,39,86,0.07);
-}
-
-/* Card padding and spacing */
-.card, .bg-card, .shadow-card, .elevated, .shadow-elevated {
-  padding: 24px;
-  border-radius: 8px;
-}
-
 /* Button styles */
-.button-primary, .btn-primary {
-  background-image: linear-gradient(90deg, #F59E0B 0%, #d97706 100%);
+.btn-primary, .button-primary {
+  background-image: linear-gradient(90deg, var(--empowerlocal-gold) 0%, #d97706 100%);
   color: #fff;
   height: 40px;
   padding: 0 16px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgba(245,158,11,0.12), 0px 1.5px 3px rgba(40,104,195,0.10);
   font-weight: 600;
+  transition: all 0.2s ease-in-out;
 }
-.button-primary:hover, .btn-primary:hover {
+.btn-primary:hover, .button-primary:hover {
   filter: brightness(1.1);
   box-shadow: 0 6px 12px rgba(245,158,11,0.2), 0px 3px 6px rgba(40,104,195,0.13);
 }
-.button-primary:active, .btn-primary:active {
+.btn-primary:active, .button-primary:active {
   filter: brightness(0.97);
   box-shadow: 0 2px 4px rgba(245,158,11,0.09), 0px 1px 2px rgba(40,104,195,0.08);
+  transform: translateY(1px);
 }
 
-.button-secondary, .btn-secondary {
+.btn-secondary, .button-secondary {
   background: #fff;
   color: var(--empowerlocal-navy);
   border: 1px solid #e5e7eb;
@@ -140,16 +132,34 @@ body {
   border-radius: 8px;
   font-weight: 500;
   box-shadow: none;
+  transition: all 0.2s ease-in-out;
 }
-.button-secondary:hover, .btn-secondary:hover {
+.btn-secondary:hover, .button-secondary:hover {
   background: #f3f4f6;
   border-color: #d1d5db;
 }
-.button-secondary:active, .btn-secondary:active {
+.btn-secondary:active, .button-secondary:active {
   background: #e5e7eb;
+  transform: translateY(1px);
 }
 
-/* Inputs and forms */
+.btn-text {
+  background: transparent;
+  color: var(--empowerlocal-blue);
+  padding: 0 8px;
+  font-weight: 500;
+  height: 40px;
+  transition: all 0.2s ease-in-out;
+}
+.btn-text:hover {
+  color: var(--empowerlocal-navy);
+  background: rgba(40,104,195,0.05);
+}
+.btn-text:active {
+  transform: translateY(1px);
+}
+
+/* Form elements */
 input, select, textarea {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -166,13 +176,16 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(40,104,195,0.10);
 }
 
-/* Table improvements */
+/* Table styling */
 table {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 24px;
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   border-radius: 8px;
+  overflow: hidden;
 }
 thead th {
   font-weight: 600;
@@ -182,6 +195,7 @@ thead th {
   background: #F8FAFC;
   border-bottom: 1.5px solid #e5e7eb;
   padding: 12px 16px;
+  text-align: left;
 }
 tbody td {
   padding: 12px 16px;
@@ -198,22 +212,19 @@ tfoot td {
   padding: 12px 16px;
 }
 
-/* Headings */
-h1, h2, h3, h4, h5, h6, .heading, .header-title {
-  color: var(--empowerlocal-navy);
-  font-family: 'Inter', system-ui, sans-serif;
+/* Layout spacing */
+.section {
+  margin: 32px 0;
+}
+.section-content {
+  margin-top: 16px;
+}
+.card-grid {
+  display: grid;
+  gap: 16px;
 }
 
-/* General */
-#root {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  background: var(--empowerlocal-bg);
-}
-
-/* Custom EmpowerLocal gradient background */
+/* EmpowerLocal background gradient */
 .bg-empowerlocal-gradient {
   background: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
 }

@@ -48,7 +48,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className={cn("h-full bg-empowerlocal-gradient text-white border-r border-white/10 transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
+    <aside className={cn("h-full bg-empowerlocal-gradient text-white border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       {/* Logo Area */}
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
@@ -67,7 +67,7 @@ const Sidebar: React.FC = () => {
           return <li key={index}>
                 <Link to={item.href} className={cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-colors relative", isActive ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white", collapsed ? "justify-center" : "", isActive && "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-empowerlocal-gold before:rounded-l-lg")}>
                   <item.icon className={cn("h-5 w-5", isActive ? "text-white" : "text-white/80")} />
-                  {!collapsed && <span>{item.label}</span>}
+                  {!collapsed && <span className="small-text">{item.label}</span>}
                 </Link>
               </li>;
         })}

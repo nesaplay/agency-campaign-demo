@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
@@ -59,13 +60,13 @@ const MyLists: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="flex flex-col h-full bg-gray-50">
+      <div className="flex flex-col h-full bg-empowerlocal-bg">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 p-6">
+        <div className="bg-white border-b border-gray-200 p-6 shadow-sm">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-empowerlocal-navy">My Lists</h1>
+            <h1 className="heading-1 text-2xl font-semibold text-empowerlocal-navy">My Lists</h1>
             <button 
-              className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
+              className="btn-primary flex items-center gap-2"
               onClick={() => setShowCreateModal(true)}
             >
               <Plus className="h-5 w-5" />
@@ -75,11 +76,11 @@ const MyLists: React.FC = () => {
         </div>
         
         {/* Filters */}
-        <div className="bg-white border-b border-gray-200 p-4">
+        <div className="bg-white border-b border-gray-200 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex space-x-4">
               <button 
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors small-text ${
                   activeCategory === 'all' ? 'bg-gray-100 text-empowerlocal-navy' : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 onClick={() => handleCategoryChange('all')}
@@ -87,7 +88,7 @@ const MyLists: React.FC = () => {
                 All Lists
               </button>
               <button 
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors small-text ${
                   activeCategory === 'recent' ? 'bg-gray-100 text-empowerlocal-navy' : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 onClick={() => handleCategoryChange('recent')}
@@ -95,7 +96,7 @@ const MyLists: React.FC = () => {
                 Recently Updated
               </button>
               <button 
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors small-text ${
                   activeCategory === 'category' ? 'bg-gray-100 text-empowerlocal-navy' : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 onClick={() => handleCategoryChange('category')}
@@ -103,7 +104,7 @@ const MyLists: React.FC = () => {
                 By Category
               </button>
               <button 
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors small-text ${
                   activeCategory === 'shared' ? 'bg-gray-100 text-empowerlocal-navy' : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 onClick={() => handleCategoryChange('shared')}
@@ -117,7 +118,7 @@ const MyLists: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search lists..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-empowerlocal-blue focus:border-transparent"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-empowerlocal-blue focus:border-transparent small-text"
                 value={searchQuery}
                 onChange={handleSearch}
               />
@@ -126,9 +127,9 @@ const MyLists: React.FC = () => {
         </div>
         
         {/* Lists Grid */}
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="section flex-1 p-6 overflow-auto">
           {filteredLists.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredLists.map(list => (
                 <ListCard 
                   key={list.id} 
@@ -142,10 +143,10 @@ const MyLists: React.FC = () => {
               <div className="bg-gray-100 p-6 rounded-full">
                 <Search className="h-12 w-12 text-gray-400" />
               </div>
-              <h3 className="mt-4 text-lg font-medium">No lists found</h3>
-              <p className="mt-2 text-sm">Try adjusting your search or filters</p>
+              <h3 className="mt-4 text-lg font-medium heading-3">No lists found</h3>
+              <p className="mt-2 text-sm body-text">Try adjusting your search or filters</p>
               <button 
-                className="mt-6 flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
+                className="btn-primary mt-6 flex items-center gap-2"
                 onClick={() => setShowCreateModal(true)}
               >
                 <Plus className="h-5 w-5" />

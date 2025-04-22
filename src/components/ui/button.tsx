@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-empowerlocal-gold to-amber-600 text-white shadow-button-primary hover:brightness-110 hover:shadow-lg active:brightness-95 active:shadow-sm transition-all duration-200", // Updated gradient and transitions
+        default: "bg-gradient-to-r from-empowerlocal-gold to-amber-600 text-white shadow-button-primary hover:brightness-110 hover:shadow-lg active:brightness-95 active:shadow-sm active:translate-y-0.5 transition-all duration-200", 
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
