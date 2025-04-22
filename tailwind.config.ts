@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -71,7 +70,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        'empowerlocal-gradient': 'linear-gradient(90deg, #25A87E 0%, #2868C3 100%)',
+        'empowerlocal-gradient': 'linear-gradient(90deg, #2868C3 0%, #25A87E 100%)',
       }
     },
   },
