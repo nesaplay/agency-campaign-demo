@@ -142,9 +142,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
                   <Button size="sm" variant="outline" className="btn-secondary flex-1 h-8">
                     <FileText className="h-3 w-3 mr-1" /> Details
                   </Button>
-                  <Button size="sm" variant="outline" className="btn-secondary flex-1 h-8">
-                    <Settings className="h-3 w-3 mr-1" /> Settings
-                  </Button>
+                  
                   <Button size="sm" variant="outline" className="btn-secondary flex-1 h-8">
                     <PlusCircle className="h-3 w-3 mr-1" /> Add
                   </Button>
