@@ -137,8 +137,9 @@ const CampaignCommandCenter: React.FC = () => {
   });
 
   return (
-    <div className="bg-white card-component rounded-xl overflow-hidden">
+    <div className="card-component rounded-xl overflow-hidden">
       <div className="p-6 section">
+        {/* Header */}
         <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
           <div>
             <h2 id="campaign-performance-heading" className="heading-2 mb-2">
@@ -150,19 +151,20 @@ const CampaignCommandCenter: React.FC = () => {
           </div>
           <Tabs defaultValue="performance" onValueChange={(value) => setSortBy(value)}>
             <TabsList>
-              <TabsTrigger value="performance">
+              <TabsTrigger value="performance" className="section-label">
                 Performance
               </TabsTrigger>
-              <TabsTrigger value="attention">
+              <TabsTrigger value="attention" className="section-label">
                 Needs Attention ({needsAttention})
               </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
 
+        {/* Performance Indicator Cards */}
         <div className="card-grid mb-6">
-          <Card>
-            <CardContent className="p-4 flex items-center">
+          <Card className="card-component card-performance">
+            <CardContent className="p-4 flex items-center gap-4">
               <div className="h-10 w-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-4">
                 <TrendingUp className="h-5 w-5" />
               </div>
@@ -173,8 +175,8 @@ const CampaignCommandCenter: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardContent className="p-4 flex items-center">
+          <Card className="card-component card-performance">
+            <CardContent className="p-4 flex items-center gap-4">
               <div className="h-10 w-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mr-4">
                 <SlidersHorizontal className="h-5 w-5" />
               </div>
@@ -185,8 +187,8 @@ const CampaignCommandCenter: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardContent className="p-4 flex items-center">
+          <Card className="card-component card-performance">
+            <CardContent className="p-4 flex items-center gap-4">
               <div className="h-10 w-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mr-4">
                 <AlertTriangle className="h-5 w-5" />
               </div>
@@ -200,6 +202,7 @@ const CampaignCommandCenter: React.FC = () => {
 
         <div className="section-divider" />
 
+        {/* Campaign Cards */}
         <div className="relative mt-6 mb-6">
           <div className="flex overflow-x-auto pb-2 space-x-4 campaign-cards-scroll">
             {sortedCampaigns.map(campaign => (
@@ -210,7 +213,7 @@ const CampaignCommandCenter: React.FC = () => {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <Button variant="default" className="cta-link-amber" size="lg">
+          <Button variant="default" className="btn-primary cta-link-amber" size="lg">
             View All Campaigns <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

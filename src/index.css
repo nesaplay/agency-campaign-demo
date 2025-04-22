@@ -4,7 +4,8 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* EmpowerLocal Brand Color System & Variables (light mode root) */
+/* EmpowerLocal Brand Color System, Card, Button, Typography, and Progress Styles */
+
 :root {
   --empowerlocal-teal: #25A87E;
   --empowerlocal-blue: #2868C3;
@@ -14,26 +15,15 @@
   --empowerlocal-gold-dark: #d97706;
   --empowerlocal-coral: #F97316;
   --empowerlocal-terracotta: #C2410C;
-
-  /* Functional palette */
   --empowerlocal-success: #34D399;
   --empowerlocal-warning: #FBBF24;
   --empowerlocal-error: #EF4444;
   --empowerlocal-info: #60A5FA;
-
   --divider: #E1E5EB;
-
-  /* System (unchanged) */
-  --border: 220, 13%, 91%;
-  --input: 220, 13%, 91%;
-  --ring: 222, 47%, 11%;
-  --background: 210, 20%, 99%;
-  --foreground: 220, 77%, 16%;
-
   --radius: 8px;
 }
 
-/* Typography - empowerlocal classes */
+/* --- Global Typography Classes --- */
 .heading-1, h1, .el-h1 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
@@ -66,6 +56,13 @@
   letter-spacing: -0.1px;
   color: var(--empowerlocal-navy);
 }
+.section-label, .label, .form-label, label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0;
+  color: var(--empowerlocal-navy);
+}
 .body-text, p, .el-body {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
@@ -78,106 +75,110 @@
   font-size: 16px;
   line-height: 24px;
 }
-.small-text, small, .el-small, label, .form-label {
+.small-text, small, .el-small, .table-header, th {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
 }
-.section-label {
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-}
 
-/* Card Component */
-.card-component, .bg-card, .card, .shadow-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px -1px rgba(0,0,0,0.10), 0px 2px 4px -1px rgba(0,0,0,0.06);
-  padding: 24px;
-  transition: box-shadow 0.2s, transform 0.17s;
-}
-.card-component.interactive:hover, .card:hover, .shadow-card:hover {
-  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.13), 0px 4px 6px -2px rgba(0,0,0,0.07);
-  transform: translateY(-2px) scale(1.01);
-}
-
-/* Button Styles */
-.btn-primary, .button-primary {
+/* --- Button System --- */
+.btn-primary {
   background-image: linear-gradient(90deg, var(--empowerlocal-gold) 0%, var(--empowerlocal-gold-dark) 100%);
   color: #fff;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
   box-shadow: 0 3px 8px rgba(245,158,11,0.12), 0px 1.5px 3px rgba(40,104,195,0.10);
   transition: filter 0.2s, box-shadow 0.2s, transform 0.13s;
 }
-.btn-primary:hover, .button-primary:hover {
-  filter: brightness(1.1);
+.btn-primary:hover {
+  filter: brightness(1.07);
   text-decoration: underline;
-  box-shadow: 0 6px 12px rgba(245,158,11,0.2), 0px 3px 6px rgba(40,104,195,0.13);
+  box-shadow: 0 6px 12px rgba(245,158,11,0.17), 0px 3px 6px rgba(40,104,195,0.12);
 }
-.btn-primary:active, .button-primary:active {
+.btn-primary:active {
   filter: brightness(0.97);
   box-shadow: 0 2px 4px rgba(245,158,11,0.09), 0px 1px 2px rgba(40,104,195,0.08);
   transform: translateY(1px);
 }
-.btn-secondary, .button-secondary {
+
+.btn-secondary {
   background: #fff;
   color: var(--empowerlocal-navy);
   border: 1px solid #e5e7eb;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
   box-shadow: none;
   transition: all 0.2s;
 }
-.btn-secondary:hover, .button-secondary:hover {
+.btn-secondary:hover {
   background: #f3f4f6;
   border-color: #d1d5db;
 }
-.btn-secondary:active, .button-secondary:active {
+.btn-secondary:active {
   background: #e5e7eb;
   transform: translateY(1px);
 }
 .btn-text {
   background: transparent;
-  color: var(--empowerlocal-gold);
+  color: var(--empowerlocal-blue);
   padding: 0 8px;
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
-  height: 40px;
-  transition: color 0.2s;
 }
 .btn-text:hover {
-  color: var(--empowerlocal-navy);
-  background: rgba(40,104,195,0.05);
-  text-decoration: underline;
-}
-.btn-text:active {
-  transform: translateY(1px);
-}
-.cta-link, .cta-link-amber {
   color: var(--empowerlocal-gold);
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.17s, text-decoration 0.2s;
-}
-.cta-link:hover, .cta-link-amber:hover {
-  filter: brightness(1.15);
   text-decoration: underline;
 }
 
-/* Progress bar refinement */
+.cta-link {
+  color: var(--empowerlocal-blue);
+  font-weight: 600;
+  transition: color 0.17s, text-decoration 0.2s;
+}
+.cta-link:hover {
+  filter: brightness(1.11);
+  text-decoration: underline;
+}
+
+.cta-link-amber {
+  color: var(--empowerlocal-gold);
+  font-weight: 600;
+  transition: color 0.17s, text-decoration 0.2s;
+}
+.cta-link-amber:hover {
+  filter: brightness(1.11);
+  text-decoration: underline;
+}
+
+/* --- Card Component Styles --- */
+.card-component {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px -1px rgba(0,0,0,0.10), 0px 2px 4px -1px rgba(0,0,0,0.06);
+  padding: 24px;
+  transition: box-shadow 0.2s, transform 0.16s;
+}
+.card-component.interactive:hover, .card-component.card-campaign:hover, .card-component.card-performance:hover {
+  box-shadow: 0px 8px 20px -5px rgba(40,104,195,0.13), 0px 4.5px 8px -2px rgba(0,0,0,0.07);
+  transform: translateY(-2px) scale(1.01);
+}
+.card-header {
+  border-bottom: 1px solid #F3F4F6;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+/* --- Progress Bar --- */
 .progress-bar {
   border-radius: 4px;
   height: 8px;
   background-color: #f3f4f6;
   overflow: hidden;
-  margin-top: 4px;
-  margin-bottom: 4px;
 }
 .progress-bar .progress-fill {
   height: 100%;
@@ -188,66 +189,49 @@
 .progress-warning { background-color: var(--empowerlocal-warning); }
 .progress-error { background-color: var(--empowerlocal-error); }
 
-.divider, .section-divider {
-  border-top: 1.5px solid var(--divider);
-  margin: 24px 0;
-}
-
-/* Tabs Component refinement */
-.tab-list {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 4px;
-  border-bottom: 2px solid #e7eaf0;
-  background: transparent;
-}
-.tab-btn, .tab-trigger {
-  background: none;
-  color: var(--empowerlocal-navy);
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  border: none;
-  outline: none;
-  padding: 8px 20px 14px 20px;
-  transition: color 0.18s;
-  cursor: pointer;
-  border-bottom: 2.5px solid transparent;
-}
-.tab-btn.active, .tab-trigger[data-state="active"] {
-  color: var(--empowerlocal-blue);
-  font-weight: 700;
-  border-bottom: 2.5px solid var(--empowerlocal-blue);
-  background: transparent;
-  box-shadow: none;
-}
-.tab-btn:focus-visible, .tab-trigger:focus-visible {
-  outline: 2px solid var(--empowerlocal-blue);
-}
-
-/* Layout spacing */
+/* --- Section and Card Layout --- */
 .section {
   margin: 32px 0;
-}
-.section-content {
-  margin-top: 16px;
 }
 .card-grid {
   display: grid;
   gap: 16px;
 }
-.mb-32 { margin-bottom: 32px; }
-.mt-32 { margin-top: 32px; }
-.mb-16 { margin-bottom: 16px; }
-.mt-16 { margin-top: 16px; }
 
-/* EmpowerLocal background gradient */
-.bg-empowerlocal-gradient {
-  background: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
+/* --- Dividers --- */
+.section-divider {
+  border-top: 1.5px solid var(--divider);
+  margin: 24px 0;
 }
 
-/* NAVIGATION BAR & FOOTER */
+/* --- Timeline/Filter Pills --- */
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  color: var(--empowerlocal-navy);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.filter-pill.active, .filter-pill[aria-current='true'] {
+  background: #F8FAFC;
+  border-color: var(--empowerlocal-blue);
+  color: var(--empowerlocal-blue);
+}
+
+/* --- Misc Consistency --- */
+input, select, textarea, label, th, td, .body-text, button, a, p, div, span {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* --- NAVIGATION BAR & FOOTER --- */
 .bg-nav-gradient {
   background: linear-gradient(90deg, #25A87E 0%, #2868C3 100%);
 }
@@ -262,8 +246,3 @@
   color: #F8FAFC;
 }
 
-/* Miscellaneous fixes */
-input, select, textarea, label, th, td, .body-text, button, a, p, div, span {
-  font-family: 'Inter', sans-serif !important;
-}
-/* --- End of Extend Global CSS --- */
