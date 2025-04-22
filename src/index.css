@@ -1,4 +1,5 @@
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -19,72 +20,188 @@
   --empowerlocal-error: #EF4444;
   --empowerlocal-info: #60A5FA;
 
-  /* System */
+  /* System (unchanged) */
   --border: 220, 13%, 91%;
   --input: 220, 13%, 91%;
   --ring: 222, 47%, 11%;
   --background: 210, 20%, 99%;
   --foreground: 220, 77%, 16%;
 
-  --radius: 0.5rem;
+  --radius: 8px;
 }
 
-/* Main background */
+/* Typography */
 body {
   background-color: var(--empowerlocal-bg);
   color: var(--empowerlocal-navy);
   font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-/* EmpowerLocal brand-gradient for backgrounds and buttons */
-.bg-empowerlocal-gradient {
-  background-image: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
-  color: #fff !important;
+/* Heading hierarchy utility classes */
+.el-h1, h1, .heading-h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.5px;
+  color: var(--empowerlocal-navy);
+}
+.el-h2, h2, .heading-h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: -0.3px;
+  color: var(--empowerlocal-navy);
+}
+.el-h3, h3, .heading-h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: var(--empowerlocal-navy);
+}
+.el-h4, h4, .heading-h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.1px;
+  color: var(--empowerlocal-navy);
+}
+.body-lg, .body-md, p, .el-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+.data-point, .data-metric {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+.small-text, .el-small, small, label, .form-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
 }
 
-/* Text colors */
-.text-empowerlocal-navy { color: var(--empowerlocal-navy); }
-.text-empowerlocal-blue { color: var(--empowerlocal-blue); }
-.text-empowerlocal-teal { color: var(--empowerlocal-teal); }
-.text-empowerlocal-gold { color: var(--empowerlocal-gold); }
-.text-empowerlocal-coral { color: var(--empowerlocal-coral); }
-.text-empowerlocal-terracotta { color: var(--empowerlocal-terracotta); }
-
-/* Background colors */
-.bg-empowerlocal-background {
-  background-color: var(--empowerlocal-bg);
+/* Card and base component elevation */
+.bg-card, .card, .shadow-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px -1px rgba(0,0,0,0.10), 0px 2px 4px -1px rgba(0,0,0,0.06);
 }
-.bg-empowerlocal-navy { background-color: var(--empowerlocal-navy); }
-.bg-empowerlocal-blue { background-color: var(--empowerlocal-blue); }
-.bg-empowerlocal-teal { background-color: var(--empowerlocal-teal); }
-.bg-empowerlocal-gold { background-color: var(--empowerlocal-gold); }
-.bg-empowerlocal-coral { background-color: var(--empowerlocal-coral); }
-.bg-empowerlocal-terracotta { background-color: var(--empowerlocal-terracotta); }
-.bg-empowerlocal-success { background-color: var(--empowerlocal-success); }
-.bg-empowerlocal-warning { background-color: var(--empowerlocal-warning); }
-.bg-empowerlocal-error { background-color: var(--empowerlocal-error); }
-.bg-empowerlocal-info { background-color: var(--empowerlocal-info); }
+.elevated, .shadow-elevated {
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -2px rgba(0,0,0,0.05);
+}
 
-/* Button, card, sidebar dimensions */
-.sidebar {
-  background-image: linear-gradient(90deg, var(--empowerlocal-teal) 0%, var(--empowerlocal-blue) 100%);
+/* Sidebar shadow for separation */
+.sidebar, .bg-empowerlocal-gradient {
+  box-shadow: 2px 0 16px 0 rgba(10,39,86,0.07);
+}
+
+/* Card padding and spacing */
+.card, .bg-card, .shadow-card, .elevated, .shadow-elevated {
+  padding: 24px;
+  border-radius: 8px;
+}
+
+/* Button styles */
+.button-primary, .btn-primary {
+  background-image: linear-gradient(90deg, #F59E0B 0%, #d97706 100%);
   color: #fff;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(245,158,11,0.12), 0px 1.5px 3px rgba(40,104,195,0.10);
+  font-weight: 600;
 }
-.button-primary,
-.cta-primary {
-  background-color: var(--empowerlocal-gold);
-  color: #fff;
+.button-primary:hover, .btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 12px rgba(245,158,11,0.2), 0px 3px 6px rgba(40,104,195,0.13);
+}
+.button-primary:active, .btn-primary:active {
+  filter: brightness(0.97);
+  box-shadow: 0 2px 4px rgba(245,158,11,0.09), 0px 1px 2px rgba(40,104,195,0.08);
+}
+
+.button-secondary, .btn-secondary {
+  background: #fff;
+  color: var(--empowerlocal-navy);
+  border: 1px solid #e5e7eb;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: none;
+}
+.button-secondary:hover, .btn-secondary:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+.button-secondary:active, .btn-secondary:active {
+  background: #e5e7eb;
+}
+
+/* Inputs and forms */
+input, select, textarea {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 12px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--empowerlocal-blue);
+  box-shadow: 0 0 0 2px rgba(40,104,195,0.10);
+}
+
+/* Table improvements */
+table {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%;
+  border-radius: 8px;
+}
+thead th {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--empowerlocal-navy);
+  background: #F8FAFC;
+  border-bottom: 1.5px solid #e5e7eb;
+  padding: 12px 16px;
+}
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+tbody tr:nth-child(even) {
+  background: #fcfcfd;
+}
+tbody tr:hover {
+  background: #f1faf6;
+}
+tfoot td {
+  padding: 12px 16px;
 }
 
 /* Headings */
 h1, h2, h3, h4, h5, h6, .heading, .header-title {
   color: var(--empowerlocal-navy);
   font-family: 'Inter', system-ui, sans-serif;
-}
-
-/* Global background */
-body {
-  background: var(--empowerlocal-bg);
 }
 
 /* General */

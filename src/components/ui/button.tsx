@@ -6,25 +6,25 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg h-10 px-4 font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 select-none",
   {
     variants: {
       variant: {
-        default: "bg-empowerlocal-gold text-white hover:bg-amber-600",
+        default: "bg-gradient-to-r from-empowerlocal-gold via-amber-400 to-amber-600 text-white shadow-[0_3px_8px_rgba(245,158,11,0.12)] hover:brightness-110 hover:shadow-lg active:brightness-95 active:shadow flex", // Gradient gold-amber, stronger shadow
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "bg-white border border-gray-200 text-empowerlocal-navy hover:bg-gray-50 hover:border-gray-300 shadow-none",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-white text-empowerlocal-navy border border-gray-100 hover:bg-gray-50 shadow-none",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-empowerlocal-blue underline-offset-4 hover:underline",
-        gradient: "bg-empowerlocal-gradient hover:opacity-90",
+        gradient: "bg-empowerlocal-gradient hover:opacity-90 text-white",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "h-10 px-4",
         sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        lg: "h-11 rounded-lg px-8",
         icon: "h-10 w-10",
       },
     },
@@ -56,3 +56,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
