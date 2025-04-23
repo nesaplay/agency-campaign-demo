@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -52,11 +51,10 @@ const Sidebar: React.FC = () => {
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
           <img 
-            src="/lovable-uploads/2553161e-6f3b-4fd3-a9fd-c619ea2ea4d8.png" 
+            src="/lovable-uploads/16b733e5-70b9-4673-9162-cfbb62b2d09f.png" 
             alt="EmpowerLocal Logo" 
             className={cn("h-9 w-9 rounded-lg", collapsed && "mx-auto")}
           />
-          {!collapsed && <span className="text-white font-semibold text-xl">EmpowerLocal</span>}
         </div>
       </div>
 
