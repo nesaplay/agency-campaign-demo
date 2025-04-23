@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -50,9 +51,11 @@ const Sidebar: React.FC = () => {
     <aside className={cn("h-full bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-teal border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
-          <div className="h-9 w-9 rounded-lg flex items-center justify-center text-empowerlocal-navy bg-white font-bold">
-            E
-          </div>
+          <img 
+            src="/lovable-uploads/2553161e-6f3b-4fd3-a9fd-c619ea2ea4d8.png" 
+            alt="EmpowerLocal Logo" 
+            className={cn("h-9 w-9 rounded-lg", collapsed && "mx-auto")}
+          />
           {!collapsed && <span className="text-white font-semibold text-xl">EmpowerLocal</span>}
         </div>
       </div>
