@@ -50,11 +50,6 @@ const Sidebar: React.FC = () => {
     <aside className={cn("h-full bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-teal border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
-          <img 
-            src="/lovable-uploads/16b733e5-70b9-4673-9162-cfbb62b2d09f.png" 
-            alt="EmpowerLocal Logo" 
-            className={cn("h-9 w-9 rounded-lg", collapsed && "mx-auto")}
-          />
         </div>
       </div>
 
