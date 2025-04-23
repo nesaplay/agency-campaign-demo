@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -48,10 +47,10 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className={cn("h-full bg-[#0A2756] border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
+    <aside className={cn("h-full bg-gradient-to-r from-empowerlocal-blue to-empowerlocal-teal border-r border-white/10 shadow-lg transition-all duration-300 flex flex-col relative", collapsed ? "w-20" : "w-64")}>
       <div className="p-4 border-b border-white/10">
         <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
-          <div className="h-9 w-9 rounded-lg flex items-center justify-center text-white bg-green-500 font-bold">
+          <div className="h-9 w-9 rounded-lg flex items-center justify-center text-empowerlocal-navy bg-white font-bold">
             E
           </div>
           {!collapsed && <span className="text-white font-semibold text-xl">EmpowerLocal</span>}
@@ -63,7 +62,7 @@ const Sidebar: React.FC = () => {
           {navItems.map((item, index) => {
           const isActive = location.pathname === item.href || item.href !== '/' && location.pathname.startsWith(item.href);
           return <li key={index}>
-                <Link to={item.href} className={cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-colors relative", isActive ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white", collapsed ? "justify-center" : "", isActive && "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-500 before:rounded-l-lg")}>
+                <Link to={item.href} className={cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-colors relative", isActive ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white", collapsed ? "justify-center" : "", isActive && "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-empowerlocal-gold before:rounded-l-lg")}>
                   <item.icon className={cn("h-5 w-5", isActive ? "text-white" : "text-white/80")} />
                   {!collapsed && <span className="small-text">{item.label}</span>}
                 </Link>
@@ -73,7 +72,7 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <button onClick={toggleSidebar} className="absolute -right-3 top-20 bg-white border border-gray-200 rounded-full p-1 shadow-md">
-        <ChevronLeft className={cn("h-4 w-4 text-[#0A2756] transition-transform duration-300", collapsed && "rotate-180")} />
+        <ChevronLeft className={cn("h-4 w-4 text-empowerlocal-navy transition-transform duration-300", collapsed && "rotate-180")} />
       </button>
     </aside>
   );
