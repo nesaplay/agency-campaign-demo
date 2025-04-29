@@ -21,7 +21,7 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
       </div>
       
       {campaignStage > 0 && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mr-4">
           <div className="hidden sm:flex items-center gap-2">
             <div className={`h-2 w-2 rounded-full ${campaignStage >= 1 ? 'bg-empowerlocal-blue' : 'bg-gray-200'}`}></div>
             <div className={`h-2 w-2 rounded-full ${campaignStage >= 2 ? 'bg-empowerlocal-blue' : 'bg-gray-200'}`}></div>
@@ -31,17 +31,6 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
           </div>
           
           <span className="text-sm text-gray-500">Step {campaignStage} of 5</span>
-          
-          <button 
-            onClick={() => setShowSummaryPanel(!showSummaryPanel)}
-            className={`text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 ${
-              showSummaryPanel 
-                ? 'bg-empowerlocal-teal/10 text-empowerlocal-teal' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {showSummaryPanel ? 'Hide Summary' : 'Show Summary'}
-          </button>
         </div>
       )}
     </div>

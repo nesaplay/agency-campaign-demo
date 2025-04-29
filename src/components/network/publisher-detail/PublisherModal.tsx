@@ -15,7 +15,7 @@ const PublisherModal: React.FC<PublisherModalProps> = ({
   title = "Publisher Details"
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] overflow-hidden">
       <div 
         className={cn(
           "fixed inset-y-0 right-0 w-[90%] max-w-6xl bg-white shadow-xl",

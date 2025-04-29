@@ -5,14 +5,16 @@ import MessageInput from './MessageInput';
 import CampaignSummaryPanel from '../CampaignSummaryPanel';
 import { useCampaignState } from '../hooks/useCampaignState';
 import { useMessageHandlers } from '../hooks/useMessageHandlers';
-import { Publisher } from '../types';
-import { mockPublishers } from '../data/mockPublishers';
+import { Publisher as ConversationPublisher } from '@/components/network/types';
+import { useToast } from "@/hooks/use-toast";
+import { mockPublishers } from '@/components/network/mockData';
 
 interface ConversationInterfaceProps {
-  onPublisherSelect?: (publisher: Publisher) => void;
+  onPublisherSelect?: (publisher: ConversationPublisher) => void;
 }
 
 const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublisherSelect }) => {
+  const { toast } = useToast();
   const {
     campaignStage,
     setCampaignStage,
@@ -35,7 +37,8 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     handleAddAllPublishers,
     handleSendMessage,
     handleQuickReply,
-    handleFeedback
+    handleFeedback,
+    handleAddPublisherToCampaign
   } = useMessageHandlers({
     messages,
     setMessages,
@@ -51,6 +54,14 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     publishers: mockPublishers,
     onPublisherSelect
   });
+
+  const handleRemovePublisherFromCampaign = (publisherId: string) => {
+    setSelectedPublishers(prev => prev.filter(p => p.id !== publisherId));
+    toast({
+      title: "Publisher Removed",
+      description: "The publisher has been removed from your campaign summary.",
+    });
+  };
 
   const focusInput = () => {
     // The actual focus logic is in MessageInput now, but we keep the container click handler
@@ -73,6 +84,7 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
           onQuickReply={handleQuickReply}
           onPublisherSelect={handlePublisherSelect}
           onAddAllPublishers={handleAddAllPublishers}
+          onAddPublisherToCampaign={handleAddPublisherToCampaign}
         />
         
         <MessageInput 
@@ -90,6 +102,8 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
         geography={campaignDetails.geography}
         timeline={campaignDetails.timeline}
         estimatedReach={campaignDetails.estimatedReach}
+        onRemovePublisher={handleRemovePublisherFromCampaign}
+        campaignStage={campaignStage}
       />
     </div>
   );

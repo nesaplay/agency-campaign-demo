@@ -10,7 +10,6 @@ import PublisherDetail from '@/components/network/PublisherDetail';
 import { Toaster } from "@/components/ui/toaster";
 import ListDetailHeader from '@/components/lists/detail/ListDetailHeader';
 import ListDetailContent from '@/components/lists/detail/ListDetailContent';
-import { MapPin, BarChart2, Users } from 'lucide-react';
 
 const ListDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -64,6 +63,11 @@ const ListDetail: React.FC = () => {
       lastUpdated: new Date()
     });
   };
+
+  const handleAddPublisherToCampaign = (publisherId: string) => {
+    console.log('Adding publisher to campaign:', publisherId);
+    // Add your logic here to add the publisher to the campaign
+  };
   
   const handleViewPublisherDetails = (publisher: Publisher) => {
     setSelectedPublisher(publisher);
@@ -112,6 +116,7 @@ const ListDetail: React.FC = () => {
         <PublisherDetail 
           publisher={selectedPublisher} 
           onClose={() => setSelectedPublisher(null)} 
+          onAddPublisherToCampaign={handleAddPublisherToCampaign}
         />
       )}
       

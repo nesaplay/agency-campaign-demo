@@ -1,11 +1,11 @@
-
 import React from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Calendar, Coins, Flag, Users, ChevronRight, ChevronLeft, X } from 'lucide-react';
-import { Publisher } from './types';
+import { Publisher } from '@/components/network/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
+import useCampaignStore from '@/stores/useCampaignStore';
 
 interface CampaignSummaryPanelProps {
   isExpanded: boolean;
@@ -15,6 +15,8 @@ interface CampaignSummaryPanelProps {
   geography?: string;
   timeline?: string;
   estimatedReach?: string;
+  onRemovePublisher: (publisherId: string) => void;
+  campaignStage: number;
 }
 
 const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
@@ -24,9 +26,12 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
   budget = 'Not set',
   geography = 'Not set',
   timeline = 'Not set',
-  estimatedReach = 'Not set'
+  estimatedReach = 'Not set',
+  onRemovePublisher,
+  campaignStage
 }) => {
   const { toast } = useToast();
+  const addCampaign = useCampaignStore((state) => state.addCampaign);
   
   // Calculate total reach from all selected publishers
   const calculateTotalReach = () => {
@@ -34,9 +39,8 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
     
     // Convert reach strings like "450K" to numbers for calculation
     const totalReach = publishers.reduce((sum, pub) => {
-      const reachNumber = parseFloat(pub.reach.replace(/[^0-9.]/g, ''));
-      const multiplier = pub.reach.includes('M') ? 1000000 : 
-                         pub.reach.includes('K') ? 1000 : 1;
+      const reachNumber = pub.audienceSize;
+      const multiplier = 1;
       return sum + (reachNumber * multiplier);
     }, 0);
     
@@ -51,9 +55,22 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
   };
   
   const handleExportBrief = () => {
+    // Gather current campaign data
+    const campaignData = {
+      budget,
+      geography,
+      timeline,
+      estimatedReach,
+      publishers,
+    };
+    
+    // Add campaign to the store
+    addCampaign(campaignData);
+    
+    // Show confirmation toast
     toast({
-      title: "Campaign brief ready",
-      description: "Your campaign brief has been prepared for export",
+      title: "Campaign Saved & Ready",
+      description: "Your campaign has been saved and prepared for export.",
     });
   };
   
@@ -68,7 +85,7 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
     <AnimatePresence>
       {isExpanded ? (
         <motion.div 
-          className="w-80 border-l border-gray-200 bg-white shadow-lg h-full"
+          className="w-[420px] min-w-[420px] border-l border-t border-gray-200 bg-white shadow-xl h-full sticky top-4"
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
@@ -92,31 +109,46 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
             </div>
           </div>
           
-          <div className="p-4 overflow-auto h-[calc(100%-61px)]">
+          <div className="p-4 overflow-auto h-full">
             {/* Progress indicator */}
             <div className="mb-6">
               <h4 className="text-sm font-medium text-gray-500 mb-2">Campaign Progress</h4>
-              <div className="flex items-center gap-1">
-                <div className="flex-1 h-2 bg-empowerlocal-blue/20 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-empowerlocal-blue rounded-full" 
-                    style={{ width: `${publishers.length ? '60%' : '30%'}` }}
-                  ></div>
-                </div>
-                <span className="text-xs font-medium">{publishers.length ? '60%' : '30%'}</span>
-              </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-500">
-                <span>Budget</span>
-                <span>Geography</span>
-                <span>Publishers</span>
-                <span>Schedule</span>
-                <span>Create</span>
-              </div>
+              {(() => {
+                const totalSteps = 4;
+                let progressSteps = 0;
+                
+                if (campaignStage >= 1) progressSteps = 1; // Start campaign
+                if (campaignStage >= 2) progressSteps = 2; // Budget
+                if (campaignStage >= 3) progressSteps = 3; // Geography
+                if (campaignStage >= 3 && publishers.length > 0) progressSteps = 4; // Publishers
+
+                const progress = (progressSteps / totalSteps) * 100;
+                
+                return (
+                  <>
+                    <div className="flex items-center gap-1">
+                      <div className="flex-1 h-2 bg-empowerlocal-blue/20 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-empowerlocal-blue rounded-full transition-all duration-300 ease-out" 
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-xs font-medium">{progress.toFixed(0)}%</span>
+                    </div>
+                    <div className="flex justify-between mt-2 text-xs text-gray-500">
+                      <span>Budget</span>
+                      <span>Geography</span>
+                      <span>Publishers</span>
+                      <span>Create</span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
             
             {/* Campaign details */}
-            <Card className="mb-4 border border-gray-200">
-              <CardHeader className="pb-2 pt-4 px-4">
+            <Card className="mb-4 border border-gray-200 !p-0">
+              <CardHeader className="p-4">
                 <CardTitle className="text-sm font-semibold">Campaign Details</CardTitle>
               </CardHeader>
               <CardContent className="px-4 pb-4 pt-0">
@@ -164,16 +196,27 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
                   {publishers.map(publisher => (
                     <div 
                       key={publisher.id} 
-                      className="p-2 bg-gray-50 border border-gray-200 rounded-md flex items-center gap-2"
+                      className="relative group p-2 bg-gray-50 border border-gray-200 rounded-md flex items-center gap-2"
                     >
                       <div className="h-8 w-8 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
-                        <img src={publisher.image} alt={publisher.name} className="h-full w-full object-cover" />
+                        <img src={publisher.logo} alt={publisher.name} className="h-full w-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h5 className="font-medium text-sm text-gray-800 truncate">{publisher.name}</h5>
                         <p className="text-xs text-gray-500 truncate">{publisher.location}</p>
                       </div>
-                      <div className="text-xs font-medium">{publisher.reach}</div>
+                      <div className="text-xs font-medium">{publisher.audienceSize.toLocaleString()}</div>
+                      {/* Remove button - appears on hover */}
+                      <button 
+                        className="absolute -top-2 -right-2 p-1 bg-white rounded-full text-red-400 hover:text-white hover:bg-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150 border border-gray-200 shadow-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemovePublisher(publisher.id);
+                        }}
+                        title="Remove publisher"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -206,7 +249,7 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
         </motion.div>
       ) : (
         <motion.div 
-          className="w-10 flex items-center justify-center border-l border-gray-200 bg-white shadow-lg h-full"
+          className="w-10 flex items-center justify-center border-l border-gray-200 bg-white shadow-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

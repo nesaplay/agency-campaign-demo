@@ -94,7 +94,6 @@
 }
 .btn-primary:hover {
   filter: brightness(1.07);
-  text-decoration: underline;
   box-shadow: 0 6px 12px rgba(245,158,11,0.17), 0px 3px 6px rgba(40,104,195,0.12);
 }
 .btn-primary:active {

@@ -70,14 +70,14 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
       ref={ref} 
       className={`bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30 shadow-md' : ''}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4">
         <Tabs 
           defaultValue="lassie" 
           value={activeTab} 
           onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections' | 'seasonal')}
           className="w-full"
         >
-          <TabsList className="w-full flex justify-start mb-0 mt-4 bg-transparent p-0 border-b border-gray-200 overflow-x-auto">
+          <TabsList className="w-full flex justify-start mb-0 bg-transparent p-0 border-b border-gray-200 overflow-x-auto">
             <TabsTrigger 
               value="lassie" 
               className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"

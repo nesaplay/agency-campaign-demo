@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { ThumbsUp, ThumbsDown, Info, X, MessageCircle, Map, List } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import QuickReply from './QuickReply';
-import PublisherCard from './PublisherCard';
-import PublisherMap from './PublisherMap';
-import { Message as MessageType } from './types';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { ThumbsUp, ThumbsDown, Info, X, MessageCircle, Map, List } from "lucide-react";
+import { cn } from "@/lib/utils";
+import QuickReply from "./QuickReply";
+import PublisherMap from "./PublisherMap";
+import { Message as MessageType } from "./types";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
+import PublisherCard from "../network/PublisherCard";
 
 interface MessageProps {
   message: MessageType;
@@ -14,32 +14,34 @@ interface MessageProps {
   onQuickReply: (text: string, value: string) => void;
   onPublisherSelect?: (publisherId: string) => void;
   onAddAllPublishers?: () => void;
+  onAddPublisherToCampaign?: (publisherId: string) => void;
 }
 
-const Message: React.FC<MessageProps> = ({ 
-  message, 
-  onFeedback, 
-  onQuickReply, 
+const Message: React.FC<MessageProps> = ({
+  message,
+  onFeedback,
+  onQuickReply,
   onPublisherSelect,
-  onAddAllPublishers
+  onAddAllPublishers,
+  onAddPublisherToCampaign,
 }) => {
-  const [feedbackGiven, setFeedbackGiven] = useState<'positive' | 'negative' | null>(null);
-  const [selectedView, setSelectedView] = useState<'map' | 'list'>('map');
+  const [feedbackGiven, setFeedbackGiven] = useState<"positive" | "negative" | null>(null);
+  const [selectedView, setSelectedView] = useState<"map" | "list">("map");
   const [showInsight, setShowInsight] = useState(false);
   const { toast } = useToast();
-  
+
   const handleFeedback = (isPositive: boolean) => {
     if (feedbackGiven) return;
     onFeedback(message.id, isPositive);
-    setFeedbackGiven(isPositive ? 'positive' : 'negative');
+    setFeedbackGiven(isPositive ? "positive" : "negative");
   };
-  
+
   const handlePublisherCardClick = (publisherId: string) => {
     if (onPublisherSelect) {
       onPublisherSelect(publisherId);
     }
   };
-  
+
   const handleAddAll = () => {
     if (onAddAllPublishers) {
       onAddAllPublishers();
@@ -49,52 +51,50 @@ const Message: React.FC<MessageProps> = ({
       });
     }
   };
-  
-  const isAssistant = message.sender === 'assistant';
-  
+
+  const isAssistant = message.sender === "assistant";
+
   const getContextualInsight = () => {
-    if (message.content.includes('ice cream') || message.content.includes('summer')) {
+    if (message.content.includes("ice cream") || message.content.includes("summer")) {
       return "Summer ice cream campaigns perform best when launched 2-3 weeks before seasonal temperature increases. Consider starting in late April or early May for maximum impact.";
     }
-    
-    if (message.content.includes('budget') || message.content.includes('$10,000')) {
+
+    if (message.content.includes("budget") || message.content.includes("$10,000")) {
       return "Similar campaigns in this budget range typically allocate 60% to premium publishers and 40% to mid-tier publishers for optimal reach/engagement balance.";
     }
-    
-    if (message.content.includes('West Coast')) {
+
+    if (message.content.includes("West Coast")) {
       return "West Coast markets show 28% higher engagement for food and beverage campaigns during summer months compared to national averages.";
     }
-    
+
     return "Based on similar campaigns, we recommend including a mix of lifestyle and news publishers for optimal audience reach.";
   };
-  
+
   return (
-    <div className={cn(
-      "flex items-start gap-3",
-      isAssistant ? "justify-start" : "justify-end"
-    )}>
-      <div className={cn(
-        "max-w-3xl space-y-2",
-        isAssistant ? "bg-gradient-to-r from-[#f0f7ff] to-[#e6f0ff] rounded-2xl rounded-tl-none p-4 shadow-sm" :
-        "bg-white border border-gray-200 rounded-2xl rounded-tr-none p-4 shadow-sm"
-      )}>
-        <div className="text-gray-800">
-          {message.content}
-        </div>
-        
-        {isAssistant && message.content.includes('campaign') && (
+    <div className={cn("flex items-start gap-3", isAssistant ? "justify-start" : "justify-end")}>
+      <div
+        className={cn(
+          "max-w-3xl space-y-2",
+          isAssistant
+            ? "bg-gradient-to-r from-[#f0f7ff] to-[#e6f0ff] rounded-2xl rounded-tl-none p-4 shadow-sm"
+            : "bg-white border border-gray-200 rounded-2xl rounded-tr-none p-4 shadow-sm",
+        )}
+      >
+        <div className="text-gray-800">{message.content}</div>
+
+        {isAssistant && message.content.includes("campaign") && (
           <div className="mt-2 pt-2 border-t border-gray-200/50">
             <div className="flex justify-between items-center">
-              <button 
+              <button
                 onClick={() => setShowInsight(!showInsight)}
                 className="flex items-center gap-1.5 text-xs text-empowerlocal-blue font-medium hover:underline"
               >
                 <Info className="h-3.5 w-3.5" />
                 Campaign Insight
               </button>
-              
+
               {showInsight && (
-                <button 
+                <button
                   onClick={() => setShowInsight(false)}
                   className="p-1 hover:bg-gray-100 rounded-full transition-colors"
                 >
@@ -102,12 +102,12 @@ const Message: React.FC<MessageProps> = ({
                 </button>
               )}
             </div>
-            
+
             <AnimatePresence>
               {showInsight && (
-                <motion.div 
+                <motion.div
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
+                  animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
@@ -120,24 +120,24 @@ const Message: React.FC<MessageProps> = ({
             </AnimatePresence>
           </div>
         )}
-        
+
         {message.showMap && (
           <div className="mt-3">
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-sm font-medium text-empowerlocal-navy">Publisher Coverage</h4>
               <div className="flex items-center bg-gray-100 rounded-md p-0.5">
-                <button 
-                  className={`px-2 py-1 text-xs rounded ${selectedView === 'map' ? 'bg-white shadow-sm' : ''}`}
-                  onClick={() => setSelectedView('map')}
+                <button
+                  className={`px-2 py-1 text-xs rounded ${selectedView === "map" ? "bg-white shadow-sm" : ""}`}
+                  onClick={() => setSelectedView("map")}
                 >
                   <span className="flex items-center gap-1">
                     <Map className="h-3 w-3" />
                     Map
                   </span>
                 </button>
-                <button 
-                  className={`px-2 py-1 text-xs rounded ${selectedView === 'list' ? 'bg-white shadow-sm' : ''}`}
-                  onClick={() => setSelectedView('list')}
+                <button
+                  className={`px-2 py-1 text-xs rounded ${selectedView === "list" ? "bg-white shadow-sm" : ""}`}
+                  onClick={() => setSelectedView("list")}
                 >
                   <span className="flex items-center gap-1">
                     <List className="h-3 w-3" />
@@ -146,9 +146,13 @@ const Message: React.FC<MessageProps> = ({
                 </button>
               </div>
             </div>
-            
-            {selectedView === 'map' ? (
-              <PublisherMap />
+
+            {selectedView === "map" ? (
+              <PublisherMap
+                publishers={message.publishers}
+                onPublisherSelect={onPublisherSelect}
+                onAddPublisherToCampaign={onAddPublisherToCampaign}
+              />
             ) : (
               <div className="border border-gray-200 rounded-md p-3 bg-white">
                 <div className="space-y-2">
@@ -177,22 +181,26 @@ const Message: React.FC<MessageProps> = ({
             )}
           </div>
         )}
-        
-        {message.publishers && (
+
+        {!message.showMap && message.publishers && (
           <div className="mt-4">
             <div className="flex flex-col space-y-4">
-              <div className="flex overflow-x-auto space-x-4 pb-2 -mx-2 px-2">
-                {message.publishers.map(publisher => (
-                  <div 
-                    key={publisher.id} 
+              <div className="flex overflow-x-auto space-x-4 p-2 w-full max-w-[calc(100vw-772px)]">
+                {message.publishers.map((publisher) => (
+                  <div
+                    key={publisher.id}
                     className="cursor-pointer transition-transform hover:scale-105"
                     onClick={() => handlePublisherCardClick(publisher.id)}
                   >
-                    <PublisherCard key={publisher.id} publisher={publisher} />
+                    <PublisherCard
+                      publisher={publisher}
+                      onClick={() => onPublisherSelect(publisher.id)}
+                      onAddToCampaign={() => onAddPublisherToCampaign(publisher.id)}
+                    />
                   </div>
                 ))}
               </div>
-              
+
               {message.publishers.length > 0 && (
                 <button
                   onClick={handleAddAll}
@@ -204,53 +212,51 @@ const Message: React.FC<MessageProps> = ({
             </div>
           </div>
         )}
-        
+
         {message.quickReplies && (
           <div className="flex flex-wrap gap-2 mt-3">
-            {message.quickReplies.map(reply => (
-              <QuickReply 
-                key={reply.id} 
-                text={reply.text} 
-                onClick={() => onQuickReply(reply.text, reply.value)} 
-              />
+            {message.quickReplies.map((reply) => (
+              <QuickReply key={reply.id} text={reply.text} onClick={() => onQuickReply(reply.text, reply.value)} />
             ))}
           </div>
         )}
-        
+
         {isAssistant && (
           <div className="flex items-center gap-2 mt-2">
-            <button 
+            <button
               onClick={() => handleFeedback(true)}
               className={cn(
                 "p-1.5 rounded-full border border-transparent transition-all duration-150",
-                feedbackGiven === 'positive' 
-                  ? "bg-green-100 border-green-200 text-green-700" 
-                  : "text-gray-400 hover:bg-gray-100"
+                feedbackGiven === "positive"
+                  ? "bg-green-100 border-green-200 text-green-700"
+                  : "text-gray-400 hover:bg-gray-100",
               )}
             >
               <ThumbsUp className="h-4 w-4" />
             </button>
-            <button 
+            <button
               onClick={() => handleFeedback(false)}
               className={cn(
                 "p-1.5 rounded-full border border-transparent transition-all duration-150",
-                feedbackGiven === 'negative' 
-                  ? "bg-red-100 border-red-200 text-red-700" 
-                  : "text-gray-400 hover:bg-gray-100"
+                feedbackGiven === "negative"
+                  ? "bg-red-100 border-red-200 text-red-700"
+                  : "text-gray-400 hover:bg-gray-100",
               )}
             >
               <ThumbsDown className="h-4 w-4" />
             </button>
-            
+
             <span className="flex-1"></span>
-            
-            <button 
+
+            <button
               className="p-1.5 text-gray-400 hover:bg-gray-100 hover:text-empowerlocal-blue rounded-full transition-colors"
               title="Ask follow-up"
-              onClick={() => toast({
-                title: "Ask a follow-up",
-                description: "Type your question in the input field below",
-              })}
+              onClick={() =>
+                toast({
+                  title: "Ask a follow-up",
+                  description: "Type your question in the input field below",
+                })
+              }
             >
               <MessageCircle className="h-4 w-4" />
             </button>

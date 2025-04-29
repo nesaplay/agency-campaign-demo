@@ -28,7 +28,7 @@ const ListCard: React.FC<ListCardProps> = ({ list, onClick }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         
         <div className="absolute bottom-0 left-0 p-4 text-white">
-          <h3 className="heading-3 font-bold text-xl tracking-[-0.2px]">{list.name}</h3>
+          <h3 className="font-bold text-white/80 text-xl tracking-[-0.2px]">{list.name}</h3>
         </div>
         
         {/* Visibility Badge */}

@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
-import { Publisher, Message as MessageType } from '../types';
+import { Message as MessageType } from '../types';
+import { Publisher } from '@/components/network/types';
 
 interface CampaignDetails {
   budget: string;
@@ -11,7 +12,7 @@ interface CampaignDetails {
 
 export const useCampaignState = () => {
   const [campaignStage, setCampaignStage] = useState<number>(0);
-  const [showSummaryPanel, setShowSummaryPanel] = useState(false);
+  const [showSummaryPanel, setShowSummaryPanel] = useState(true);
   const [selectedPublishers, setSelectedPublishers] = useState<Publisher[]>([]);
   const [campaignDetails, setCampaignDetails] = useState<CampaignDetails>({
     budget: '',

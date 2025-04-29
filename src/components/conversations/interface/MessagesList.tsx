@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { CircleEllipsis } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -12,6 +11,7 @@ interface MessagesListProps {
   onQuickReply: (text: string, value: string) => void;
   onPublisherSelect: (publisherId: string) => void;
   onAddAllPublishers: () => void;
+  onAddPublisherToCampaign: (publisherId: string) => void;
 }
 
 const MessagesList: React.FC<MessagesListProps> = ({
@@ -20,7 +20,8 @@ const MessagesList: React.FC<MessagesListProps> = ({
   onFeedback,
   onQuickReply,
   onPublisherSelect,
-  onAddAllPublishers
+  onAddAllPublishers,
+  onAddPublisherToCampaign
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -48,6 +49,7 @@ const MessagesList: React.FC<MessagesListProps> = ({
               onQuickReply={onQuickReply}
               onPublisherSelect={onPublisherSelect}
               onAddAllPublishers={onAddAllPublishers}
+              onAddPublisherToCampaign={onAddPublisherToCampaign}
             />
           </motion.div>
         ))}
