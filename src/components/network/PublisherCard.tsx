@@ -115,7 +115,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
       )}
 
       {/* Options Menu */}
-      <div className="absolute top-2 left-2 z-10">
+      <div className="absolute top-2 left-2 z-[1000]">
         <button
           onClick={handleMenuToggle}
           className="p-1.5 bg-white/90 rounded-full hover:bg-gray-100 transition-colors shadow-sm"
@@ -124,7 +124,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
         </button>
 
         {menuOpen && (
-          <div className="absolute left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-20">
+          <div className="absolute left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-[1000]">
             <button
               className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm"
               onClick={handleViewDetails}
@@ -227,15 +227,15 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
         </div>
 
         {/* Categories */}
-        <div className="flex flex-wrap gap-1 w-full">
-          {publisher.categories.slice(0, 3).map((category, index) => (
+        <div className="flex gap-1 w-full mt-4">
+          {publisher.categories.slice(0, 2).map((category, index) => (
             <span key={index} className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}>
               {category}
             </span>
           ))}
-          {publisher.categories.length > 3 && (
+          {publisher.categories.length > 2 && (
             <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
-              +{publisher.categories.length - 3}
+              +{publisher.categories.length - 2}
             </span>
           )}
         </div>

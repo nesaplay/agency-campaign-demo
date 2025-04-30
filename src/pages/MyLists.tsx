@@ -1,32 +1,46 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
 import { PublisherList, ListCategory } from '@/components/lists/types';
-import { mockLists } from '@/components/lists/mockListsData';
+import useListStore from '@/stores/useListStore';
 import ListCard from '@/components/lists/ListCard';
 import { Plus, Search } from 'lucide-react';
 import CreateListModal from '@/components/lists/create-modal/CreateListModal';
+import { useToast } from "@/hooks/use-toast";
 
 const MyLists: React.FC = () => {
   const navigate = useNavigate();
-  const [lists] = useState<PublisherList[]>(mockLists);
-  const [filteredLists, setFilteredLists] = useState<PublisherList[]>(mockLists);
+  const { lists, addList } = useListStore();
+  const [filteredLists, setFilteredLists] = useState<PublisherList[]>(lists);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ListCategory>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const { toast } = useToast();
 
-  // Filter handlers
+  useEffect(() => {
+    const categoryFiltered = getFilteredListsByCategory(activeCategory, lists);
+    if (searchQuery.trim()) {
+      const searchFiltered = categoryFiltered.filter(list => 
+        list.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        list.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredLists(searchFiltered);
+    } else {
+      setFilteredLists(categoryFiltered);
+    }
+  }, [lists, activeCategory, searchQuery]);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
     
+    const baseLists = getFilteredListsByCategory(activeCategory, lists);
     if (!query.trim()) {
-      setFilteredLists(getFilteredListsByCategory(activeCategory, lists));
+      setFilteredLists(baseLists);
       return;
     }
     
-    const filtered = lists.filter(list => 
+    const filtered = baseLists.filter(list => 
       list.name.toLowerCase().includes(query.toLowerCase()) || 
       list.description.toLowerCase().includes(query.toLowerCase())
     );
@@ -37,11 +51,10 @@ const MyLists: React.FC = () => {
   const getFilteredListsByCategory = (category: ListCategory, listsToFilter: PublisherList[]) => {
     switch(category) {
       case 'recent':
-        return [...listsToFilter].sort((a, b) => b.lastUpdated.getTime() - a.lastUpdated.getTime());
+        return [...listsToFilter].sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime());
       case 'shared':
         return listsToFilter.filter(list => list.isShared);
       case 'category':
-        // This would actually group by category, but for now we'll just show all
         return listsToFilter;
       case 'all':
       default:
@@ -56,6 +69,24 @@ const MyLists: React.FC = () => {
 
   const handleListClick = (listId: string) => {
     navigate(`/lists/${listId}`);
+  };
+
+  const handleCreateList = (newListData: Omit<PublisherList, 'id' | 'publishers' | 'publisherCount' | 'lastUpdated' | 'createdBy' | 'isShared' | 'totalReach' | 'category'> & { publishers: string[] }) => {
+    const listToAdd = {
+      name: newListData.name,
+      description: newListData.description,
+      publishers: [],
+      visibility: newListData.visibility,
+    }
+    
+    const createdList = addList(listToAdd);
+    
+    setShowCreateModal(false);
+
+    toast({
+      title: "List Created",
+      description: `"${createdList.name}" has been successfully created.`,
+    });
   };
 
   return (
@@ -161,11 +192,7 @@ const MyLists: React.FC = () => {
       {showCreateModal && (
         <CreateListModal 
           onClose={() => setShowCreateModal(false)}
-          onCreateList={(list) => {
-            console.log("List created:", list);
-            setShowCreateModal(false);
-            // In a real app, we would add the list to the lists array
-          }}
+          onCreateList={handleCreateList}
         />
       )}
     </MainLayout>

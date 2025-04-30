@@ -99,7 +99,7 @@ const MyCampaigns: React.FC = () => {
         </div>
 
         {campaigns.length === 0 ? (
-          <div className="text-center py-16 border border-dashed border-gray-300 rounded-lg">
+          <div className="text-center py-16 border border-dashed border-gray-300 rounded-lg flex items-center justify-center flex-col h-full">
             <h2 className="text-xl font-medium text-gray-700 mb-2">No campaigns yet</h2>
             <p className="text-gray-500 mb-4">Start building your first campaign with Lassie.</p>
             <Link to="/network-navigator" className="btn-primary flex items-center gap-2">

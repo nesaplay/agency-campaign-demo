@@ -9,7 +9,7 @@ import { X } from "lucide-react";
 interface PublisherDetailProps {
   publisher: Publisher;
   onClose: () => void;
-  onAddPublisherToCampaign: (publisherId: string) => void;
+  onAddPublisherToCampaign?: (publisherId: string) => void;
 }
 
 const PublisherDetail: React.FC<PublisherDetailProps> = ({ publisher, onClose, onAddPublisherToCampaign }) => {
@@ -22,7 +22,7 @@ const PublisherDetail: React.FC<PublisherDetailProps> = ({ publisher, onClose, o
           <div className="flex-1 overflow-hidden">
             <PublisherDetailContent publisher={publisher} setShowLassieChat={setShowLassieChat} />
           </div>
-          <PublisherActions onClick={() => onAddPublisherToCampaign(publisher.id)} />
+          <PublisherActions onClick={onAddPublisherToCampaign ? () => onAddPublisherToCampaign(publisher.id) : undefined} />
         </div>
 
         {showLassieChat && (

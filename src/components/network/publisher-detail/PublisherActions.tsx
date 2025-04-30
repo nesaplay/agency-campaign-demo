@@ -2,7 +2,7 @@ import React from "react";
 import { Plus } from "lucide-react";
 
 interface PublisherActionsProps {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const PublisherActions: React.FC<PublisherActionsProps> = ({ onClick }) => {

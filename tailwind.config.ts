@@ -40,6 +40,8 @@ export default {
           teal: "var(--empowerlocal-teal)",
           gold: "var(--empowerlocal-gold)",
           amber: "var(--empowerlocal-gold)",
+          green: "var(--empowerlocal-green)",
+          success: "var(--empowerlocal-green)",
           coral: "var(--empowerlocal-coral)",
           peach: "var(--empowerlocal-coral)",
           terracotta: "var(--empowerlocal-terracotta)",

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -13,6 +12,7 @@ import {
   MapPin
 } from 'lucide-react';
 import { PublisherList } from '@/components/lists/types';
+import { format } from 'date-fns';
 
 interface ListDetailHeaderProps {
   list: PublisherList;
@@ -39,12 +39,15 @@ const ListDetailHeader: React.FC<ListDetailHeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   
+  // Format date using date-fns
+  const formattedDate = list.lastUpdated ? format(new Date(list.lastUpdated), 'PPP') : 'N/A';
+
   return (
-    <div className="bg-white border-b border-gray-200 p-6">
-      <div className="flex items-center mb-4">
+    <div className="bg-white border-b border-gray-200 p-6 shadow-sm">
+      <div className="flex items-center mb-4 gap-4">
         <button 
           onClick={() => navigate('/lists')}
-          className="mr-3 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 text-gray-500" />
         </button>
@@ -59,36 +62,49 @@ const ListDetailHeader: React.FC<ListDetailHeaderProps> = ({
               autoFocus
             />
           ) : (
-            <h1 className="text-2xl font-semibold text-empowerlocal-navy">{list.name}</h1>
+            <h1 className="text-3xl font-semibold text-empowerlocal-navy flex items-center">
+              {list.name}
+              <div className="ml-2 bg-empowerlocal-navy text-white px-2 py-1 rounded-full text-sm">
+                {list.visibility === 'private' ? (
+                  <Lock className="h-4 w-4" />
+                ) : list.visibility === 'team' ? (
+                  <Share2 className="h-4 w-4" />
+                ) : (
+                  <Globe className="h-4 w-4" />
+                )}
+              </div>
+            </h1>
           )}
         </div>
         
-        <div className="flex items-center gap-3">
-          {isEditing ? (
-            <button 
-              onClick={handleSaveEdit}
-              className="flex items-center gap-2 bg-empowerlocal-green text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors"
-            >
-              Save
-            </button>
-          ) : (
-            <>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {isEditing ? (
               <button 
-                onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                onClick={handleSaveEdit}
+                className="flex items-center gap-2 bg-empowerlocal-green text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                <Edit2 className="h-4 w-4" />
-                Edit List
+                Save
               </button>
-              <button 
-                onClick={handleCreateCampaign}
-                className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
-              >
-                <Rocket className="h-4 w-4" />
-                Create Campaign
-              </button>
-            </>
-          )}
+            ) : (
+              <>
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                >
+                  <Edit2 className="h-4 w-4" />
+                  Edit List
+                </button>
+                <button 
+                  onClick={handleCreateCampaign}
+                  className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
+                >
+                  <Rocket className="h-4 w-4" />
+                  Create Campaign
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
       
@@ -102,7 +118,10 @@ const ListDetailHeader: React.FC<ListDetailHeaderProps> = ({
               className="w-full text-gray-600 bg-gray-100 p-2 rounded-lg"
             />
           ) : (
-            <p className="text-gray-600">{list.description}</p>
+            <div>
+              <p className="text-sm text-gray-500 mt-1">Updated: {formattedDate}</p>
+              <p className="text-sm text-gray-600 mt-2 max-w-2xl">{list.description}</p>
+            </div>
           )}
           
           <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
@@ -117,7 +136,6 @@ const ListDetailHeader: React.FC<ListDetailHeaderProps> = ({
               <span className="capitalize">{list.visibility}</span>
             </div>
             <span>•</span>
-            <span>Updated {list.lastUpdated.toLocaleDateString()}</span>
           </div>
         </div>
         

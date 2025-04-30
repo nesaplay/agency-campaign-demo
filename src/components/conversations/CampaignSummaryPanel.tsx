@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 import useCampaignStore from '@/stores/useCampaignStore';
+import useListStore from '@/stores/useListStore';
+import { ToastAction } from '@/components/ui/toast';
+import { useNavigate } from 'react-router-dom';
+import { PublisherList } from '../lists/types';
 
 interface CampaignSummaryPanelProps {
   isExpanded: boolean;
@@ -32,6 +36,8 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
 }) => {
   const { toast } = useToast();
   const addCampaign = useCampaignStore((state) => state.addCampaign);
+  const addList = useListStore((state) => state.addList);
+  const navigate = useNavigate();
   
   // Calculate total reach from all selected publishers
   const calculateTotalReach = () => {
@@ -75,9 +81,40 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
   };
   
   const handleSaveToList = () => {
+    if (publishers.length === 0) return;
+
+    // 1. Define list data
+    const newListData = {
+      id: `list_${Date.now()}`,
+      name: `Campaign Publishers - ${new Date().toLocaleDateString()}`,
+      description: `Publishers selected during campaign creation on ${new Date().toLocaleDateString()}.`, 
+      publishers,
+      publisherCount: publishers.length,
+      visibility: 'private' as const,
+      lastUpdated: new Date(),
+      coverImage: publishers[0]?.logo || '',
+      category: 'campaign',
+      createdBy: 'You',
+      isShared: false,
+      totalReach: calculateTotalReach(),
+    };
+
+    // 2. Call store action to add the list
+    const newList = addList(newListData);
+
+    // 3. Show confirmation toast
     toast({
-      title: "Publishers saved",
-      description: `${publishers.length} publishers have been saved to your list`,
+      title: "List Created",
+      description: `List "${newList.name}" created with ${publishers.length} publishers.`,
+      action: (
+        <ToastAction 
+          altText="View List" 
+          onClick={() => navigate(`/lists/${newList.id}`)}
+          className="bg-empowerlocal-blue hover:bg-empowerlocal-navy text-white"
+        >
+          View List
+        </ToastAction>
+      ),
     });
   };
   
