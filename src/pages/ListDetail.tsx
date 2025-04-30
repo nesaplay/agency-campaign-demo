@@ -121,8 +121,18 @@ const ListDetail: React.FC = () => {
   };
 
   const handleCreateCampaign = () => {
-    console.log("Creating campaign from list", list?.id);
-    alert("Creating a new campaign with this publisher list!");
+    if (!list || publishers.length === 0) {
+      toast({
+        title: "Cannot Create Campaign",
+        description: "Add publishers to the list before creating a campaign.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const publisherIds = list.publishers;
+    console.log("Navigating to create campaign with publishers:", publisherIds);
+    navigate('/network-navigator', { state: { preselectedPublisherIds: publisherIds } });
   };
 
   if (!list) {

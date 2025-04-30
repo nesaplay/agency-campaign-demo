@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ConversationHeader from './ConversationHeader';
 import MessagesList from './MessagesList';
 import MessageInput from './MessageInput';
@@ -15,6 +16,8 @@ interface ConversationInterfaceProps {
 
 const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublisherSelect }) => {
   const { toast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     campaignStage,
     setCampaignStage,
@@ -31,6 +34,17 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     isTyping,
     setIsTyping
   } = useCampaignState();
+
+  useEffect(() => {
+    const preselectedIds = location.state?.preselectedPublisherIds as string[];
+    if (preselectedIds && preselectedIds.length > 0) {
+      console.log('Pre-selecting publishers from state:', preselectedIds);
+      const publishersToSelect = mockPublishers.filter(p => preselectedIds.includes(p.id));
+      setSelectedPublishers(publishersToSelect);
+
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, setSelectedPublishers]);
 
   const {
     handlePublisherSelect,
