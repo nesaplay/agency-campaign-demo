@@ -1,9 +1,19 @@
+import React from "react";
+import { Users, Target, BarChart2 } from "lucide-react";
+import { PerformanceMetricProps } from "./types";
+import { Brand } from "../types";
 
-import React from 'react';
-import { Users, Target, BarChart2 } from 'lucide-react';
-import { PerformanceMetricProps } from './types';
+interface MetricsSectionProps {
+  brand: Brand | null;
+}
 
-const MetricsSection: React.FC = () => {
+const MetricsSection: React.FC<MetricsSectionProps> = ({ brand }) => {
+  if (!brand?.metrics) {
+    return <div className="px-4 pb-4 text-center text-gray-500">Metrics data not available.</div>;
+  }
+
+  const { targetAudience, objectives, performance } = brand.metrics;
+
   return (
     <div className="px-4 pb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Audience Demographics */}
@@ -12,15 +22,15 @@ const MetricsSection: React.FC = () => {
           <Users className="h-4 w-4 mr-1.5 text-gray-500" />
           Target Audience
         </h3>
-        <div className="bg-gray-50 rounded-md p-3 text-sm text-gray-600">
-          <div className="mb-2">
-            <span className="font-medium">Primary:</span> Adults 25-45
-          </div>
-          <div className="mb-2">
-            <span className="font-medium">Interests:</span> Outdoor activities, Local events
+        <div className="bg-gray-50 rounded-md p-3 text-sm text-gray-600 space-y-1.5">
+          <div>
+            <span className="font-medium">Primary:</span> {targetAudience.primary}
           </div>
           <div>
-            <span className="font-medium">Locations:</span> Urban/Suburban areas
+            <span className="font-medium">Interests:</span> {targetAudience.interests.join(", ")}
+          </div>
+          <div>
+            <span className="font-medium">Locations:</span> {targetAudience.locations.join(", ")}
           </div>
         </div>
       </div>
@@ -33,9 +43,9 @@ const MetricsSection: React.FC = () => {
         </h3>
         <div className="bg-gray-50 rounded-md p-3 text-sm text-gray-600">
           <ul className="list-disc list-inside space-y-1">
-            <li>Increase local market awareness</li>
-            <li>Drive in-store traffic and engagement</li>
-            <li>Build community presence and loyalty</li>
+            {objectives.map((objective, index) => (
+              <li key={index}>{objective}</li>
+            ))}
           </ul>
         </div>
       </div>
@@ -47,9 +57,9 @@ const MetricsSection: React.FC = () => {
           Performance Metrics
         </h3>
         <div className="bg-gray-50 rounded-md p-3 text-sm">
-          <PerformanceMetric label="Awareness" value={64} color="bg-blue-500" />
-          <PerformanceMetric label="Engagement" value={72} color="bg-green-500" />
-          <PerformanceMetric label="Conversion" value={41} color="bg-amber-500" />
+          {performance.map((metric, index) => (
+            <PerformanceMetric key={index} {...metric} />
+          ))}
         </div>
       </div>
     </div>

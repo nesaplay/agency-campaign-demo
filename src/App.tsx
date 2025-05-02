@@ -15,6 +15,7 @@ import BrandDetail from "./pages/BrandDetail";
 import ListDetail from "./pages/ListDetail";
 import NotFound from "./pages/NotFound";
 import CampaignDetail from "./pages/CampaignDetail";
+import AddBrand from './pages/AddBrand';
 
 // Create QueryClient outside the component
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/campaigns/:id" element={<CampaignDetail />} />
               <Route path="/brands" element={<Brands />} />
               <Route path="/brands/:id" element={<BrandDetail />} />
+              <Route path="/add-brand" element={<AddBrand />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

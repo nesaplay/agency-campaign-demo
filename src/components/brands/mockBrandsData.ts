@@ -1,4 +1,3 @@
-
 import { Brand } from './types';
 
 export const mockBrands: Brand[] = [
@@ -9,7 +8,25 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 5,
     color: '#4CAF50',
-    isActive: true
+    isActive: true,
+    attachments: [],
+    metrics: {
+      targetAudience: {
+        primary: 'Adults 25-55',
+        interests: ['Hiking', 'Camping', 'Local Events'],
+        locations: ['Urban', 'Suburban']
+      },
+      objectives: [
+        'Increase foot traffic by 15%',
+        'Boost online sales for new gear',
+        'Improve brand visibility in local parks'
+      ],
+      performance: [
+        { label: 'Awareness', value: 78, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 62, color: 'bg-green-500' },
+        { label: 'Conversion', value: 45, color: 'bg-amber-500' }
+      ]
+    }
   },
   {
     id: '2',
@@ -18,7 +35,29 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 3,
     color: '#2196F3',
-    isActive: false
+    isActive: false,
+    attachments: [
+        { name: 'Brand Guidelines.pdf', url: '/placeholder.pdf' },
+        { name: 'Logo Pack.zip', url: '/placeholder.zip' },
+        { name: 'Onboarding Doc.docx', url: '/placeholder.docx' }
+    ],
+    metrics: {
+      targetAudience: {
+        primary: 'Seniors 65+, Families',
+        interests: ['Health & Wellness', 'Community Programs'],
+        locations: ['Regional']
+      },
+      objectives: [
+        'Promote new telehealth services',
+        'Increase patient portal sign-ups',
+        'Run community health workshops'
+      ],
+      performance: [
+        { label: 'Awareness', value: 60, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 55, color: 'bg-green-500' },
+        { label: 'Conversion', value: 30, color: 'bg-amber-500' }
+      ]
+    }
   },
   {
     id: '3',
@@ -27,7 +66,25 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 7,
     color: '#FF9800',
-    isActive: false
+    isActive: false,
+    attachments: [],
+    metrics: {
+      targetAudience: {
+        primary: 'Young Professionals 21-35',
+        interests: ['Dining Out', 'Nightlife', 'Food Trends'],
+        locations: ['Downtown', 'Entertainment Districts']
+      },
+      objectives: [
+        'Launch new seasonal menu',
+        'Increase weekend reservations',
+        'Partner with local delivery apps'
+      ],
+      performance: [
+        { label: 'Awareness', value: 85, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 70, color: 'bg-green-500' },
+        { label: 'Conversion', value: 50, color: 'bg-amber-500' }
+      ]
+    }
   },
   {
     id: '4',
@@ -36,7 +93,25 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 2,
     color: '#9C27B0',
-    isActive: false
+    isActive: false,
+    attachments: [{ name: 'Property Map.png', url: '/placeholder.png' }],
+    metrics: {
+      targetAudience: {
+        primary: 'Businesses, Investors',
+        interests: ['Commercial Real Estate', 'Development'],
+        locations: ['Growth Corridors']
+      },
+      objectives: [
+        'Lease new office spaces',
+        'Attract anchor tenants for retail center',
+        'Showcase sustainability features'
+      ],
+      performance: [
+        { label: 'Awareness', value: 50, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 40, color: 'bg-green-500' },
+        { label: 'Conversion', value: 25, color: 'bg-amber-500' }
+      ]
+    }
   },
   {
     id: '5',
@@ -45,7 +120,25 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 4,
     color: '#E91E63',
-    isActive: false
+    isActive: false,
+    attachments: [],
+    metrics: {
+      targetAudience: {
+        primary: 'Adults 30-60',
+        interests: ['Cars', 'Local Sports', 'Family Activities'],
+        locations: ['Citywide']
+      },
+      objectives: [
+        'Promote end-of-year sales event',
+        'Increase service department bookings',
+        'Highlight new electric vehicle models'
+      ],
+      performance: [
+        { label: 'Awareness', value: 70, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 65, color: 'bg-green-500' },
+        { label: 'Conversion', value: 48, color: 'bg-amber-500' }
+      ]
+    }
   },
   {
     id: '6',
@@ -54,6 +147,24 @@ export const mockBrands: Brand[] = [
     logoUrl: '/placeholder.svg',
     campaignCount: 1,
     color: '#673AB7',
-    isActive: false
+    isActive: false,
+    attachments: [],
+    metrics: {
+      targetAudience: {
+        primary: 'Parents, High School Students',
+        interests: ['Education', 'College Prep', 'STEM'],
+        locations: ['Tri-county Area']
+      },
+      objectives: [
+        'Increase applications for next school year',
+        'Host successful open house events',
+        'Promote scholarship opportunities'
+      ],
+      performance: [
+        { label: 'Awareness', value: 68, color: 'bg-blue-500' },
+        { label: 'Engagement', value: 75, color: 'bg-green-500' },
+        { label: 'Conversion', value: 35, color: 'bg-amber-500' }
+      ]
+    }
   }
 ];

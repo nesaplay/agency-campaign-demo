@@ -13,7 +13,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ brand }) => {
   return (
     <div className="px-4 pb-4 flex justify-end">
       <Button 
-        variant="outline"
+        variant="default"
         size="sm"
         asChild
         className="text-xs"

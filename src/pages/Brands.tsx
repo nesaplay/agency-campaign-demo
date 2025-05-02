@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Plus, Search, Grid, List, ChevronDown, ArrowUpDown } from 'lucide-react';
@@ -7,6 +6,7 @@ import { useBrand } from '@/components/brands/BrandContext';
 import { Brand } from '@/components/brands/types';
 import { cn } from '@/lib/utils';
 import EmptyBrands from '@/components/brands/EmptyBrands';
+import { Link } from 'react-router-dom';
 
 type SortOption = 'alphabetical' | 'recent' | 'campaigns';
 type ViewMode = 'grid' | 'list';
@@ -53,12 +53,14 @@ const Brands: React.FC = () => {
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-empowerlocal-navy">My Brands</h1>
-            <button 
-              className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
-            >
-              <Plus className="h-5 w-5" />
-              Add New Brand
-            </button>
+            <Link to="/add-brand">
+              <button 
+                className="flex items-center gap-2 bg-empowerlocal-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-empowerlocal-navy transition-colors"
+              >
+                <Plus className="h-5 w-5" />
+                Add New Brand
+              </button>
+            </Link>
           </div>
           <p className="mt-2 text-gray-500">Manage your client brands and set the active context</p>
         </div>
