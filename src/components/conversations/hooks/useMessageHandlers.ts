@@ -1,5 +1,5 @@
 import { useToast } from "@/hooks/use-toast";
-import { Message as MessageType } from "../types";
+import { Message as MessageType, QuickReply } from "../types";
 import { Publisher } from "@/components/network/types";
 
 interface UseMessageHandlersProps {
@@ -23,6 +23,15 @@ interface UseMessageHandlersProps {
   setShowSummaryPanel: React.Dispatch<React.SetStateAction<boolean>>;
   publishers: Publisher[];
   onPublisherSelect?: (publisher: Publisher) => void;
+}
+
+// Define an explicit type for a step in the config
+interface StepConfig {
+  id: string;
+  triggers: string[];
+  action: () => MessageType | null; // Action function type
+  quickReplies?: QuickReply[]; // Optional quick replies
+  // Add other potential optional step properties here if needed
 }
 
 export const useMessageHandlers = ({
@@ -86,22 +95,23 @@ export const useMessageHandlers = ({
     }
   };
 
-  const stepsConfig = [
+  // Use the explicit type for the config array
+  const stepsConfig: StepConfig[] = [
     {
       id: 'start_campaign',
       triggers: ["Start a new campaign", "new campaign"],
-      action: (): MessageType => {
+      action: (): MessageType => { // Action can return MessageType directly if never null
         setCampaignStage(1);
-        return {
+        return { 
           id: Date.now().toString(),
           content: "Great! Let's clarify your campaign budget and goals. What's your budget range for this campaign?",
           sender: "assistant",
           timestamp: new Date(),
-          quickReplies: [
-            { id: "3", text: "Under $10,000", value: "budget-small" },
-            { id: "4", text: "$10,000 - $50,000", value: "budget-medium" },
-            { id: "5", text: "Over $50,000", value: "budget-large" },
-          ],
+          quickReplies: [ // This step has quickReplies
+             { id: "3", text: "Under $10,000", value: "budget-small" },
+             { id: "4", text: "$10,000 - $50,000", value: "budget-medium" },
+             { id: "5", text: "Over $50,000", value: "budget-large" },
+           ],
         };
       }
     },
@@ -127,54 +137,54 @@ export const useMessageHandlers = ({
     {
       id: 'set_geography',
       triggers: ["West Coast", "geographic"],
-      action: (): null => {
-        setCampaignDetails((prev) => ({ ...prev, geography: "West Coast (CA, AZ, NV)" }));
-        setCampaignStage(3);
+       action: (): null => { // This action returns null, but the type allows MessageType | null
+          setCampaignDetails((prev) => ({ ...prev, geography: "West Coast (CA, AZ, NV)" }));
+          setCampaignStage(3);
 
-        const mapResponse: MessageType = {
-          id: Date.now().toString(),
-          content: "The West Coast is a great choice for a summer ice cream campaign! Here's our publisher coverage in these areas:",
-          sender: "assistant",
-          timestamp: new Date(),
-          showMap: true,
-          publishers: publishers,
-        };
-        setMessages((prev) => [...prev, mapResponse]);
-        setIsTyping(false);
+          const mapResponse: MessageType = {
+            id: Date.now().toString(),
+            content: "The West Coast is a great choice for a summer ice cream campaign! Here's our publisher coverage in these areas:",
+            sender: "assistant",
+            timestamp: new Date(),
+            showMap: true,
+            publishers: publishers,
+          };
+          setMessages((prev) => [...prev, mapResponse]);
+          setIsTyping(false);
 
-        setTimeout(() => {
-          setIsTyping(true);
           setTimeout(() => {
-            setCampaignDetails((prev) => ({
-              ...prev,
-              timeline: "June 15 - August 30",
-              estimatedReach: "1.97M",
-            }));
-
-            const recommendationsResponse: MessageType = {
-              id: (Date.now() + 1).toString(),
-              content: "Based on your budget and geographic focus, I recommend these top-performing publishers for your summer ice cream campaign:",
-              sender: "assistant",
-              timestamp: new Date(),
-              publishers: publishers,
-              showAddPublisherButton: true,
-              quickReplies: [
-                { id: '9', text: 'Add all three', value: 'add-all' },
-                { id: '10', text: 'See other options', value: 'more-options' },
-                { id: '11', text: 'View campaign summary', value: 'view-summary' }
-              ]
-            };
-            setMessages((prev) => [...prev, recommendationsResponse]);
-            setIsTyping(false);
-
+            setIsTyping(true);
             setTimeout(() => {
-              setShowSummaryPanel(true);
-            }, 500);
-          }, 1500);
-        }, 2000);
+              setCampaignDetails((prev) => ({
+                ...prev,
+                timeline: "June 15 - August 30",
+                estimatedReach: "1.97M",
+              }));
 
-        return null;
-      }
+              const recommendationsResponse: MessageType = {
+                id: (Date.now() + 1).toString(),
+                content: "Based on your budget and geographic focus, I recommend these top-performing publishers for your summer ice cream campaign:",
+                sender: "assistant",
+                timestamp: new Date(),
+                publishers: publishers,
+                showAddPublisherButton: true,
+                quickReplies: [
+                  { id: '9', text: 'Add all three', value: 'add-all' },
+                  { id: '10', text: 'See other options', value: 'more-options' },
+                  { id: '11', text: 'View campaign summary', value: 'view-summary' }
+                ]
+              };
+              setMessages((prev) => [...prev, recommendationsResponse]);
+              setIsTyping(false);
+
+              setTimeout(() => {
+                setShowSummaryPanel(true);
+              }, 500);
+            }, 1500);
+          }, 2000);
+
+          return null;
+        }
     },
     {
       id: 'add_all',
@@ -278,5 +288,6 @@ export const useMessageHandlers = ({
     handleSendMessage,
     handleQuickReply,
     handleFeedback,
+    stepsConfig,
   };
 };

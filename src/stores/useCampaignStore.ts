@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Campaign } from '@/types/campaign';
-import { Publisher } from '@/components/conversations/types';
 
 interface CampaignState {
   campaigns: Campaign[];
