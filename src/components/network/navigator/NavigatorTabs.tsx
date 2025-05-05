@@ -7,8 +7,8 @@ import ResultsHeader from '../ResultsHeader';
 import SelectedPublishersBar from '../SelectedPublishersBar';
 import ResultsDisplay from '../ResultsDisplay';
 import SeasonalOpportunities from '../seasonal';
-import { Publisher } from '../types';
-import { Publisher as ConversationPublisher } from '@/components/conversations/types';
+import { Publisher, PublisherCollection } from '../types';
+import { Publisher as ConversationPublisher } from '@/components/network/types';
 import { PublisherList } from '@/components/lists/types';
 import { mockCollections } from '../mockCollectionsData';
 
@@ -33,7 +33,7 @@ interface NavigatorTabsProps {
   selectedCategories: string[];
   toggleState: (state: string) => void;
   toggleCategory: (category: string) => void;
-  handleExploreCollection: (collection: any) => void;
+  handleExploreCollection: (collection: PublisherCollection) => void;
   setShowSaveToListModal: (show: boolean) => void;
   setSelectedPublishers: (publishers: string[]) => void;
 }
@@ -68,14 +68,14 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
   return (
     <div 
       ref={ref} 
-      className={`bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30 shadow-md' : ''}`}
+      className={`flex-1 h-full bg-white border-b border-gray-200 ${isTabsSticky ? 'sticky top-0 z-30 shadow-md' : ''}`}
     >
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 h-full">
         <Tabs 
           defaultValue="lassie" 
           value={activeTab} 
           onValueChange={(value) => setActiveTab(value as 'lassie' | 'publishers' | 'collections' | 'seasonal')}
-          className="w-full"
+          className="w-full h-full flex flex-col"
         >
           <TabsList className="w-full flex justify-start mb-0 bg-transparent p-0 border-b border-gray-200 overflow-x-auto">
             <TabsTrigger 
@@ -108,15 +108,15 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(({
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="lassie" className="mt-0">
-            <div className="py-4">
+          <TabsContent value="lassie" className="mt-0 flex-1">
+            <div className="py-4 h-full">
               <ConversationInterface 
                 onPublisherSelect={onConversationPublisherSelect}
               />
             </div>
           </TabsContent>
           
-          <TabsContent value="publishers" className="mt-0">
+          <TabsContent value="publishers" className="mt-0 flex-1">
             {/* Results header for publishers tab */}
             <ResultsHeader 
               activeBrowseMethod={getActiveBrowseMethod()} 

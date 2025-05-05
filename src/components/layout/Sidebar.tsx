@@ -26,8 +26,8 @@ const Sidebar: React.FC = () => {
     },
     {
       icon: Bot,
-      label: "Lassie",
-      href: "/network-navigator",
+      label: "Ask Lassie",
+      href: "/ask-lassie",
     },
     {
       icon: ListChecks,

@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import ConversationHeader from './ConversationHeader';
-import MessagesList from './MessagesList';
-import MessageInput from './MessageInput';
-import CampaignSummaryPanel from '../CampaignSummaryPanel';
-import { useCampaignState } from '../hooks/useCampaignState';
-import { useMessageHandlers } from '../hooks/useMessageHandlers';
-import { Publisher as ConversationPublisher } from '@/components/network/types';
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import ConversationHeader from "./ConversationHeader";
+import MessagesList from "./MessagesList";
+import MessageInput from "./MessageInput";
+import CampaignSummaryPanel from "../CampaignSummaryPanel";
+import { useCampaignState } from "../hooks/useCampaignState";
+import { useMessageHandlers } from "../hooks/useMessageHandlers";
+import { Publisher as ConversationPublisher } from "@/components/network/types";
+import { useBrand } from "@/components/brands/BrandContext";
 import { useToast } from "@/hooks/use-toast";
-import { mockPublishers } from '@/components/network/mockData';
+import { mockPublishers } from "@/components/network/mockData";
 
 interface ConversationInterfaceProps {
   onPublisherSelect?: (publisher: ConversationPublisher) => void;
@@ -18,6 +19,8 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+  const { activeBrand } = useBrand();
+
   const {
     campaignStage,
     setCampaignStage,
@@ -32,14 +35,15 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     inputValue,
     setInputValue,
     isTyping,
-    setIsTyping
+    setIsTyping,
   } = useCampaignState();
 
   useEffect(() => {
-    const preselectedIds = location.state?.preselectedPublisherIds as string[];
-    if (preselectedIds && preselectedIds.length > 0) {
-      console.log('Pre-selecting publishers from state:', preselectedIds);
-      const publishersToSelect = mockPublishers.filter(p => preselectedIds.includes(p.id));
+    // Use the already extracted preselectedPublisherIds
+    const preselectedPublisherIds = location.state?.preselectedPublisherIds as string[] | undefined; // Keep check for actual preselection logic if needed elsewhere
+    if (preselectedPublisherIds && preselectedPublisherIds.length > 0) {
+      console.log("Pre-selecting publishers from state:", preselectedPublisherIds);
+      const publishersToSelect = mockPublishers.filter((p) => preselectedPublisherIds.includes(p.id));
       setSelectedPublishers(publishersToSelect);
 
       navigate(location.pathname, { replace: true, state: {} });
@@ -52,7 +56,7 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     handleSendMessage,
     handleQuickReply,
     handleFeedback,
-    handleAddPublisherToCampaign
+    handleAddPublisherToCampaign,
   } = useMessageHandlers({
     messages,
     setMessages,
@@ -66,11 +70,11 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
     setCampaignDetails,
     setShowSummaryPanel,
     publishers: mockPublishers,
-    onPublisherSelect
+    onPublisherSelect,
   });
 
   const handleRemovePublisherFromCampaign = (publisherId: string) => {
-    setSelectedPublishers(prev => prev.filter(p => p.id !== publisherId));
+    setSelectedPublishers((prev) => prev.filter((p) => p.id !== publisherId));
     toast({
       title: "Publisher Removed",
       description: "The publisher has been removed from your campaign summary.",
@@ -83,32 +87,30 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
   };
 
   return (
-    <div className="h-full flex">
-      <div className="flex-1 flex flex-col" onClick={focusInput}>
-        <ConversationHeader 
+    <div className="flex gap-4 max-h-[calc(100vh-12rem)] h-full">
+      <div className="flex flex-col" onClick={focusInput}>
+        <ConversationHeader
           campaignStage={campaignStage}
           showSummaryPanel={showSummaryPanel}
           setShowSummaryPanel={setShowSummaryPanel}
         />
-        
-        <MessagesList 
-          messages={messages}
-          isTyping={isTyping}
-          onFeedback={handleFeedback}
-          onQuickReply={handleQuickReply}
-          onPublisherSelect={handlePublisherSelect}
-          onAddAllPublishers={handleAddAllPublishers}
-          onAddPublisherToCampaign={handleAddPublisherToCampaign}
-        />
-        
-        <MessageInput 
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          handleSendMessage={handleSendMessage}
-        />
+
+        <div className="flex-1 overflow-y-auto p-4">
+          <MessagesList
+            messages={messages}
+            isTyping={isTyping}
+            onFeedback={handleFeedback}
+            onQuickReply={handleQuickReply}
+            onPublisherSelect={handlePublisherSelect}
+            onAddAllPublishers={handleAddAllPublishers}
+            onAddPublisherToCampaign={handleAddPublisherToCampaign}
+          />
+        </div>
+
+        <MessageInput inputValue={inputValue} setInputValue={setInputValue} handleSendMessage={handleSendMessage} />
       </div>
-      
-      <CampaignSummaryPanel 
+
+      <CampaignSummaryPanel
         isExpanded={showSummaryPanel}
         onToggle={() => setShowSummaryPanel(!showSummaryPanel)}
         publishers={selectedPublishers}

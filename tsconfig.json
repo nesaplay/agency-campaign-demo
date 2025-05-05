@@ -1,5 +1,10 @@
 {
-  "files": [],
+  "files": [
+    "./src/types/supabase.ts",
+    "./src/lib/openai.ts",
+    "./src/lib/assistant/assistant-service.ts",
+    "./src/lib/server/utils.ts"
+  ],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
@@ -7,7 +12,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@server/*": ["./src/lib/server/*"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,

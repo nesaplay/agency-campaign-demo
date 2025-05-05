@@ -8,11 +8,13 @@ export interface QuickReply {
 
 export interface Message {
   id: string;
-  content: string;
+  content: string | React.ReactNode;
   sender: 'user' | 'assistant';
   timestamp: Date;
   quickReplies?: QuickReply[];
   publishers?: Publisher[];
   showMap?: boolean;
   showAddPublisherButton?: boolean;
+  feedback?: 'positive' | 'negative';
+  selectGeography?: { onSelect: (states: string[]) => void };
 }

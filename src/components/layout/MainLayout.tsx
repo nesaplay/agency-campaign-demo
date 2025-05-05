@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -19,8 +18,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {/* Header */}
         <Header />
         
-        {/* Page Content - Main scrollable area */}
-        <div className="flex flex-col flex-1 overflow-auto">
+        {/* Page Content - Allow child to control scroll */}
+        <div className="flex flex-col flex-1 overflow-hidden">
           <main className="flex-1 bg-background">
             {children}
           </main>

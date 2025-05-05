@@ -3,6 +3,7 @@ import { CircleEllipsis } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Message from '../Message';
 import { Message as MessageType } from '../types';
+import { StateSelector } from './StateSelector';
 
 interface MessagesListProps {
   messages: MessageType[];
@@ -34,7 +35,7 @@ const MessagesList: React.FC<MessagesListProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gray-50 rounded-lg p-4 mb-4">
+    <div className="flex-1 overflow-y-auto bg-gray-50 rounded-lg p-4 h-full">
       <div className="space-y-4 pb-2">
         {messages.map((message) => (
           <motion.div
@@ -43,14 +44,23 @@ const MessagesList: React.FC<MessagesListProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Message 
-              message={message}
-              onFeedback={onFeedback}
-              onQuickReply={onQuickReply}
-              onPublisherSelect={onPublisherSelect}
-              onAddAllPublishers={onAddAllPublishers}
-              onAddPublisherToCampaign={onAddPublisherToCampaign}
-            />
+            {message.selectGeography ? (
+              <div className="flex items-start gap-3 max-w-3xl">
+                <div className="bg-gradient-to-r from-[#f0f7ff] to-[#e6f0ff] rounded-2xl rounded-tl-none p-4 shadow-sm">
+                  <p className="text-sm text-gray-800 mb-2">{message.content}</p>
+                  <StateSelector onSelect={message.selectGeography.onSelect} />
+                </div>
+              </div>
+            ) : (
+              <Message 
+                message={message}
+                onFeedback={onFeedback}
+                onQuickReply={onQuickReply}
+                onPublisherSelect={onPublisherSelect}
+                onAddAllPublishers={onAddAllPublishers}
+                onAddPublisherToCampaign={onAddPublisherToCampaign}
+              />
+            )}
           </motion.div>
         ))}
         

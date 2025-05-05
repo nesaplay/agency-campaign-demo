@@ -1,6 +1,8 @@
 import { useToast } from "@/hooks/use-toast";
-import { Message as MessageType } from "../types";
+import { Message as MessageType, QuickReply } from "../types";
 import { Publisher } from "@/components/network/types";
+import { useBrand } from '@/components/brands/BrandContext';
+import React from "react";
 
 interface UseMessageHandlersProps {
   messages: MessageType[];
@@ -25,6 +27,14 @@ interface UseMessageHandlersProps {
   onPublisherSelect?: (publisher: Publisher) => void;
 }
 
+function getRandomElements<T>(arr: T[], n: number): T[] {
+  if (n >= arr.length) {
+    return [...arr];
+  }
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+}
+
 export const useMessageHandlers = ({
   messages,
   setMessages,
@@ -41,6 +51,7 @@ export const useMessageHandlers = ({
   onPublisherSelect,
 }: UseMessageHandlersProps) => {
   const { toast } = useToast();
+  const { activeBrand } = useBrand();
 
   const handlePublisherSelect = (publisherId: string) => {
     const publisher = publishers.find((p) => p.id === publisherId);
@@ -79,10 +90,22 @@ export const useMessageHandlers = ({
   };
 
   const handleAddAllPublishers = () => {
-    const newPublishers = publishers.filter((p) => !selectedPublishers.some((sp) => sp.id === p.id));
-    if (newPublishers.length > 0) {
-      setSelectedPublishers((prev) => [...prev, ...newPublishers]);
+    const newPublishersToAdd = publishers.filter(
+      (pub) => !selectedPublishers.some((selected) => selected.id === pub.id)
+    );
+    if (newPublishersToAdd.length > 0) {
+      setSelectedPublishers((prev) => [...prev, ...newPublishersToAdd]);
+      toast({
+        title: `Added ${newPublishersToAdd.length} Publishers`,
+        description: "All recommended publishers have been added to your campaign summary.",
+      });
       setShowSummaryPanel(true);
+    } else {
+      toast({
+        title: "No New Publishers",
+        description: "All recommended publishers are already in your campaign summary.",
+        variant: "default",
+      });
     }
   };
 
@@ -109,71 +132,67 @@ export const useMessageHandlers = ({
       id: 'set_budget',
       triggers: ["$10,000", "budget"],
       action: (): MessageType => {
-        setCampaignDetails((prev) => ({ ...prev, budget: "$10,000 - $50,000" }));
+        const budgetSelection = "$10,000 - $50,000";
+        setCampaignDetails((prev) => ({ ...prev, budget: budgetSelection }));
         setCampaignStage(2);
+
+        const handleGeographySelect = (selectedStates: string[]) => {
+          console.log("Selected States:", selectedStates);
+          const geographyString = selectedStates.join(', ');
+          setCampaignDetails((prev) => ({ ...prev, geography: geographyString }));
+          setCampaignStage(3);
+
+          const mapResponse: MessageType = {
+            id: Date.now().toString(),
+            content: `Great choice targeting ${geographyString}! Here's our publisher coverage in these areas:`,
+            sender: "assistant",
+            timestamp: new Date(),
+            showMap: true,
+            publishers: publishers,
+          };
+          setMessages((prev) => [...prev, mapResponse]);
+          setIsTyping(false);
+
+          setTimeout(() => {
+            setIsTyping(true);
+            setTimeout(() => {
+              const recommendedPublishers = getRandomElements(publishers, 3);
+              setCampaignDetails((prev) => ({
+                ...prev,
+                timeline: "June 15 - August 30",
+                estimatedReach: "1.97M",
+              }));
+
+              const recommendationsResponse: MessageType = {
+                id: (Date.now() + 1).toString(),
+                content: `Based on your budget and focus on ${geographyString}, I recommend these top-performing publishers for your ${activeBrand?.name ?? 'brand'} campaign:`,
+                sender: "assistant",
+                timestamp: new Date(),
+                publishers: recommendedPublishers,
+                showAddPublisherButton: true,
+                quickReplies: [
+                  { id: '9', text: `Add all ${recommendedPublishers.length}`, value: 'add-all' },
+                  { id: '10', text: 'See other options', value: 'more-options' },
+                  { id: '11', text: 'View campaign summary', value: 'view-summary' }
+                ]
+              };
+              setMessages((prev) => [...prev, recommendationsResponse]);
+              setIsTyping(false);
+
+              setTimeout(() => {
+                setShowSummaryPanel(true);
+              }, 500);
+            }, 1500);
+          }, 2000);
+        };
+
         return {
           id: Date.now().toString(),
-          content: "Thank you for sharing your budget. Which geographic areas would you like to focus on for your Dr. Bombay ice cream summer campaign?",
+          content: `Thank you for sharing your budget. Which geographic areas (select one or more states) would you like to focus on for your ${activeBrand?.name ?? 'brand'} campaign?`,
           sender: "assistant",
           timestamp: new Date(),
-          quickReplies: [
-            { id: "6", text: "West Coast (CA, AZ, NV)", value: "west" },
-            { id: "7", text: "East Coast", value: "east" },
-            { id: "8", text: "Nationwide", value: "nationwide" },
-          ],
+          selectGeography: { onSelect: handleGeographySelect }
         };
-      }
-    },
-    {
-      id: 'set_geography',
-      triggers: ["West Coast", "geographic"],
-      action: (): null => {
-        setCampaignDetails((prev) => ({ ...prev, geography: "West Coast (CA, AZ, NV)" }));
-        setCampaignStage(3);
-
-        const mapResponse: MessageType = {
-          id: Date.now().toString(),
-          content: "The West Coast is a great choice for a summer ice cream campaign! Here's our publisher coverage in these areas:",
-          sender: "assistant",
-          timestamp: new Date(),
-          showMap: true,
-          publishers: publishers,
-        };
-        setMessages((prev) => [...prev, mapResponse]);
-        setIsTyping(false);
-
-        setTimeout(() => {
-          setIsTyping(true);
-          setTimeout(() => {
-            setCampaignDetails((prev) => ({
-              ...prev,
-              timeline: "June 15 - August 30",
-              estimatedReach: "1.97M",
-            }));
-
-            const recommendationsResponse: MessageType = {
-              id: (Date.now() + 1).toString(),
-              content: "Based on your budget and geographic focus, I recommend these top-performing publishers for your summer ice cream campaign:",
-              sender: "assistant",
-              timestamp: new Date(),
-              publishers: publishers,
-              showAddPublisherButton: true,
-              quickReplies: [
-                { id: '9', text: 'Add all three', value: 'add-all' },
-                { id: '10', text: 'See other options', value: 'more-options' },
-                { id: '11', text: 'View campaign summary', value: 'view-summary' }
-              ]
-            };
-            setMessages((prev) => [...prev, recommendationsResponse]);
-            setIsTyping(false);
-
-            setTimeout(() => {
-              setShowSummaryPanel(true);
-            }, 500);
-          }, 1500);
-        }, 2000);
-
-        return null;
       }
     },
     {
@@ -231,7 +250,7 @@ export const useMessageHandlers = ({
 
     for (const step of stepsConfig) {
       const lowerContent = content.toLowerCase();
-      if (step.triggers.some(trigger => lowerContent.includes(trigger.toLowerCase()))) {
+      if (step.triggers && Array.isArray(step.triggers) && step.triggers.some(trigger => lowerContent.includes(trigger.toLowerCase()))) {
         response = step.action();
         stepMatched = true;
         break;
@@ -258,7 +277,76 @@ export const useMessageHandlers = ({
   };
 
   const handleQuickReply = (text: string, value: string) => {
-    handleSendMessage(text);
+    // Don't add user message here for all cases, let specific branches or handleSendMessage do it.
+
+    let assistantResponse: MessageType | null = null;
+
+    if (value === 'recommend_yes') {
+      const recommendations = getRandomElements(publishers, 2);
+      setSelectedPublishers(prev => {
+        const currentIds = new Set(prev.map(p => p.id));
+        const newPublishers = recommendations.filter(p => !currentIds.has(p.id));
+        return [...prev, ...newPublishers];
+      });
+
+      // Add user message *only* for this specific branch
+      const userMessage: MessageType = {
+        id: Date.now().toString(),
+        content: text,
+        sender: "user",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+      setIsTyping(true); // Start typing for assistant response
+
+      // Construct a more informative message
+      const brandName = activeBrand?.name ?? 'your brand'; // Fallback name
+      const targetAudience = activeBrand?.metrics?.targetAudience?.primary ? `targeting the ${activeBrand.metrics.targetAudience.primary} audience` : 'based on its profile';
+      const objectives = activeBrand?.metrics?.objectives && activeBrand.metrics.objectives.length > 0 ? `and campaign objectives like '${activeBrand.metrics.objectives[0]}'` : '';
+
+      const recommendationNames = recommendations.map(p => p.name).join(' and ');
+
+      assistantResponse = {
+        id: (Date.now() + 1).toString(),
+        content: `Okay! Considering ${brandName}'s focus ${targetAudience}${objectives ? ` ${objectives}` : ''}, I recommend checking out ${recommendationNames}. I've added them to your summary panel for review.`,
+        sender: "assistant",
+        timestamp: new Date(),
+        quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
+      };
+      setShowSummaryPanel(true);
+      setTimeout(() => {
+        if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
+        setIsTyping(false);
+      }, 1000);
+
+    } else if (value === 'recommend_no') {
+        // Add user message *only* for this specific branch
+        const userMessage: MessageType = {
+            id: Date.now().toString(),
+            content: text,
+            sender: "user",
+            timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, userMessage]);
+        setIsTyping(true); // Start typing for assistant response
+
+        assistantResponse = {
+            id: (Date.now() + 1).toString(),
+            content: `Alright, no problem. You can explore publishers yourself or ask for recommendations later. How can I help you today?`,
+            sender: "assistant",
+            timestamp: new Date(),
+            quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
+        };
+        setTimeout(() => {
+            if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
+            setIsTyping(false);
+        }, 1000);
+    } else {
+      // Default behavior: Let handleSendMessage manage adding the user message and typing indicator
+      setInputValue(''); // Clear input field
+      // setIsTyping(false); // Remove this - handleSendMessage will set it true
+      handleSendMessage(text); // Pass the text of the quick reply
+    }
   };
 
   const handleFeedback = (messageId: string, isPositive: boolean) => {
