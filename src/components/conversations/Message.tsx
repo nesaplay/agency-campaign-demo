@@ -185,7 +185,7 @@ const Message: React.FC<MessageProps> = ({
         {!message.showMap && message.publishers && (
           <div className="mt-4">
             <div className="flex flex-col space-y-4">
-              <div className="flex overflow-x-auto space-x-4 p-2 w-full max-w-[calc(100vw-772px)]">
+              <div className="flex overflow-x-auto space-x-4 p-2 w-full max-w-[calc(100vw-820px)]">
                 {message.publishers.map((publisher) => (
                   <div
                     key={publisher.id}
