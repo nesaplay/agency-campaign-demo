@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PublisherForm, { PublisherFormData } from "@/components/publishers/PublisherForm";
 import PublisherPreview from "@/components/publishers/PublisherPreview";
+import { fileToDataURL } from "@/lib/fileUtils";
 
 const PublisherEditPage: React.FC = () => {
   const { id: publisherId } = useParams<{ id: string }>();
@@ -46,21 +47,23 @@ const PublisherEditPage: React.FC = () => {
 
   const handleFormChange = (updatedData: Partial<PublisherFormData>) => {
     setFormData((prevData) => {
-      if (!prevData) return null; // Should not happen if initialized correctly
+      if (!prevData) return null;
       
-      // Handle Object URL revocation for previous files if new files are being set
+      // Note: The Object URL revocation logic here might need refinement
+      // as URL.createObjectURL(prevData.logoFile) would create a new URL.
+      // For now, focusing on the save logic.
       if (updatedData.logoFile instanceof File && prevData.logoFile instanceof File) {
-        URL.revokeObjectURL(URL.createObjectURL(prevData.logoFile));
+        // Consider managing object URLs more directly if explicit revocation is critical during form interaction
       }
       if (updatedData.headerImageFile instanceof File && prevData.headerImageFile instanceof File) {
-        URL.revokeObjectURL(URL.createObjectURL(prevData.headerImageFile));
+        // Similar consideration for headerImageFile
       }
       
       return { ...prevData, ...updatedData };
     });
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     if (!publisherId || !formData) {
       console.error("Cannot save without publisher ID or form data");
       toast({ title: "Error", description: "Form data is missing.", variant: "destructive" });
@@ -71,28 +74,32 @@ const PublisherEditPage: React.FC = () => {
 
       // Destructure to separate File objects from other data to be saved to the store
       const { logoFile, headerImageFile, ...dataToSaveBase } = formData;
-      const dataToSave: Partial<Publisher> = { ...dataToSaveBase }; // dataToSaveBase is already Partial<Publisher>
+      // Initialize with base data, which includes existing string URLs for logo/header if no new files are chosen
+      const dataToSave: Partial<Publisher> = { ...dataToSaveBase };
 
-      // TODO: Handle actual file uploads here!
-      // 1. Upload logoFile if it exists => get logoUrl
-      // 2. Upload headerImageFile if it exists => get headerImageUrl
-      // 3. Add logoUrl and headerImageUrl to dataToSave
-      // These URLs would then replace or set the `logo` and `headerImage` fields in dataToSave
+      try {
+        if (logoFile instanceof File) {
+          dataToSave.logo = await fileToDataURL(logoFile);
+          console.log("Converted logoFile to data URL");
+        } else if (logoFile === null && dataToSaveBase.logo !== undefined) {
+          dataToSave.logo = undefined;
+        }
 
-      // Placeholder logic for mock URLs if files were selected (mimicking upload)
-      if (logoFile) {
-        dataToSave.logo = `/mock/path/to/${logoFile.name}`; // Example
-        console.log("TODO: Upload logoFile, then set dataToSave.logo with actual URL");
+        if (headerImageFile instanceof File) {
+          dataToSave.headerImage = await fileToDataURL(headerImageFile);
+          console.log("Converted headerImageFile to data URL");
+        } else if (headerImageFile === null && dataToSaveBase.headerImage !== undefined) {
+          dataToSave.headerImage = undefined;
+        }
+
+        updatePublisher(publisherId, dataToSave);
+
+        toast({ title: "Success", description: "Publisher updated successfully." });
+        navigate(`/publishers`);
+      } catch (error) {
+        console.error("Error processing images or updating publisher:", error);
+        toast({ title: "Error", description: "Could not save publisher changes. Please try again.", variant: "destructive" });
       }
-      if (headerImageFile) {
-        dataToSave.headerImage = `/mock/path/to/${headerImageFile.name}`; // Example
-        console.log("TODO: Upload headerImageFile, then set dataToSave.headerImage with actual URL");
-      }
-
-      updatePublisher(publisherId, dataToSave);
-
-      toast({ title: "Success", description: "Publisher updated successfully." });
-      navigate(`/publishers`);
     }
   };
 

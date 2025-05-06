@@ -3,6 +3,7 @@ import { Message as MessageType, QuickReply } from "../types";
 import { Publisher } from "@/components/network/types";
 import { useBrand } from '@/components/brands/BrandContext';
 import React from "react";
+import usePublisherStore from "@/stores/usePublisherStore";
 
 interface UseMessageHandlersProps {
   messages: MessageType[];
@@ -23,7 +24,6 @@ interface UseMessageHandlersProps {
     }>
   >;
   setShowSummaryPanel: React.Dispatch<React.SetStateAction<boolean>>;
-  publishers: Publisher[];
   onPublisherSelect?: (publisher: Publisher) => void;
 }
 
@@ -47,14 +47,14 @@ export const useMessageHandlers = ({
   setSelectedPublishers,
   setCampaignDetails,
   setShowSummaryPanel,
-  publishers,
   onPublisherSelect,
 }: UseMessageHandlersProps) => {
   const { toast } = useToast();
   const { activeBrand } = useBrand();
+  const { publishers: allPublishersFromStore, getPublisherById } = usePublisherStore();
 
   const handlePublisherSelect = (publisherId: string) => {
-    const publisher = publishers.find((p) => p.id === publisherId);
+    const publisher = getPublisherById(publisherId);
     if (publisher) {
       if (onPublisherSelect) {
         onPublisherSelect(publisher);
@@ -69,7 +69,7 @@ export const useMessageHandlers = ({
   };
 
   const handleAddPublisherToCampaign = (publisherId: string) => {
-    const publisher = publishers.find((p) => p.id === publisherId);
+    const publisher = getPublisherById(publisherId);
     if (publisher) {
       const isAlreadySelected = selectedPublishers.some((p) => p.id === publisherId);
       if (!isAlreadySelected) {
@@ -90,7 +90,7 @@ export const useMessageHandlers = ({
   };
 
   const handleAddAllPublishers = () => {
-    const newPublishersToAdd = publishers.filter(
+    const newPublishersToAdd = allPublishersFromStore.filter(
       (pub) => !selectedPublishers.some((selected) => selected.id === pub.id)
     );
     if (newPublishersToAdd.length > 0) {
@@ -148,7 +148,7 @@ export const useMessageHandlers = ({
             sender: "assistant",
             timestamp: new Date(),
             showMap: true,
-            publishers: publishers,
+            publishers: allPublishersFromStore,
           };
           setMessages((prev) => [...prev, mapResponse]);
           setIsTyping(false);
@@ -156,7 +156,7 @@ export const useMessageHandlers = ({
           setTimeout(() => {
             setIsTyping(true);
             setTimeout(() => {
-              const recommendedPublishers = getRandomElements(publishers, 3);
+              const recommendedPublishers = allPublishersFromStore;
               setCampaignDetails((prev) => ({
                 ...prev,
                 timeline: "June 15 - August 30",
@@ -296,7 +296,7 @@ export const useMessageHandlers = ({
     let assistantResponse: MessageType | null = null;
 
     if (value === 'recommend_yes') {
-      const recommendations = getRandomElements(publishers, 2);
+      const recommendations = getRandomElements(allPublishersFromStore, 2);
       setSelectedPublishers(prev => {
         const currentIds = new Set(prev.map(p => p.id));
         const newPublishers = recommendations.filter(p => !currentIds.has(p.id));

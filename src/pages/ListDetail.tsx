@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { PublisherList } from "@/components/lists/types";
 import useListStore from "@/stores/useListStore";
-import { mockPublishers } from "@/components/network/mockData";
+import usePublisherStore from "@/stores/usePublisherStore";
 import { Publisher } from "@/components/network/types";
 import PublisherDetail from "@/components/network/PublisherDetail";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,6 +15,7 @@ const ListDetail: React.FC = () => {
   const { id: listId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { lists, updateList, removePublisherFromList, addPublisherToList } = useListStore();
+  const { getPublisherById, publishers: allPublishersFromStore } = usePublisherStore();
   const { toast } = useToast();
 
   const [list, setList] = useState<PublisherList | null>(null);
@@ -30,9 +31,9 @@ const ListDetail: React.FC = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   
   const availablePublishersForSearch = React.useMemo(() => {
-      if (!list) return [];
-      return mockPublishers.filter(p => !list.publishers.includes(p.id));
-  }, [list]);
+    if (!list) return [];
+    return allPublishersFromStore.filter(p => !list.publishers.includes(p.id));
+  }, [list, allPublishersFromStore]);
 
   useEffect(() => {
     const foundList = lists.find((l) => l.id === listId);
@@ -42,12 +43,15 @@ const ListDetail: React.FC = () => {
       setEditedName(foundList.name);
       setEditedDescription(foundList.description);
 
-      const listPublishers = mockPublishers.filter((p) => foundList.publishers.includes(p.id));
-      setPublishers(listPublishers);
+      const listPublishersData = foundList.publishers
+        .map(publisherId => getPublisherById(publisherId))
+        .filter((p): p is Publisher => p !== undefined);
+      
+      setPublishers(listPublishersData);
     } else {
       navigate("/lists");
     }
-  }, [listId, lists, navigate]);
+  }, [listId, lists, navigate, getPublisherById]);
 
   const handleSaveEdit = () => {
     if (!list) return;

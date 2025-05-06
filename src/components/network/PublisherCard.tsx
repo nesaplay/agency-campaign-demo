@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import {
-  MoreVertical,
-  Trash2,
-  Eye,
-  Star,
-  PlusCircle,
-} from "lucide-react";
+import { MoreVertical, Trash2, Eye, Star, PlusCircle } from "lucide-react";
 import { Publisher } from "./types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import PublisherPreview, { PublisherPreviewData } from "@/components/publishers/PublisherPreview";
-
+import { useNavigate } from "react-router-dom";
 interface PublisherCardProps {
   publisher: Publisher;
   onClick: () => void;
@@ -30,6 +24,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleMenuToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -46,7 +41,11 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
         description: `${publisher.name} has been removed.`,
       });
     } else {
-      toast({ title: "Action not available", description: "Delete function not provided for this card.", variant: "destructive" });
+      toast({
+        title: "Action not available",
+        description: "Delete function not provided for this card.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -115,7 +114,11 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
       </div>
 
       <div className="cursor-pointer h-full">
-        <PublisherPreview publisherData={publisherDataForPreview} preview={false} />
+        <PublisherPreview
+          publisherData={publisherDataForPreview}
+          preview={false}
+          onViewPublisher={() => navigate(`/publishers/${publisher.id}`)}
+        />
       </div>
 
       {onAddToCampaign && (
