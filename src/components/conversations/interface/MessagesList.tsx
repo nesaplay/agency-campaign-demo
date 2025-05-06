@@ -52,14 +52,14 @@ const MessagesList: React.FC<MessagesListProps> = ({
                 </div>
               </div>
             ) : (
-              <Message 
-                message={message}
-                onFeedback={onFeedback}
-                onQuickReply={onQuickReply}
-                onPublisherSelect={onPublisherSelect}
-                onAddAllPublishers={onAddAllPublishers}
-                onAddPublisherToCampaign={onAddPublisherToCampaign}
-              />
+            <Message 
+              message={message}
+              onFeedback={onFeedback}
+              onQuickReply={onQuickReply}
+              onPublisherSelect={onPublisherSelect}
+              onAddAllPublishers={onAddAllPublishers}
+              onAddPublisherToCampaign={onAddPublisherToCampaign}
+            />
             )}
           </motion.div>
         ))}

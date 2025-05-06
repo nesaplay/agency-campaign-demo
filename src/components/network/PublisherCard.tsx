@@ -1,36 +1,30 @@
 import React, { useState } from "react";
 import {
-  MapPin,
-  Users,
-  BarChart2,
-  DollarSign,
-  Plus,
   MoreVertical,
   Trash2,
   Eye,
-  MessageCircleQuestion,
   Star,
-  ExternalLink,
   PlusCircle,
 } from "lucide-react";
 import { Publisher } from "./types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import PublisherPreview, { PublisherPreviewData } from "@/components/publishers/PublisherPreview";
 
 interface PublisherCardProps {
   publisher: Publisher;
   onClick: () => void;
-  onDelete?: () => void;
-  onViewDetails?: () => void;
+  onDeleteFromList?: () => void;
+  onViewDetailsInMenu?: () => void;
   onAddToCampaign?: () => void;
 }
 
 const PublisherCard: React.FC<PublisherCardProps> = ({
   publisher,
   onClick,
-  onDelete,
-  onViewDetails,
+  onDeleteFromList,
+  onViewDetailsInMenu,
   onAddToCampaign,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,217 +39,102 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
-
-    if (onDelete) {
-      onDelete();
+    if (onDeleteFromList) {
+      onDeleteFromList();
       toast({
         title: "Publisher removed",
-        description: `${publisher.name} has been removed from this list`,
+        description: `${publisher.name} has been removed.`,
       });
+    } else {
+      toast({ title: "Action not available", description: "Delete function not provided for this card.", variant: "destructive" });
     }
   };
 
-  const handleViewDetails = (e: React.MouseEvent) => {
+  const handleViewDetailsClickInMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
-
-    if (onViewDetails) {
-      onViewDetails();
-    }
-  };
-
-  // Get category-specific colors
-  const getCategoryColor = (category: string) => {
-    const colorMap: Record<string, string> = {
-      News: "bg-blue-100 text-blue-700 border-blue-200",
-      Sports: "bg-green-100 text-green-700 border-green-200",
-      Entertainment: "bg-purple-100 text-purple-700 border-purple-200",
-      Politics: "bg-red-100 text-red-700 border-red-200",
-      Business: "bg-amber-100 text-amber-700 border-amber-200",
-      Technology: "bg-indigo-100 text-indigo-700 border-indigo-200",
-      Lifestyle: "bg-pink-100 text-pink-700 border-pink-200",
-      Health: "bg-teal-100 text-teal-700 border-teal-200",
-      Education: "bg-cyan-100 text-cyan-700 border-cyan-200",
-      Food: "bg-orange-100 text-orange-700 border-orange-200",
-    };
-
-    return colorMap[category] || "bg-gray-100 text-gray-700 border-gray-200";
-  };
-
-  // Get performance badge style
-  const getPerformanceBadgeStyle = (performance: string) => {
-    switch (performance) {
-      case "Excellent":
-        return "bg-gradient-to-r from-green-50 to-green-100 text-green-700 border border-green-200";
-      case "Good":
-        return "bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200";
-      default:
-        return "bg-gradient-to-r from-yellow-50 to-yellow-100 text-yellow-700 border border-yellow-200";
+    if (onViewDetailsInMenu) {
+      onViewDetailsInMenu();
+    } else {
+      onClick();
     }
   };
 
   const isPremium = publisher.performance === "Excellent";
 
+  const publisherDataForPreview: PublisherPreviewData = {
+    ...publisher,
+    logoFile: null,
+    headerImageFile: null,
+  };
+
   return (
     <div
       className={cn(
-        "bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 relative cursor-pointer",
-        isHovered && "transform scale-[1.01] shadow-md",
-        isPremium && "ring-1 ring-amber-200",
+        "bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 relative group min-w-[300px]",
+        isHovered && "transform scale-[1.01]",
       )}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Premium indicator */}
       {isPremium && (
-        <div className="absolute top-3 right-3 z-20 bg-amber-50 border border-amber-200 rounded-full p-1">
-          <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+        <div className="absolute top-3 right-3 z-30 bg-amber-100 border border-amber-300 rounded-full p-1 shadow-md">
+          <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
         </div>
       )}
 
-      {/* Options Menu */}
-      <div className="absolute top-2 left-2 z-[1000]">
+      <div className="absolute top-2 left-2 z-40">
         <button
           onClick={handleMenuToggle}
-          className="p-1.5 bg-white/90 rounded-full hover:bg-gray-100 transition-colors shadow-sm"
+          className="p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-gray-100 transition-colors shadow-sm group-hover:opacity-100 opacity-75"
         >
-          <MoreVertical className="h-4 w-4 text-gray-500" />
+          <MoreVertical className="h-4 w-4 text-gray-600" />
         </button>
 
         {menuOpen && (
-          <div className="absolute left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-[1000]">
+          <div className="absolute left-0 mt-1 w-40 bg-white rounded-md shadow-xl border border-gray-200 overflow-hidden z-50">
             <button
-              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm"
-              onClick={handleViewDetails}
+              className="w-full text-left py-2 px-3 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700"
+              onClick={handleViewDetailsClickInMenu}
             >
               <Eye className="h-4 w-4 text-gray-500" />
               View Details
             </button>
-            <button
-              className="w-full text-left py-2 px-3 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm text-red-500"
-              onClick={handleDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-              Remove
-            </button>
+            {onDeleteFromList && (
+              <button
+                className="w-full text-left py-2 px-3 hover:bg-red-50 transition-colors flex items-center gap-2 text-sm text-red-600"
+                onClick={handleDelete}
+              >
+                <Trash2 className="h-4 w-4" />
+                Remove
+              </button>
+            )}
           </div>
         )}
       </div>
 
-      {/* Website Preview */}
-      <div className="h-40 bg-gradient-to-b from-gray-200 to-gray-100 flex items-center justify-center relative overflow-hidden">
-        {/* Website screenshot background */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&auto=format&fit=crop"
-            alt="Website preview"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gray-900/40"></div>
-        </div>
-
-        {/* Logo overlay */}
-        <div className="z-10 bg-white/90 p-3 rounded-lg shadow-md">
-          <img src={publisher.logo} alt={`${publisher.name} logo`} className="h-16 w-16 object-contain" />
-        </div>
-
-        {/* Performance badge */}
-        <div
-          className={`absolute bottom-3 left-3 px-2.5 py-1 text-xs font-medium rounded-full z-10 shadow-sm ${getPerformanceBadgeStyle(
-            publisher.performance,
-          )}`}
-        >
-          {(publisher.performance === "Excellent" && (
-            <span className="flex items-center gap-1">
-              <Star className="h-3 w-3 inline fill-current" />
-              {publisher.performance}
-            </span>
-          )) ||
-            publisher.performance}
-        </div>
-
-        {/* Visit website button */}
-        <button
-          className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-empowerlocal-blue text-xs font-medium py-1 px-2.5 rounded-full flex items-center gap-1 shadow-sm transition-colors z-10"
-          onClick={(e) => {
-            e.stopPropagation();
-            window.open("#", "_blank");
-          }}
-        >
-          <ExternalLink className="h-3 w-3" />
-          Visit Site
-        </button>
+      <div className="cursor-pointer h-full">
+        <PublisherPreview publisherData={publisherDataForPreview} preview={false} />
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="font-semibold text-lg text-empowerlocal-navy">{publisher.name}</h3>
-
-        <div className="flex items-center text-sm text-gray-500 mt-1">
-          <MapPin className="h-3.5 w-3.5 mr-1 flex-shrink-0" />
-          <span className="truncate">{publisher.location}</span>
-        </div>
-
-        {/* Content preview */}
-        <div className="mt-3 pb-3 border-b border-gray-100">
-          <p className="text-xs text-gray-600 line-clamp-2">
-            Latest content: "Local businesses thrive despite economic challenges. City council announces new development
-            plans."
-          </p>
-        </div>
-
-        {/* Metrics */}
-        <div className="grid grid-cols-3 gap-2 mt-3">
-          <div className="flex flex-col items-center p-2 rounded-md bg-gray-50 border border-gray-100">
-            <Users className="h-3.5 w-3.5 text-gray-400 mb-1" />
-            <span className="text-xs font-semibold">{publisher.subscribers}</span>
-            <span className="text-[10px] text-gray-400">Subscribers</span>
-          </div>
-
-          <div className="flex flex-col items-center p-2 rounded-md bg-gray-50 border border-gray-100">
-            <BarChart2 className="h-3.5 w-3.5 text-gray-400 mb-1" />
-            <span className="text-xs font-semibold">{publisher.engagement}</span>
-            <span className="text-[10px] text-gray-400">Engagement</span>
-          </div>
-
-          <div className="flex flex-col items-center p-2 rounded-md bg-gray-50 border border-gray-100">
-            <DollarSign className="h-3.5 w-3.5 text-gray-400 mb-1" />
-            <span className="text-xs font-semibold">{publisher.cpm}</span>
-            <span className="text-[10px] text-gray-400">CPM</span>
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="flex gap-1 w-full mt-4">
-          {publisher.categories.slice(0, 2).map((category, index) => (
-            <span key={index} className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}>
-              {category}
-            </span>
-          ))}
-          {publisher.categories.length > 2 && (
-            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
-              +{publisher.categories.length - 2}
-            </span>
-          )}
-        </div>
-
-        {/* Action Buttons */}
-        {onAddToCampaign && (
+      {onAddToCampaign && (
+        <div className="p-4 border-t border-gray-200 bg-gray-50/50">
           <Button
             variant="default"
             size="sm"
-            className="w-full mt-4 !text-base"
+            className="w-full font-semibold !text-base bg-empowerlocal-blue hover:bg-empowerlocal-navy text-white"
             onClick={(e) => {
               e.stopPropagation();
               onAddToCampaign();
+              toast({ title: "Added to Campaign", description: `${publisher.name} added.` });
             }}
           >
-            <PlusCircle className="h-3.5 w-3.5 mr-1.5" />
+            <PlusCircle className="h-4 w-4 mr-2" />
             Add to Campaign
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -98,3 +98,4 @@ export function StateSelector({ onSelect }: StateSelectorProps) {
     </div>
   );
 }
+ 

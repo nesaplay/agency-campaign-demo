@@ -19,6 +19,8 @@ import NotFound from "./pages/NotFound";
 import CampaignDetail from "./pages/CampaignDetail";
 import AddBrand from './pages/AddBrand';
 import AskLassie from "./pages/AskLassie";
+import Publishers from "./pages/Publishers";
+import PublisherEditPage from "./pages/PublisherEdit";
 
 // Create QueryClient outside the component
 const queryClient = new QueryClient();
@@ -67,6 +69,8 @@ const App = () => {
               <Route path="/brands" element={<Brands />} />
               <Route path="/brands/:id" element={<BrandDetail />} />
               <Route path="/add-brand" element={<AddBrand />} />
+              <Route path="/publishers" element={<Publishers />} />
+              <Route path="/publishers/:id" element={<PublisherEditPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

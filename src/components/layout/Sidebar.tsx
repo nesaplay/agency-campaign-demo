@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks, Bot } from "lucide-react";
+import { Home, BarChart3, Settings, LineChart, ChevronLeft, MapPin, ListChecks, Bot, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { useBrand } from "@/components/brands/BrandContext";
@@ -38,6 +38,11 @@ const Sidebar: React.FC = () => {
       icon: LineChart,
       label: "Campaigns",
       href: "/campaigns",
+    },
+    {
+      icon: Users,
+      label: "Publishers",
+      href: "/publishers",
     },
     {
       icon: BarChart3,

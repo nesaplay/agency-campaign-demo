@@ -6,7 +6,6 @@ import MapControls from "./MapControls";
 import MapLegend from "./MapLegend";
 import PublisherMapMarker from "./PublisherMapMarker";
 import RetailMapMarker from "./RetailMapMarker";
-import { Brand } from "../brands/types";
 import { useBrand } from "../brands/BrandContext";
 interface MapViewProps {
   publishers: Publisher[];

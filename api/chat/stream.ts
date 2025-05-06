@@ -275,3 +275,4 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
 // function processOpenAIChunk(chunk: any): string | null {
 //     return chunk?.choices?.[0]?.delta?.content || null;
 // }
+ 

@@ -39,7 +39,7 @@ const ListDetailContent: React.FC<ListDetailContentProps> = ({
   
   return (
     <div className="flex-1 overflow-auto">
-      <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between sticky top-0 z-[99999] gap-4">
+      <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between sticky top-0 z-[100] gap-4">
         <h2 className="font-medium text-empowerlocal-navy whitespace-nowrap">Publishers ({publishers.length})</h2>
         
         <div className="flex items-center gap-4 flex-grow justify-end">

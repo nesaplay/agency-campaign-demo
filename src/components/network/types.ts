@@ -1,8 +1,10 @@
+import React from 'react';
 
 export interface Publisher {
   id: string;
   name: string;
   logo: string;
+  headerImage?: string;
   location: string;
   coverage: string;
   subscribers: string;
@@ -13,6 +15,9 @@ export interface Publisher {
   latitude: number;
   longitude: number;
   audienceSize: number;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
 }
 
 export interface RetailLocation {
