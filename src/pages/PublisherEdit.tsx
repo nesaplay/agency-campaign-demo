@@ -11,95 +11,114 @@ import PublisherPreview from "@/components/publishers/PublisherPreview";
 import { fileToDataURL } from "@/lib/fileUtils";
 
 const PublisherEditPage: React.FC = () => {
-  const { id: publisherId } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Get store actions
-  const { getPublisherById, updatePublisher } = usePublisherStore();
+  const { getPublisherById, updatePublisher, addPublisher } = usePublisherStore();
 
-  // Use PublisherFormData for the form's state
+  const [isCreateMode, setIsCreateMode] = useState(false);
   const [formData, setFormData] = useState<PublisherFormData | null>(null);
-  // Original publisher data loaded from the store - should be of type Publisher
   const [originalPublisher, setOriginalPublisher] = useState<Publisher | null>(null);
 
   useEffect(() => {
-    if (!publisherId) {
-      console.error("No publisher ID provided.");
-      navigate("/publishers");
-      return;
-    }
-    const foundPublisher = getPublisherById(publisherId); // This returns Publisher | undefined
-    if (foundPublisher) {
-      setOriginalPublisher(foundPublisher);
-      // Initialize formData with the loaded publisher data, fitting PublisherFormData structure
+    const createModeCheck = id === "new" || id === undefined; // also treat undefined id as create mode
+    setIsCreateMode(createModeCheck);
+
+    if (createModeCheck) {
+      setOriginalPublisher(null); 
       setFormData({
-        ...foundPublisher,
-        logoFile: null, // Explicitly initialize file fields for PublisherFormData
+        name: '',
+        location: '',
+        coverage: '',
+        audienceSize: undefined,
+        subscribers: '',
+        engagement: '',
+        cpm: '',
+        performance: undefined,
+        categories: [],
+        primaryColor: '#442d9a',
+        secondaryColor: '#753363',
+        accentColor: '#a29090',
+        latitude: undefined,
+        longitude: undefined,
+        logo: undefined,
+        headerImage: undefined,
+        logoFile: null,
         headerImageFile: null,
       });
+    } else if (id) { // Explicit ID provided, so it's edit mode
+      const foundPublisher = getPublisherById(id);
+      if (foundPublisher) {
+        setOriginalPublisher(foundPublisher);
+        setFormData({
+          ...foundPublisher,
+          logoFile: null,
+          headerImageFile: null,
+        });
+      } else {
+        toast({ title: "Error", description: "Publisher not found.", variant: "destructive" });
+        navigate("/publishers");
+      }
     } else {
-      console.error(`Publisher with id ${publisherId} not found.`);
-      toast({ title: "Error", description: "Publisher not found.", variant: "destructive" });
+      // This case should ideally not be reached if routing is /publishers/:id/edit or /publishers/new/edit
+      console.error("Invalid route for publisher page, ID is missing for edit mode.");
+      toast({ title: "Error", description: "Invalid page URL.", variant: "destructive" });
       navigate("/publishers");
     }
-  }, [publisherId, navigate, getPublisherById, toast]);
+  }, [id, navigate, getPublisherById, toast]);
 
   const handleFormChange = (updatedData: Partial<PublisherFormData>) => {
     setFormData((prevData) => {
       if (!prevData) return null;
-      
-      // Note: The Object URL revocation logic here might need refinement
-      // as URL.createObjectURL(prevData.logoFile) would create a new URL.
-      // For now, focusing on the save logic.
-      if (updatedData.logoFile instanceof File && prevData.logoFile instanceof File) {
-        // Consider managing object URLs more directly if explicit revocation is critical during form interaction
-      }
-      if (updatedData.headerImageFile instanceof File && prevData.headerImageFile instanceof File) {
-        // Similar consideration for headerImageFile
-      }
-      
       return { ...prevData, ...updatedData };
     });
   };
 
   const handleSaveChanges = async () => {
-    if (!publisherId || !formData) {
-      console.error("Cannot save without publisher ID or form data");
+    if (!formData) {
       toast({ title: "Error", description: "Form data is missing.", variant: "destructive" });
       return;
     }
-    if (originalPublisher) {
-      console.log("Saving changes for publisher:", publisherId, formData);
+    
+    if (isCreateMode && !formData.name?.trim()) {
+        toast({ title: "Error", description: "Publisher name is required.", variant: "destructive" });
+        return;
+    }
 
-      // Destructure to separate File objects from other data to be saved to the store
-      const { logoFile, headerImageFile, ...dataToSaveBase } = formData;
-      // Initialize with base data, which includes existing string URLs for logo/header if no new files are chosen
-      const dataToSave: Partial<Publisher> = { ...dataToSaveBase };
+    const { logoFile, headerImageFile, ...dataToProcess } = formData;
+    const processedData: Partial<Publisher> & { logo?: string | undefined; headerImage?: string | undefined } = { ...dataToProcess };
 
-      try {
-        if (logoFile instanceof File) {
-          dataToSave.logo = await fileToDataURL(logoFile);
-          console.log("Converted logoFile to data URL");
-        } else if (logoFile === null && dataToSaveBase.logo !== undefined) {
-          dataToSave.logo = undefined;
-        }
+    try {
+      if (logoFile instanceof File) {
+        processedData.logo = await fileToDataURL(logoFile);
+      } else if (logoFile === null && !isCreateMode) { 
+        processedData.logo = undefined;
+      }
 
-        if (headerImageFile instanceof File) {
-          dataToSave.headerImage = await fileToDataURL(headerImageFile);
-          console.log("Converted headerImageFile to data URL");
-        } else if (headerImageFile === null && dataToSaveBase.headerImage !== undefined) {
-          dataToSave.headerImage = undefined;
-        }
+      if (headerImageFile instanceof File) {
+        processedData.headerImage = await fileToDataURL(headerImageFile);
+      } else if (headerImageFile === null && !isCreateMode) { 
+        processedData.headerImage = undefined;
+      }
+      
+      delete (processedData as PublisherFormData).logoFile;
+      delete (processedData as PublisherFormData).headerImageFile;
 
-        updatePublisher(publisherId, dataToSave);
-
+      if (isCreateMode) {
+        const newPublisher = addPublisher(processedData as Omit<Publisher, 'id'>);
+        toast({ title: "Success", description: `Publisher "${newPublisher.name}" created successfully.` });
+        navigate(`/publishers`); 
+      } else if (id && originalPublisher) { 
+        updatePublisher(id, processedData as Partial<Publisher>); 
         toast({ title: "Success", description: "Publisher updated successfully." });
         navigate(`/publishers`);
-      } catch (error) {
-        console.error("Error processing images or updating publisher:", error);
-        toast({ title: "Error", description: "Could not save publisher changes. Please try again.", variant: "destructive" });
+      } else {
+        throw new Error("Invalid state for saving.");
       }
+    } catch (error) {
+      console.error("Error processing images or saving publisher:", error);
+      toast({ title: "Error", description: "Could not save publisher. Please try again.", variant: "destructive" });
     }
   };
 
@@ -107,10 +126,10 @@ const PublisherEditPage: React.FC = () => {
     navigate(`/publishers`);
   };
 
-  if (!originalPublisher || !formData) { // Check both originalPublisher and formData
+  if ((!isCreateMode && !originalPublisher && id !== "new" && id !== undefined) || !formData) {
     return (
       <MainLayout>
-        <div className="p-6">Loading publisher...</div>
+        <div className="p-6">Loading publisher data...</div>
       </MainLayout>
     );
   }
@@ -126,7 +145,7 @@ const PublisherEditPage: React.FC = () => {
               </button>
               <div>
                 <h1 className="text-3xl font-semibold text-empowerlocal-navy flex items-center truncate">
-                  {originalPublisher.name}
+                  {isCreateMode ? "Create New Publisher" : (originalPublisher?.name || "Edit Publisher")}
                 </h1>
               </div>
             </div>
@@ -135,7 +154,7 @@ const PublisherEditPage: React.FC = () => {
                 Cancel
               </Button>
               <Button onClick={handleSaveChanges} className="btn-primary">
-                Save Changes
+                {isCreateMode ? "Create Publisher" : "Save Changes"}
               </Button>
             </div>
           </div>

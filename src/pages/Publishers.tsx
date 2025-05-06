@@ -37,8 +37,7 @@ const PublishersPage: React.FC = () => {
   };
   
   const handleAddNewPublisher = () => {
-    // toast({ title: "Coming Soon!", description: "Adding new publishers will be available soon." });
-    // navigate('/publishers/new/edit'); 
+    navigate('/publishers/new'); 
   };
 
   return (

@@ -1,25 +1,39 @@
-import React from 'react';
-import { Publisher } from "@/components/network/types"; 
+import React, { useState, useEffect } from "react";
+import { Publisher } from "@/components/network/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud } from "lucide-react";
 
 // Define the extended type needed for the form's temporary file state
 export interface PublisherFormData extends Partial<Publisher> {
-    logoFile?: File | null;
-    headerImageFile?: File | null;
+  logoFile?: File | null;
+  headerImageFile?: File | null;
 }
 
 interface PublisherFormProps {
-  publisher: Publisher | null; // Original publisher data for default values
-  formData: PublisherFormData | null; // Current form state including temporary files
+  publisher: Publisher | null;
+  formData: PublisherFormData | null;
   onFormChange: (updatedData: Partial<PublisherFormData>) => void;
+  isCreateMode: boolean;
 }
 
-const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFormChange }) => {
-  if (!publisher || !formData) return <div className="p-4">Loading publisher data...</div>;
+const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFormChange, isCreateMode }) => {
+  const [categoriesInputValue, setCategoriesInputValue] = useState<string>("");
+
+  useEffect(() => {
+    if (formData && formData.categories) {
+      setCategoriesInputValue(formData.categories.join(", "));
+    } else {
+      // If creating and formData is fresh, or if no categories exist
+      setCategoriesInputValue(formData?.name === "" && isCreateMode ? "" : (formData?.categories || []).join(", "));
+    }
+  }, [formData?.categories, formData?.name, isCreateMode]); // Add isCreateMode and formData.name to dependencies for robust init
+
+  if (!isCreateMode && !formData) {
+    return <div className="p-4">Loading publisher data...</div>;
+  }
 
   // Use formData for values to make inputs controlled, fallback to original publisher data
   const currentPrimaryColor = formData.primaryColor ?? publisher.primaryColor ?? "#442d9a";
@@ -41,6 +55,19 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
     onFormChange({ [fieldName]: value === "" ? undefined : parseFloat(value) } as Partial<PublisherFormData>);
   };
 
+  const handleCategoriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategoriesInputValue(e.target.value);
+  };
+
+  const handleCategoriesBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Process the raw string into an array of categories onBlur
+    const processedCategories = e.target.value
+      .split(",")
+      .map((cat) => cat.trim())
+      .filter((cat) => cat); // Filter out empty strings
+    onFormChange({ categories: processedCategories });
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -55,7 +82,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="name"
               id="name"
               className="mt-1"
-              value={formData.name ?? ""} 
+              value={formData.name ?? ""}
               onChange={(e) => onFormChange({ name: e.target.value })}
             />
           </div>
@@ -66,7 +93,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="location"
               id="location"
               className="mt-1"
-              value={formData.location ?? ""} 
+              value={formData.location ?? ""}
               onChange={(e) => onFormChange({ location: e.target.value })}
             />
           </div>
@@ -77,7 +104,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="coverage"
               id="coverage"
               className="mt-1"
-              value={formData.coverage ?? ""} 
+              value={formData.coverage ?? ""}
               onChange={(e) => onFormChange({ coverage: e.target.value })}
             />
           </div>
@@ -96,7 +123,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="audienceSize"
               id="audienceSize"
               className="mt-1"
-              value={formData.audienceSize ?? ""} 
+              value={formData.audienceSize ?? ""}
               onChange={(e) => handleNumberChange(e, "audienceSize")}
             />
           </div>
@@ -107,7 +134,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="subscribers"
               id="subscribers"
               className="mt-1"
-              value={formData.subscribers ?? ""} 
+              value={formData.subscribers ?? ""}
               onChange={(e) => onFormChange({ subscribers: e.target.value })}
             />
           </div>
@@ -118,7 +145,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="engagement"
               id="engagement"
               className="mt-1"
-              value={formData.engagement ?? ""} 
+              value={formData.engagement ?? ""}
               onChange={(e) => onFormChange({ engagement: e.target.value })}
             />
           </div>
@@ -129,7 +156,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="cpm"
               id="cpm"
               className="mt-1"
-              value={formData.cpm ?? ""} 
+              value={formData.cpm ?? ""}
               onChange={(e) => onFormChange({ cpm: e.target.value })}
             />
           </div>
@@ -137,13 +164,13 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
             <Label htmlFor="performance">Performance</Label>
             <Select
               name="performance"
-              value={formData.performance} 
+              value={formData.performance}
               onValueChange={(value) => onFormChange({ performance: value as "Good" | "Average" | "Excellent" })}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select performance" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="Good">Good</SelectItem>
                 <SelectItem value="Average">Average</SelectItem>
                 <SelectItem value="Excellent">Excellent</SelectItem>
@@ -165,19 +192,13 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="categories"
               id="categories"
               className="mt-1"
-              value={(formData.categories || []).join(", ")} 
-              onChange={(e) =>
-                onFormChange({
-                  categories: e.target.value
-                    .split(",")
-                    .map((cat) => cat.trim())
-                    .filter((cat) => cat),
-                })
-              }
+              value={categoriesInputValue}
+              onChange={handleCategoriesChange}
+              onBlur={handleCategoriesBlur}
               placeholder="e.g., News, Politics, Local Events"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Enter categories separated by commas. A tag input would be better here for UX.
+              Enter categories separated by commas. Tags will be processed when you click away.
             </p>
           </div>
         </CardContent>
@@ -263,7 +284,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
           {/* Logo Upload */}
           <div>
             <Label htmlFor="logoUpload">Logo</Label>
-            {/* Display current logo if URL exists */} 
+            {/* Display current logo if URL exists */}
             {publisher?.logo && !formData.logoFile && (
               <div className="mt-2 mb-2">
                 <img
@@ -376,7 +397,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="latitude"
               id="latitude"
               className="mt-1"
-              value={formData.latitude ?? ""} 
+              value={formData.latitude ?? ""}
               onChange={(e) => handleNumberChange(e, "latitude")}
               step="any"
             />
@@ -388,7 +409,7 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
               name="longitude"
               id="longitude"
               className="mt-1"
-              value={formData.longitude ?? ""} 
+              value={formData.longitude ?? ""}
               onChange={(e) => handleNumberChange(e, "longitude")}
               step="any"
             />
@@ -399,4 +420,4 @@ const PublisherForm: React.FC<PublisherFormProps> = ({ publisher, formData, onFo
   );
 };
 
-export default PublisherForm; 
+export default PublisherForm;
