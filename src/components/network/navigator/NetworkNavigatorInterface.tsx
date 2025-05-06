@@ -91,7 +91,6 @@ const NetworkNavigatorInterface: React.FC = () => {
       <NavigatorTabs
         ref={tabsRef}
         isTabsSticky={isTabsSticky}
-        onConversationPublisherSelect={handleConversationPublisherSelect}
         filteredPublishers={filteredPublishers}
         selectedPublisher={selectedPublisher}
         selectedPublishers={selectedPublishers}

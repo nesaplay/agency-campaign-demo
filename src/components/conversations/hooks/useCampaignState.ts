@@ -43,7 +43,7 @@ const defaultWelcomeMessage: MessageType = {
 const createRecommendationPrompt = (brandName: string): MessageType => ({
     id: 'recommend_prompt',
     // --- Updated, friendlier message with dynamic brand name ---
-    content: `Hi there! I see you're working with ${brandName}. Would you like me to suggest some publishers that could be a great fit for this brand?`,
+    content: `Greeting Jane, Would you like to build a campaign?`,
     // --- End updated message ---
     sender: 'assistant',
     timestamp: new Date(),

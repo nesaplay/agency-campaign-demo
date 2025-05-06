@@ -122,14 +122,15 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
     <AnimatePresence>
       {isExpanded ? (
         <motion.div 
-          className="w-[420px] min-w-[420px] border-l border-t border-gray-200 bg-white shadow-xl h-full sticky top-4"
+          className="w-[420px] min-w-[420px] border-l border-t border-gray-200 bg-white shadow-xl h-full sticky top-4 overflow-auto flex flex-col"
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-            <h3 className="font-semibold text-empowerlocal-navy">Campaign Summary</h3>
+          {/* Sticky Header */}
+          <div className="sticky top-0 z-10 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+            <h3 className="text-lg font-semibold text-empowerlocal-navy">Campaign Summary</h3>
             <div className="flex gap-2">
               <button 
                 onClick={onToggle}
@@ -146,7 +147,8 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
             </div>
           </div>
           
-          <div className="p-4 overflow-auto h-full">
+          {/* Scrollable Content Area */}
+          <div className="p-4 flex-1 overflow-y-auto">
             {/* Progress indicator */}
             <div className="mb-6">
               <h4 className="text-sm font-medium text-gray-500 mb-2">Campaign Progress</h4>
@@ -263,25 +265,27 @@ const CampaignSummaryPanel: React.FC<CampaignSummaryPanelProps> = ({
                 </div>
               )}
             </div>
-            
-            {/* Actions */}
-            <div className="space-y-2">
-              <Button 
-                onClick={handleExportBrief}
-                className="w-full bg-empowerlocal-blue hover:bg-empowerlocal-navy"
-                disabled={publishers.length === 0}
-              >
-                Export Campaign Brief
-              </Button>
-              <Button 
-                onClick={handleSaveToList}
-                variant="outline"
-                className="w-full"
-                disabled={publishers.length === 0}
-              >
-                Save Publishers to List
-              </Button>
-            </div>
+          </div>
+
+          {/* Sticky Footer for Actions */}
+          <div className="sticky bottom-0 z-10 bg-white p-4 border-t border-gray-200 space-y-2">
+            <Button 
+              onClick={handleExportBrief}
+              className="w-full !text-base bg-empowerlocal-blue hover:bg-empowerlocal-navy"
+              disabled={publishers.length === 0}
+              size="sm"
+            >
+              Export Campaign Brief
+            </Button>
+            <Button 
+              onClick={handleSaveToList}
+              variant="outline"
+              className="w-full !text-base"
+              disabled={publishers.length === 0}
+              size="sm"
+            >
+              Save Publishers to List
+            </Button>
           </div>
         </motion.div>
       ) : (

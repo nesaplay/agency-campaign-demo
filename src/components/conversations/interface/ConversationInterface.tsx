@@ -87,8 +87,8 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
   };
 
   return (
-    <div className="flex gap-4 max-h-[calc(100vh-12rem)] h-full">
-      <div className="flex flex-col" onClick={focusInput}>
+    <div className="flex gap-4 max-h-[calc(100vh-10rem)] h-full w-full">
+      <div className="flex flex-col flex-1" onClick={focusInput}>
         <ConversationHeader
           campaignStage={campaignStage}
           showSummaryPanel={showSummaryPanel}

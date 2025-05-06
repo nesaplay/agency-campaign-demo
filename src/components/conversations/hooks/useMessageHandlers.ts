@@ -241,6 +241,22 @@ export const useMessageHandlers = ({
       sender: "user",
       timestamp: new Date(),
     };
+
+    if (messages.length >= 1) {
+      const lastAssistantMessage = messages[messages.length - 1];
+
+      if (
+        lastAssistantMessage.id === 'recommend_prompt' &&
+        typeof userMessage.content === 'string' &&
+        userMessage.content.toLowerCase().includes('recommend')
+      ) {
+        setMessages((prev) => [...prev, userMessage]);
+        setInputValue('');
+        handleQuickReply(userMessage.content, 'recommend_yes', true);
+        return;
+      }
+    }
+
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
@@ -261,7 +277,7 @@ export const useMessageHandlers = ({
       if (!stepMatched) {
         response = {
           id: (Date.now() + 1).toString(),
-          content: "I understand you're interested in creating a campaign for Dr. Bombay ice cream. Could you tell me more about your specific needs?",
+          content: `I understand you're interested in creating a campaign for ${activeBrand?.name ?? 'your brand'}. Could you tell me more about your specific needs?`,
           sender: "assistant",
           timestamp: new Date(),
         };
@@ -276,9 +292,7 @@ export const useMessageHandlers = ({
     }, 1000);
   };
 
-  const handleQuickReply = (text: string, value: string) => {
-    // Don't add user message here for all cases, let specific branches or handleSendMessage do it.
-
+  const handleQuickReply = (text: string, value: string, isKeywordTrigger?: boolean) => {
     let assistantResponse: MessageType | null = null;
 
     if (value === 'recommend_yes') {
@@ -289,18 +303,18 @@ export const useMessageHandlers = ({
         return [...prev, ...newPublishers];
       });
 
-      // Add user message *only* for this specific branch
-      const userMessage: MessageType = {
-        id: Date.now().toString(),
-        content: text,
-        sender: "user",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, userMessage]);
-      setIsTyping(true); // Start typing for assistant response
+      if (!isKeywordTrigger) {
+        const interpretedUserActionMessage: MessageType = {
+          id: Date.now().toString(),
+          content: text,
+          sender: "user",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, interpretedUserActionMessage]);
+      }
+      setIsTyping(true);
 
-      // Construct a more informative message
-      const brandName = activeBrand?.name ?? 'your brand'; // Fallback name
+      const brandName = activeBrand?.name ?? 'your brand';
       const targetAudience = activeBrand?.metrics?.targetAudience?.primary ? `targeting the ${activeBrand.metrics.targetAudience.primary} audience` : 'based on its profile';
       const objectives = activeBrand?.metrics?.objectives && activeBrand.metrics.objectives.length > 0 ? `and campaign objectives like '${activeBrand.metrics.objectives[0]}'` : '';
 
@@ -308,7 +322,7 @@ export const useMessageHandlers = ({
 
       assistantResponse = {
         id: (Date.now() + 1).toString(),
-        content: `Okay! Considering ${brandName}'s focus ${targetAudience}${objectives ? ` ${objectives}` : ''}, I recommend checking out ${recommendationNames}. I've added them to your summary panel for review.`,
+        content: `Sure! By looking at ${brandName}'s focus ${targetAudience}${objectives ? ` ${objectives}` : ''}, I recommend checking out ${recommendationNames}. I've added them to your summary panel for review.`,
         sender: "assistant",
         timestamp: new Date(),
         quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
@@ -320,32 +334,29 @@ export const useMessageHandlers = ({
       }, 1000);
 
     } else if (value === 'recommend_no') {
-        // Add user message *only* for this specific branch
-        const userMessage: MessageType = {
-            id: Date.now().toString(),
-            content: text,
-            sender: "user",
-            timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, userMessage]);
-        setIsTyping(true); // Start typing for assistant response
+      const userMessage: MessageType = {
+        id: Date.now().toString(),
+        content: text,
+        sender: "user",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+      setIsTyping(true);
 
-        assistantResponse = {
-            id: (Date.now() + 1).toString(),
-            content: `Alright, no problem. You can explore publishers yourself or ask for recommendations later. How can I help you today?`,
-            sender: "assistant",
-            timestamp: new Date(),
-            quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
-        };
-        setTimeout(() => {
-            if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
-            setIsTyping(false);
-        }, 1000);
+      assistantResponse = {
+        id: (Date.now() + 1).toString(),
+        content: `Alright, no problem. You can explore publishers yourself or ask for recommendations later. How can I help you today?`,
+        sender: "assistant",
+        timestamp: new Date(),
+        quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
+      };
+      setTimeout(() => {
+        if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
+        setIsTyping(false);
+      }, 1000);
     } else {
-      // Default behavior: Let handleSendMessage manage adding the user message and typing indicator
-      setInputValue(''); // Clear input field
-      // setIsTyping(false); // Remove this - handleSendMessage will set it true
-      handleSendMessage(text); // Pass the text of the quick reply
+      setInputValue('');
+      handleSendMessage(text);
     }
   };
 

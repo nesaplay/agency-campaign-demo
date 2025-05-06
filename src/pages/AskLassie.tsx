@@ -9,10 +9,18 @@ import { MessageSquare, History } from "lucide-react";
 import ChatHistoryList, { ChatThread } from "@/components/conversations/ChatHistoryList";
 import { useMutation } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import { default as ConversationInterface } from "@/components/conversations/interface/ConversationInterface";
+import PublisherDetailModal from "@/components/network/navigator/PublisherDetailModal";
+import { useNetworkNavigator } from "@/components/network/hooks/useNetworkNavigator";
+import { mockPublishers } from "@/components/network/mockData";
 
 const LASSIE_ASSISTANT_ID = "88be2a13-70b9-4bfa-ac27-86584e703f84";
 
 const AskLassie = () => {
+  const { selectedPublisher, handleCloseDetail, handlePublisherSelect } = useNetworkNavigator();
+
+  const [activeTab, setActiveTab] = useState<string>("ask");
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "initial",
@@ -43,7 +51,7 @@ const AskLassie = () => {
       const supabase = createClient();
       const session = (await supabase.auth.getSession())?.data?.session;
       console.log(session);
-      
+
       if (!session) throw new Error("Not authenticated");
       const token = session.access_token;
 
@@ -93,16 +101,14 @@ const AskLassie = () => {
         if (done) break;
         accumulatedContent += value;
         setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMsgId ? { ...msg, content: accumulatedContent } : msg
-          )
+          prev.map((msg) => (msg.id === assistantMsgId ? { ...msg, content: accumulatedContent } : msg)),
         );
       }
-      
-      const newThreadIdHeader = response.headers.get('X-Thread-ID');
+
+      const newThreadIdHeader = response.headers.get("X-Thread-ID");
       if (newThreadIdHeader) {
-          console.log("New thread created with ID:", newThreadIdHeader);
-          setCurrentThreadId(newThreadIdHeader);
+        console.log("New thread created with ID:", newThreadIdHeader);
+        setCurrentThreadId(newThreadIdHeader);
       }
 
       return accumulatedContent;
@@ -147,14 +153,17 @@ const AskLassie = () => {
   // Placeholder handlers for MessagesList props
   const handleFeedback = () => console.log("Feedback clicked");
   const handleQuickReply = () => console.log("Quick reply clicked");
-  const handlePublisherSelect = () => console.log("Publisher select clicked");
   const handleAddAllPublishers = () => console.log("Add all publishers clicked");
   const handleAddPublisherToCampaign = () => console.log("Add publisher clicked");
 
   // Placeholder handlers for ChatHistoryList props
   const handleSelectThread = (threadId: string) => {
     console.log("Selected thread:", threadId);
-    // Logic to load the selected thread's messages would go here
+    setCurrentThreadId(threadId);
+    setActiveTab("ask");
+    // TODO: Logic to load the selected thread's messages into ConversationInterface
+    // This might involve passing currentThreadId to ConversationInterface and having it fetch/filter messages,
+    // or lifting message state management.
   };
 
   const handleUpdateThreadTitle = (threadId: string, newTitle: string) => {
@@ -167,7 +176,14 @@ const AskLassie = () => {
 
   const handleStartNewChat = () => {
     console.log("Starting new chat");
-    // Logic to clear current messages and start a new session
+    setCurrentThreadId(null);
+    setActiveTab("ask");
+
+    // TODO: Reset messages within ConversationInterface
+    // The ConversationInterface manages its own message state.
+    // Need a way to signal it to start a new chat.
+    // For now, clearing the AskLassie-level messages state as a placeholder,
+    // but this might not affect ConversationInterface if it doesn't use this state.
     setMessages([
       {
         id: "new-initial",
@@ -176,14 +192,12 @@ const AskLassie = () => {
         timestamp: new Date(),
       },
     ]);
-    // Optionally switch back to the 'ask' tab
-    // Consider creating a new thread entry in chatHistory here or upon first message
   };
 
   return (
     <MainLayout>
       <div className="flex flex-col h-[calc(100vh-4rem)] max-w-[80rem] mx-auto px-4 w-full">
-        <Tabs defaultValue="ask" className="flex flex-col h-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
           <TabsList className="w-full flex justify-start bg-white border-b border-gray-200 p-0 px-4">
             <TabsTrigger
               value="ask"
@@ -205,13 +219,23 @@ const AskLassie = () => {
             value="ask"
             className="flex flex-col flex-1 overflow-hidden mt-0 bg-empowerlocal-bg data-[state=inactive]:hidden"
           >
+            <div className="py-4 h-full w-full flex items-center justify-between">
+              <ConversationInterface onPublisherSelect={handlePublisherSelect} />
+            </div>
+            <PublisherDetailModal selectedPublisher={selectedPublisher} onClose={handleCloseDetail} />
+          </TabsContent>
+
+          <TabsContent
+            value="chat"
+            className="flex flex-col flex-1 overflow-hidden mt-0 bg-empowerlocal-bg data-[state=inactive]:hidden"
+          >
             <div className="flex-1 overflow-y-auto p-4">
               <MessagesList
                 messages={messages}
                 isTyping={streamMutation.isPending}
                 onFeedback={handleFeedback}
                 onQuickReply={handleQuickReply}
-                onPublisherSelect={handlePublisherSelect}
+                onPublisherSelect={publisherId => handlePublisherSelect(mockPublishers.find(p => p.id === publisherId)!)}
                 onAddAllPublishers={handleAddAllPublishers}
                 onAddPublisherToCampaign={handleAddPublisherToCampaign}
               />
