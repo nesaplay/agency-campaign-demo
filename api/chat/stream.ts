@@ -39,11 +39,11 @@ function writeToStream(res: Response, data: string) {
   res.write(data);
 }
 
-export default async function streamHandler(req: Request, res: Response) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).send(`Method ${req.method} Not Allowed`);
-  }
+export async function POST(req: Request, res: Response) {
+  // if (req.method !== "POST") {
+  //   res.setHeader("Allow", ["POST"]);
+  //   return res.status(405).send(`Method ${req.method} Not Allowed`);
+  // }
 
   const startTime = performance.now();
   console.log("Starting chat stream processing...");
