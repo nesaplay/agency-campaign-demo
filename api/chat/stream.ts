@@ -6,11 +6,6 @@ import { getOpenaiAssistantByDbId } from "../lib/assistant-service";
 // Remove getUserByToken from imports
 import { getSupabaseServiceRoleClient } from "../lib/utils"; 
 
-// Debug logging
-console.log('Stream handler environment variables:');
-console.log('SUPABASE_SERVICE_ROLE_UID:', process.env.SUPABASE_SERVICE_ROLE_UID);
-console.log('SUPABASE_ASSISTANT_ID:', process.env.SUPABASE_ASSISTANT_ID);
-
 const SERVICE_USER_ID = process.env.SUPABASE_SERVICE_ROLE_UID;
 const DEFAULT_ASSISTANT_ID = process.env.SUPABASE_ASSISTANT_ID;
 
