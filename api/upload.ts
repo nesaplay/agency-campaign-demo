@@ -2,19 +2,23 @@ import type { Request, Response } from 'express';
 import { IncomingMessage } from 'http'; // No longer needed if getUserByToken is removed
 import formidable from "formidable";
 // Remove getUserByToken from imports if it came from @/lib/server/utils
-import { getSupabaseServiceRoleClient } from "@/lib/server/utils"; 
-import { Database } from "@/types/supabase";
+import { getSupabaseServiceRoleClient } from "./lib/utils"; 
+import { Database } from "./types/supabase";
 import * as fs from "fs";
 
 const SERVICE_USER_ID = process.env.SUPABASE_SERVICE_ROLE_UID;
+
+if (!SERVICE_USER_ID) {
+  throw new Error('SUPABASE_SERVICE_ROLE_UID is not set in environment variables');
+}
+
+// Now TypeScript knows this is a string
+const userId: string = SERVICE_USER_ID;
 
 type FileInsert = Database["public"]["Tables"]["files"]["Insert"];
 
 export default async function uploadHandler(req: Request, res: Response) {
   const bucketName = "files";
-
-  // No user authentication, always use SERVICE_USER_ID
-  const userId = SERVICE_USER_ID;
 
   const supabaseService = getSupabaseServiceRoleClient();
 

@@ -11,7 +11,11 @@
     },
     {
       "src": "api/**/*.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["api/**/*.ts"],
+        "buildCommand": "tsc -p tsconfig.api.json"
+      }
     }
   ],
   "routes": [

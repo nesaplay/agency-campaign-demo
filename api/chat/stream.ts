@@ -17,6 +17,10 @@ if (!DEFAULT_ASSISTANT_ID) {
   throw new Error('SUPABASE_ASSISTANT_ID is not set in environment variables');
 }
 
+// Now TypeScript knows these are strings
+const userId: string = SERVICE_USER_ID;
+const defaultAssistantId: string = DEFAULT_ASSISTANT_ID;
+
 type MessagesTable = Database["public"]["Tables"]["messages"];
 type MessageInsert = MessagesTable["Insert"];
 type ThreadsTable = Database["public"]["Tables"]["threads"];
@@ -45,8 +49,6 @@ export default async function streamHandler(req: Request, res: Response) {
   console.log("Starting chat stream processing...");
 
   // No user authentication, always use SERVICE_USER_ID
-  const userId = SERVICE_USER_ID;
-  
   const supabaseService = getSupabaseServiceRoleClient();
   const requestData: StreamPostBody = req.body;
   let db_thread_id: string;
@@ -56,7 +58,7 @@ export default async function streamHandler(req: Request, res: Response) {
   try {
     const { message, filename, hiddenMessage, context } = requestData || {};
     const request_thread_id = requestData?.thread_id;
-    const assistantId = requestData?.assistantId || DEFAULT_ASSISTANT_ID;
+    const assistantId = requestData?.assistantId || defaultAssistantId;
 
     if (!message) {
       return res.status(400).json({ error: "Missing required field: message" });

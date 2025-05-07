@@ -37,9 +37,27 @@ export const mockBrands: Brand[] = [
     color: '#2196F3',
     isActive: false,
     attachments: [
-        { name: 'Brand Guidelines.pdf', url: '/placeholder.pdf' },
-        { name: 'Logo Pack.zip', url: '/placeholder.zip' },
-        { name: 'Onboarding Doc.docx', url: '/placeholder.docx' }
+        {
+          id: '1',
+          name: 'Brand Guidelines.pdf',
+          url: '/placeholder.pdf',
+          type: 'application/pdf',
+          size: 1024
+        },
+        {
+          id: '2',
+          name: 'Logo Pack.zip',
+          url: '/placeholder.zip',
+          type: 'application/zip',
+          size: 2048
+        },
+        {
+          id: '3',
+          name: 'Onboarding Doc.docx',
+          url: '/placeholder.docx',
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          size: 1536
+        }
     ],
     metrics: {
       targetAudience: {
@@ -94,7 +112,13 @@ export const mockBrands: Brand[] = [
     campaignCount: 2,
     color: '#9C27B0',
     isActive: false,
-    attachments: [{ name: 'Property Map.png', url: '/placeholder.png' }],
+    attachments: [{
+      id: '4',
+      name: 'Property Map.png',
+      url: '/placeholder.png',
+      type: 'image/png',
+      size: 512
+    }],
     metrics: {
       targetAudience: {
         primary: 'Businesses, Investors',

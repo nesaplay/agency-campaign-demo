@@ -9,11 +9,23 @@ if (!supabaseUrl || !supabaseServiceKey) {
   throw new Error('Missing Supabase URL or Service Role Key environment variables');
 }
 
+// Now TypeScript knows these are strings
+const url: string = supabaseUrl;
+const key: string = supabaseServiceKey;
+
 let supabaseServiceClientInstance: SupabaseClient<Database> | null = null;
 
 export function getSupabaseServiceRoleClient(): SupabaseClient<Database> {
     if (!supabaseServiceClientInstance) {
-        supabaseServiceClientInstance = createClient<Database>(supabaseUrl, supabaseServiceKey);
+        supabaseServiceClientInstance = createClient<Database>(url, key, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            },
+            db: {
+                schema: 'public'
+            }
+        });
     }
     return supabaseServiceClientInstance;
 } 

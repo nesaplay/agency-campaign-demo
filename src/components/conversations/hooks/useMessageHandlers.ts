@@ -285,7 +285,13 @@ export const useMessageHandlers = ({
       }
 
       if (response) {
-        setMessages((prev) => [...prev, response as MessageType]);
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          if (response) {
+            newMessages.push(response);
+          }
+          return newMessages;
+        });
         setIsTyping(false);
       } else if (!stepMatched) {
         setIsTyping(false);
@@ -330,7 +336,15 @@ export const useMessageHandlers = ({
       };
       setShowSummaryPanel(true);
       setTimeout(() => {
-        if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
+        if (assistantResponse) {
+          setMessages((prev) => {
+            const newMessages = [...prev];
+            if (assistantResponse) {
+              newMessages.push(assistantResponse);
+            }
+            return newMessages;
+          });
+        }
         setIsTyping(false);
       }, 1000);
 
@@ -352,7 +366,15 @@ export const useMessageHandlers = ({
         quickReplies: [{ id: '1', text: 'Start a new campaign', value: 'new' }, { id: '2', text: 'Work on an existing campaign', value: 'existing' }]
       };
       setTimeout(() => {
-        if (assistantResponse) setMessages((prev) => [...prev, assistantResponse]);
+        if (assistantResponse) {
+          setMessages((prev) => {
+            const newMessages = [...prev];
+            if (assistantResponse) {
+              newMessages.push(assistantResponse);
+            }
+            return newMessages;
+          });
+        }
         setIsTyping(false);
       }, 1000);
     } else {
