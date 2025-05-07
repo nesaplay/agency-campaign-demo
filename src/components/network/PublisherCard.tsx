@@ -113,7 +113,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
         )}
       </div>
 
-      <div className="cursor-pointer h-full">
+      <div className="cursor-pointer">
         <PublisherPreview
           publisherData={publisherDataForPreview}
           preview={false}

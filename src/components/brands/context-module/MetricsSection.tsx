@@ -15,7 +15,7 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({ brand }) => {
   const { targetAudience, objectives, performance } = brand.metrics;
 
   return (
-    <div className="px-4 pb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="px-4 pb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Audience Demographics */}
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
@@ -48,33 +48,6 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({ brand }) => {
             ))}
           </ul>
         </div>
-      </div>
-
-      {/* Performance Metrics */}
-      <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-          <BarChart2 className="h-4 w-4 mr-1.5 text-gray-500" />
-          Performance Metrics
-        </h3>
-        <div className="bg-gray-50 rounded-md p-3 text-sm">
-          {performance.map((metric, index) => (
-            <PerformanceMetric key={index} {...metric} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PerformanceMetric: React.FC<PerformanceMetricProps> = ({ label, value, color }) => {
-  return (
-    <div className="mb-2 last:mb-0">
-      <div className="flex justify-between mb-1">
-        <span className="text-gray-600">{label}</span>
-        <span className="font-medium">{value}%</span>
-      </div>
-      <div className="w-full bg-gray-200 rounded-full h-1.5">
-        <div className={`${color} h-1.5 rounded-full`} style={{ width: `${value}%` }}></div>
       </div>
     </div>
   );

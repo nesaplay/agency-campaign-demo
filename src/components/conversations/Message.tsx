@@ -87,7 +87,7 @@ const Message: React.FC<MessageProps> = ({
         )}
       >
         <div
-          style={{ fontFamily: "DM Serif Display, Playfair Display, Georgia, Times, serif" }}
+          style={{ fontWeight: 300 }}
           className={cn(isAssistant ? "text-gray-800 text-base font-serif" : "text-gray-900 text-base font-sans")}
         >
           {message.content}

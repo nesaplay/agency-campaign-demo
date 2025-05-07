@@ -10,6 +10,8 @@ interface BrandContextType {
     newBrandData: Omit<Brand, "id" | "campaignCount" | "isActive" | "attachments" | "metrics"> 
                   & { attachments?: FileList | null; metrics?: Brand['metrics'] }
   ) => void;
+  editBrand: <K extends keyof Brand>(brandId: string, field: K, value: Brand[K]) => void;
+  removeAttachment: (brandId: string, attachmentId: string) => void;
 }
 
 const BrandContext = createContext<BrandContextType | undefined>(undefined);
@@ -33,6 +35,37 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setBrands((prevBrands) => prevBrands.map((b) => ({ ...b, isActive: b.id === brand.id })));
   }, []);
 
+  const editBrand = useCallback(<K extends keyof Brand>(brandId: string, field: K, value: Brand[K]) => {
+    setBrands((prevBrands) =>
+      prevBrands.map((brand) =>
+        brand.id === brandId ? { ...brand, [field]: value } : brand
+      )
+    );
+    if (activeBrand?.id === brandId) {
+      setActiveBrandState((prev) => prev ? { ...prev, [field]: value } : null);
+    }
+  }, [activeBrand]);
+
+  const removeAttachment = useCallback((brandId: string, attachmentId: string) => {
+    setBrands((prevBrands) =>
+      prevBrands.map((brand) =>
+        brand.id === brandId && brand.attachments
+          ? {
+              ...brand,
+              attachments: brand.attachments.filter((attachment) => attachment.id !== attachmentId)
+            }
+          : brand
+      )
+    );
+
+    if (activeBrand?.id === brandId && activeBrand.attachments) {
+      setActiveBrand({
+        ...activeBrand,
+        attachments: activeBrand.attachments.filter((attachment) => attachment.id !== attachmentId)
+      });
+    }
+  }, [activeBrand]);
+
   const addBrand = useCallback(
     (
       newBrandData: Omit<Brand, "id" | "campaignCount" | "isActive" | "attachments" | "metrics"> 
@@ -45,7 +78,13 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         logoUrl: "",
         ...newBrandData,
         attachments: newBrandData.attachments
-          ? Array.from(newBrandData.attachments).map((file) => ({ name: file.name, url: URL.createObjectURL(file) }))
+          ? Array.from(newBrandData.attachments).map((file) => ({ 
+              id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+              name: file.name, 
+              url: URL.createObjectURL(file),
+              type: file.type,
+              size: file.size
+            }))
           : [],
         metrics: {
           targetAudience: newBrandData.metrics?.targetAudience ?? { primary: '', interests: [], locations: [] },
@@ -60,7 +99,18 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 
   return (
-    <BrandContext.Provider value={{ brands, activeBrand, setActiveBrand, addBrand }}>{children}</BrandContext.Provider>
+    <BrandContext.Provider 
+      value={{ 
+        brands, 
+        activeBrand, 
+        setActiveBrand, 
+        addBrand,
+        editBrand,
+        removeAttachment
+      }}
+    >
+      {children}
+    </BrandContext.Provider>
   );
 };
 

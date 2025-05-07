@@ -19,6 +19,12 @@ export interface Brand {
   campaignCount: number;
   color: string;
   isActive: boolean;
-  attachments?: { name: string; url: string }[];
+  attachments?: { 
+    id: string;
+    name: string; 
+    url: string;
+    type: string;
+    size: number;
+  }[];
   metrics?: BrandMetrics;
 }

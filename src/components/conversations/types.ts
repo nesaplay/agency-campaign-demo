@@ -18,4 +18,10 @@ export interface Message {
   showAddPublisherButton?: boolean;
   feedback?: 'positive' | 'negative';
   selectGeography?: { onSelect: (states: string[]) => void };
+  attachments?: {
+    id: string;
+    name: string;
+    type: string;
+    size: number;
+  }[];
 }

@@ -12,11 +12,84 @@ import { useToast } from "@/hooks/use-toast";
 import { mockPublishers } from "@/components/network/mockData";
 import { useMutation } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { cn } from "@/lib/utils";
 
 interface ConversationInterfaceProps {
   onPublisherSelect?: (publisher: ConversationPublisher) => void;
   assistantId?: string;
 }
+
+export const MessageContent: React.FC<{ content: string; isAssistant: boolean }> = ({ content, isAssistant }) => {
+  return (
+    <div
+      style={{ fontWeight: 300 }}
+      className={cn(
+        isAssistant ? "text-gray-800 font-serif" : "text-gray-900 font-sans",
+        "prose prose-sm max-w-none",
+        "prose-headings:font-serif",
+        "prose-p:my-2",
+        "prose-ul:my-2",
+        "prose-ol:my-2",
+        "prose-li:my-1",
+        "prose-blockquote:my-2",
+        "[&_p]:text-sm [&_p]:my-2",
+        "[&_h1]:text-sm [&_h1]:mt-6 [&_h1]:mb-3 [&_h1]:font-medium",
+        "[&_h2]:text-sm [&_h2]:mt-5 [&_h2]:mb-2.5 [&_h2]:font-medium",
+        "[&_h3]:text-sm [&_h3]:mt-4 [&_h3]:mb-2 [&_h3]:font-medium",
+        "[&_h4]:text-sm [&_h4]:mt-3.5 [&_h4]:mb-2 [&_h4]:font-medium",
+        "[&_h5]:text-sm [&_h5]:mt-3 [&_h5]:mb-1.5 [&_h5]:font-medium",
+        "[&_h6]:text-sm [&_h6]:mt-3 [&_h6]:mb-1.5 [&_h6]:font-medium",
+        "[&_ul]:text-sm [&_ul]:my-2",
+        "[&_ol]:text-sm [&_ol]:my-2",
+        "[&_li]:text-sm [&_li]:my-1",
+        "[&_blockquote]:text-sm [&_blockquote]:my-2",
+        "[&_a]:text-sm"
+      )}
+    >
+      <ReactMarkdown 
+        remarkPlugins={[remarkGfm]}
+        components={{
+          a: ({ children, ...props }) => (
+            <a {...props} className="text-empowerlocal-blue hover:underline" target="_blank" rel="noopener noreferrer">
+              {children}
+            </a>
+          ),
+          code: ({ children, className, ...props }) => {
+            const match = /language-(\w+)/.exec(className || '');
+            return !match ? (
+              <code {...props} className="bg-gray-100 px-1 py-0.5 rounded text-sm">
+                {children}
+              </code>
+            ) : (
+              <code {...props} className="block bg-gray-100 p-2 rounded text-sm my-2">
+                {children}
+              </code>
+            );
+          },
+          blockquote: ({ children, ...props }) => (
+            <blockquote {...props} className="border-l-2 border-gray-300 pl-2 italic text-gray-600 text-sm my-2">
+              {children}
+            </blockquote>
+          ),
+          ul: ({ children, ...props }) => (
+            <ul {...props} className="list-disc pl-3 space-y-1 text-sm my-2">
+              {children}
+            </ul>
+          ),
+          ol: ({ children, ...props }) => (
+            <ol {...props} className="list-decimal pl-3 space-y-1 text-sm my-2">
+              {children}
+            </ol>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+};
 
 const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublisherSelect, assistantId }) => {
   const { toast } = useToast();

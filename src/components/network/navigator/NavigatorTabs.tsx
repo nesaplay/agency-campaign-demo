@@ -79,7 +79,7 @@ const NavigatorTabs = forwardRef<HTMLDivElement, NavigatorTabsProps>(
             onValueChange={(value) => setActiveTab(value as "publishers" | "collections" | "seasonal")}
             className="w-full h-full flex flex-col"
           >
-            <TabsList className="w-full flex justify-start mb-0 bg-transparent p-0 border-b border-gray-200 overflow-x-auto">
+            <TabsList className="w-full flex justify-start mb-0 bg-transparent p-0 border-b border-gray-200 overflow-x-auto sticky top-0 z-30 min-h-16 bg-white z-[100]">
               <TabsTrigger
                 value="publishers"
                 className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
