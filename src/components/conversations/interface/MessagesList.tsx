@@ -62,6 +62,20 @@ const MessagesList: React.FC<MessagesListProps> = ({
                     <StateSelector onSelect={message.selectGeography.onSelect} />
                   </div>
                 </div>
+              ) : message.showMap ? (
+                <div className="flex items-start gap-3 max-w-3xl">
+                  <div className="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
+                    <p className="text-sm text-gray-800 mb-2 font-serif" style={{ fontFamily: 'DM Serif Display, Playfair Display, Georgia, Times, serif' }}>{message.content}</p>
+                    <div className="relative z-0">
+                      <PublisherMap 
+                        state={message.state} 
+                        publishers={message.publishers || []} 
+                        onPublisherSelect={onPublisherSelect}
+                        onAddPublisherToCampaign={onAddPublisherToCampaign}
+                      />
+                    </div>
+                  </div>
+                </div>
               ) : message.publishers ? (
                 <div className="flex items-start gap-3 max-w-3xl">
                   <div className="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
@@ -73,8 +87,8 @@ const MessagesList: React.FC<MessagesListProps> = ({
                             key={publisher.id}
                             publisher={publisher}
                             onClick={() => onPublisherSelect(publisher.id)}
-                            onAddToCampaign={() => onPublisherSelect(publisher.id)}
-                            onViewDetails={() => onPublisherSelect(publisher.id)}
+                            onAddToCampaign={() => onAddPublisherToCampaign(publisher.id)}
+                            // onViewDetails={() => onPublisherSelect(publisher.id)}
                           />
                         ))}
                       </div>
@@ -88,20 +102,6 @@ const MessagesList: React.FC<MessagesListProps> = ({
                         Add all publishers
                       </button>
                     )}
-                  </div>
-                </div>
-              ) : message.showMap ? (
-                <div className="flex items-start gap-3 max-w-3xl">
-                  <div className="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
-                    <p className="text-sm text-gray-800 mb-2 font-serif" style={{ fontFamily: 'DM Serif Display, Playfair Display, Georgia, Times, serif' }}>{message.content}</p>
-                    <div className="relative z-0">
-                      <PublisherMap 
-                        state={message.state} 
-                        publishers={message.publishers || []} 
-                        onPublisherSelect={onPublisherSelect}
-                        onAddPublisherToCampaign={onAddPublisherToCampaign}
-                      />
-                    </div>
                   </div>
                 </div>
               ) : (

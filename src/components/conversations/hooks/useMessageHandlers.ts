@@ -171,11 +171,11 @@ export const useMessageHandlers = ({
                 timestamp: new Date(),
                 publishers: recommendedPublishers,
                 showAddPublisherButton: true,
-                quickReplies: [
-                  { id: '9', text: `Add all ${recommendedPublishers.length}`, value: 'add-all' },
-                  { id: '10', text: 'See other options', value: 'more-options' },
-                  { id: '11', text: 'View campaign summary', value: 'view-summary' }
-                ]
+                // quickReplies: [
+                //   { id: '9', text: `Add all ${recommendedPublishers.length}`, value: 'add-all' },
+                //   { id: '10', text: 'See other options', value: 'more-options' },
+                //   { id: '11', text: 'View campaign summary', value: 'view-summary' }
+                // ]
               };
               setMessages((prev) => [...prev, recommendationsResponse]);
               setIsTyping(false);

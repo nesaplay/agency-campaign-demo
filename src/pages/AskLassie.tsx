@@ -61,7 +61,7 @@ const AskLassie = () => {
 
       // 2. Prepare request body
       const requestBody = {
-        message: userInput,
+        message: userInput + " \n\n" + "Give me short answer. Prioritize speed and simplicity.",
         assistantId: LASSIE_ASSISTANT_ID,
         thread_id: currentThreadId,
         context: JSON.stringify({
