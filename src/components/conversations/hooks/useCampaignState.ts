@@ -16,18 +16,6 @@ interface InitialStateContext {
     preselectedPublisherIds?: string[];
 }
 
-// Define the initial messages
-const recommendationPromptMessage: MessageType = {
-    id: 'recommend_prompt',
-    content: "Hey, based on your selected brand, do you need publisher recommendations?",
-    sender: 'assistant',
-    timestamp: new Date(),
-    quickReplies: [
-      { id: 'rec_yes', text: 'Yes, please!', value: 'recommend_yes' },
-      { id: 'rec_no', text: 'No, thanks', value: 'recommend_no' }
-    ]
-};
-
 const defaultWelcomeMessage: MessageType = {
     id: '1', // Keep original ID or use a new unique one like 'default_welcome'
     content: "Hello! I'm Lassie, your campaign building assistant. How can I help you today?",
@@ -42,15 +30,9 @@ const defaultWelcomeMessage: MessageType = {
 // --- Function to generate the dynamic recommendation prompt ---
 const createRecommendationPrompt = (brandName: string): MessageType => ({
     id: 'recommend_prompt',
-    // --- Updated, friendlier message with dynamic brand name ---
     content: `Greeting Jane, Would you like to build a campaign?`,
-    // --- End updated message ---
     sender: 'assistant',
     timestamp: new Date(),
-    quickReplies: [
-      { id: 'rec_yes', text: 'Yes, please!', value: 'recommend_yes' },
-      { id: 'rec_no', text: 'No, thanks', value: 'recommend_no' }
-    ]
 });
 // --- End function ---
 

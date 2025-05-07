@@ -148,6 +148,7 @@ export const useMessageHandlers = ({
             sender: "assistant",
             timestamp: new Date(),
             showMap: true,
+            state: selectedStates[0],
             publishers: allPublishersFromStore,
           };
           setMessages((prev) => [...prev, mapResponse]);

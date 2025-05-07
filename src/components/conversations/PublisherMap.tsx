@@ -7,6 +7,21 @@ import { Publisher } from "@/components/network/types";
 import L from "leaflet";
 import { Button } from "@/components/ui/button";
 
+// State center coordinates mapping
+const STATE_CENTERS: { [key: string]: LatLngExpression } = {
+  'CA': [36.78, -119.42], // California
+  'NY': [42.9538, -75.5268], // New York
+  'TX': [31.4757, -99.3312], // Texas
+  'FL': [27.6648, -81.5158], // Florida
+  'IL': [40.3363, -89.1965], // Illinois
+  'PA': [40.8781, -77.7996], // Pennsylvania
+  'OH': [40.4173, -82.9071], // Ohio
+  'GA': [32.6415, -83.4426], // Georgia
+  'NC': [35.6301, -79.8431], // North Carolina
+  'MI': [44.3148, -85.6024], // Michigan
+  // Add more states as needed
+};
+
 interface MapMarkerData {
   id: string;
   name: string;
@@ -18,6 +33,7 @@ interface PublisherMapProps {
   publishers: Publisher[];
   onPublisherSelect: (publisherId: string) => void;
   onAddPublisherToCampaign: (publisherId: string) => void;
+  state?: string;
 }
 
 const defaultIcon = L.icon({
@@ -29,7 +45,7 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-const PublisherMap: React.FC<PublisherMapProps> = ({ publishers, onPublisherSelect, onAddPublisherToCampaign }) => {
+const PublisherMap: React.FC<PublisherMapProps> = ({ publishers, onPublisherSelect, onAddPublisherToCampaign, state }) => {
   // Process publishers prop into MapMarkerData
   const markers: MapMarkerData[] = publishers
     .filter((p) => p.latitude != null && p.longitude != null) // Ensure coordinates exist
@@ -40,9 +56,10 @@ const PublisherMap: React.FC<PublisherMapProps> = ({ publishers, onPublisherSele
       publisherData: p, // Store the full publisher object
     }));
 
+
   // Use const for map center and zoom
-  const zoomLevel = 6;
-  const mapCenter: LatLngExpression = [36.78, -119.42]; // Centered on California
+  const zoomLevel = state ? 7 : 6; // Zoom in more when state is selected
+  const mapCenter: LatLngExpression = state ? STATE_CENTERS[state] || [36.78, -119.42] : [36.78, -119.42];
 
   // Filter state (can be kept if needed)
   const [filterOpen, setFilterOpen] = useState(false);
@@ -52,7 +69,7 @@ const PublisherMap: React.FC<PublisherMapProps> = ({ publishers, onPublisherSele
       {" "}
       {/* Adjust height as needed */}
       <MapContainer
-        key={markers.map((m) => m.id).join("-")}
+        key={`${state}-${markers.map((m) => m.id).join("-")}`}
         center={mapCenter}
         zoom={zoomLevel}
         style={{ height: "100%", width: "100%" }}

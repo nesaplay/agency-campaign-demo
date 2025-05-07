@@ -13,13 +13,18 @@ import { default as ConversationInterface } from "@/components/conversations/int
 import PublisherDetailModal from "@/components/network/navigator/PublisherDetailModal";
 import { useNetworkNavigator } from "@/components/network/hooks/useNetworkNavigator";
 import { mockPublishers } from "@/components/network/mockData";
+import { useBrand } from "@/components/brands/BrandContext";
 
-const LASSIE_ASSISTANT_ID = "88be2a13-70b9-4bfa-ac27-86584e703f84";
+const LASSIE_ASSISTANT_ID = import.meta.env.VITE_SUPABASE_ASSISTANT_ID;
+
+if (!LASSIE_ASSISTANT_ID) {
+  console.error('VITE_SUPABASE_ASSISTANT_ID is not set in environment variables');
+}
 
 const AskLassie = () => {
   const { selectedPublisher, handleCloseDetail, handlePublisherSelect } = useNetworkNavigator();
 
-  const [activeTab, setActiveTab] = useState<string>("ask");
+  const [activeTab, setActiveTab] = useState<"ask" | "history" | "chat">("ask");
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -33,6 +38,7 @@ const AskLassie = () => {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [currentThreadId, setCurrentThreadId] = useState<string | null>(null);
   const assistantMessageRef = useRef<Message | null>(null);
+  const { activeBrand } = useBrand();
 
   // Mock chat history state
   const [chatHistory, setChatHistory] = useState<ChatThread[]>([
@@ -50,16 +56,17 @@ const AskLassie = () => {
       // 1. Get Supabase auth token
       const supabase = createClient();
       const session = (await supabase.auth.getSession())?.data?.session;
-      console.log(session);
 
       if (!session) throw new Error("Not authenticated");
-      const token = session.access_token;
 
       // 2. Prepare request body
       const requestBody = {
         message: userInput,
         assistantId: LASSIE_ASSISTANT_ID,
         thread_id: currentThreadId,
+        context: JSON.stringify({
+          brand: activeBrand,
+        }),
       };
 
       // 3. Call the stream API endpoint
@@ -67,7 +74,6 @@ const AskLassie = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -152,7 +158,29 @@ const AskLassie = () => {
 
   // Placeholder handlers for MessagesList props
   const handleFeedback = () => console.log("Feedback clicked");
-  const handleQuickReply = () => console.log("Quick reply clicked");
+  const handleQuickReply = (text: string, value: string) => {
+    if (value === 'new') {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `system-${Date.now()}`,
+          content: "Great! Let's start building your new campaign. What would you like to call it?",
+          sender: "assistant",
+          timestamp: new Date(),
+        }
+      ]);
+    } else if (value === 'existing') {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `system-${Date.now()}`,
+          content: "Sure! Please select an existing campaign to continue.",
+          sender: "assistant",
+          timestamp: new Date(),
+        }
+      ]);
+    }
+  };
   const handleAddAllPublishers = () => console.log("Add all publishers clicked");
   const handleAddPublisherToCampaign = () => console.log("Add publisher clicked");
 
@@ -197,7 +225,11 @@ const AskLassie = () => {
   return (
     <MainLayout>
       <div className="flex flex-col h-[calc(100vh-4rem)] max-w-[80rem] mx-auto px-4 w-full">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as "ask" | "history" | "chat")}
+          className="flex flex-col h-full"
+        >
           <TabsList className="w-full flex justify-start bg-white border-b border-gray-200 p-0 px-4">
             <TabsTrigger
               value="ask"
@@ -206,6 +238,13 @@ const AskLassie = () => {
               <MessageSquare className="h-5 w-5" />
               <span>Ask Lassie</span>
             </TabsTrigger>
+            {/* <TabsTrigger
+              value="chat"
+              className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
+            >
+              <MessageSquare className="h-5 w-5" />
+              <span>Chat</span>
+            </TabsTrigger> */}
             <TabsTrigger
               value="history"
               className="flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-t-md data-[state=active]:border-empowerlocal-green data-[state=active]:border-b-2 data-[state=active]:text-empowerlocal-green data-[state=inactive]:text-gray-500 bg-transparent whitespace-nowrap"
@@ -220,7 +259,10 @@ const AskLassie = () => {
             className="flex flex-col flex-1 overflow-hidden mt-0 bg-empowerlocal-bg data-[state=inactive]:hidden"
           >
             <div className="py-4 h-full w-full flex items-center justify-between">
-              <ConversationInterface onPublisherSelect={handlePublisherSelect} />
+              <ConversationInterface 
+                onPublisherSelect={handlePublisherSelect} 
+                assistantId={LASSIE_ASSISTANT_ID}
+              />
             </div>
             <PublisherDetailModal selectedPublisher={selectedPublisher} onClose={handleCloseDetail} />
           </TabsContent>
@@ -235,7 +277,9 @@ const AskLassie = () => {
                 isTyping={streamMutation.isPending}
                 onFeedback={handleFeedback}
                 onQuickReply={handleQuickReply}
-                onPublisherSelect={publisherId => handlePublisherSelect(mockPublishers.find(p => p.id === publisherId)!)}
+                onPublisherSelect={(publisherId) =>
+                  handlePublisherSelect(mockPublishers.find((p) => p.id === publisherId)!)
+                }
                 onAddAllPublishers={handleAddAllPublishers}
                 onAddPublisherToCampaign={handleAddPublisherToCampaign}
               />

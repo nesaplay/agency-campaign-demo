@@ -14,6 +14,7 @@ export interface Message {
   quickReplies?: QuickReply[];
   publishers?: Publisher[];
   showMap?: boolean;
+  state?: string;
   showAddPublisherButton?: boolean;
   feedback?: 'positive' | 'negative';
   selectGeography?: { onSelect: (states: string[]) => void };

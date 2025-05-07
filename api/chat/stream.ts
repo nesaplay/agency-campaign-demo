@@ -1,8 +1,26 @@
-import type { IncomingMessage, ServerResponse } from "http";
-import { Database } from "../../src/types/supabase";
-import { openai } from "../../src/lib/openai";
-import { getOpenaiAssistantByDbId } from "../../src/lib/assistant/assistant-service";
-import { getSupabaseServiceRoleClient, getUserByToken } from "../../src/lib/server/utils";
+import type { Request, Response } from 'express';
+// import type { IncomingMessage } from "http"; // No longer needed
+import { Database, Json } from "../types/supabase";
+import { openai } from "../lib/openai";
+import { getOpenaiAssistantByDbId } from "../lib/assistant-service";
+// Remove getUserByToken from imports
+import { getSupabaseServiceRoleClient } from "../lib/utils"; 
+
+// Debug logging
+console.log('Stream handler environment variables:');
+console.log('SUPABASE_SERVICE_ROLE_UID:', process.env.SUPABASE_SERVICE_ROLE_UID);
+console.log('SUPABASE_ASSISTANT_ID:', process.env.SUPABASE_ASSISTANT_ID);
+
+const SERVICE_USER_ID = process.env.SUPABASE_SERVICE_ROLE_UID;
+const DEFAULT_ASSISTANT_ID = process.env.SUPABASE_ASSISTANT_ID;
+
+if (!SERVICE_USER_ID) {
+  throw new Error('SUPABASE_SERVICE_ROLE_UID is not set in environment variables');
+}
+
+if (!DEFAULT_ASSISTANT_ID) {
+  throw new Error('SUPABASE_ASSISTANT_ID is not set in environment variables');
+}
 
 type MessagesTable = Database["public"]["Tables"]["messages"];
 type MessageInsert = MessagesTable["Insert"];
@@ -11,55 +29,42 @@ type ThreadInsert = ThreadsTable["Insert"];
 
 interface StreamPostBody {
   message?: string;
-  filename?: string; // This is likely the DB file ID
+  filename?: string;
   hiddenMessage?: boolean;
-  context?: Record<string, unknown>; // Keep input flexible, but validate/cast before DB insert
-  thread_id?: string; // Optional DB thread ID
+  context?: Record<string, unknown>;
+  thread_id?: string;
   assistantId?: string;
 }
 
-function writeToStream(res: ServerResponse, data: string) {
+function writeToStream(res: Response, data: string) {
   res.write(data);
 }
 
-export default async function handler(req: IncomingMessage & { body?: StreamPostBody }, res: ServerResponse) {
+export default async function streamHandler(req: Request, res: Response) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
-    res.statusCode = 405;
-    return res.end(`Method ${req.method} Not Allowed`);
+    return res.status(405).send(`Method ${req.method} Not Allowed`);
   }
 
   const startTime = performance.now();
   console.log("Starting chat stream processing...");
 
-  const { user, error: authError } = await getUserByToken(req);
-  if (authError || !user) {
-    console.error("Auth Error in POST /api/chat/stream:", authError);
-    res.statusCode = 401;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "Unauthorized", details: authError?.message }));
-    return;
-  }
-  const userId = user.id;
-
+  // No user authentication, always use SERVICE_USER_ID
+  const userId = SERVICE_USER_ID;
+  
   const supabaseService = getSupabaseServiceRoleClient();
-
-  const requestData: StreamPostBody | undefined = req.body;
-  let request_thread_id: string | undefined;
+  const requestData: StreamPostBody = req.body;
   let db_thread_id: string;
   let openai_thread_id: string | undefined;
-  let assistantId: string | undefined;
   let newThreadCreated = false;
 
   try {
     const { message, filename, hiddenMessage, context } = requestData || {};
-    request_thread_id = requestData?.thread_id;
-    assistantId = requestData?.assistantId;
+    const request_thread_id = requestData?.thread_id;
+    const assistantId = requestData?.assistantId || DEFAULT_ASSISTANT_ID;
 
-    if (!message || !assistantId) {
-      res.statusCode = 400;
-      res.end(JSON.stringify({ error: "Missing required fields: message, assistantId" }));
-      return;
+    if (!message) {
+      return res.status(400).json({ error: "Missing required field: message" });
     }
 
     if (request_thread_id) {
@@ -69,13 +74,11 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
         .from("threads")
         .select("metadata")
         .eq("id", db_thread_id)
-        .eq("user_id", userId)
+        .eq("user_id", userId) // Use SERVICE_USER_ID
         .single();
       if (threadFetchError) {
         console.error(`Error fetching thread ${db_thread_id} for user ${userId}:`, threadFetchError);
-        res.statusCode = 404;
-        res.end(JSON.stringify({ error: "Provided thread not found or access denied." }));
-        return;
+        return res.status(404).json({ error: "Provided thread not found or access denied." });
       }
       const existingMetadata = threadData?.metadata as ThreadInsert["metadata"];
       const potentialOpenaiId =
@@ -99,9 +102,7 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
           .eq("id", db_thread_id);
         if (updateError) {
           console.error(`Failed update ${db_thread_id} w/ OpenAI ID ${openai_thread_id}:`, updateError);
-          res.statusCode = 500;
-          res.end(JSON.stringify({ error: "Failed to associate OpenAI thread." }));
-          return;
+          return res.status(500).json({ error: "Failed to associate OpenAI thread." });
         }
         console.log(`Associated OpenAI thread ${openai_thread_id} w/ DB thread ${db_thread_id}`);
       } else {
@@ -114,7 +115,7 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
       openai_thread_id = newOpenaiThread.id;
       console.log(`Created new OpenAI thread: ${openai_thread_id}`);
       const newDbThreadData: ThreadInsert = {
-        user_id: userId,
+        user_id: userId, // Use SERVICE_USER_ID
         assistant_id: assistantId,
         metadata: { openai_thread_id: openai_thread_id },
       };
@@ -125,20 +126,18 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
         .single();
       if (dbCreateError || !createdDbThread) {
         console.error(`Failed create new DB thread for user ${userId}:`, dbCreateError);
-        res.statusCode = 500;
-        res.end(JSON.stringify({ error: "Failed to create new DB thread." }));
-        return;
+        return res.status(500).json({ error: "Failed to create new DB thread." });
       }
       db_thread_id = createdDbThread.id;
       console.log(`Created DB thread ${db_thread_id} -> OpenAI thread ${openai_thread_id}`);
     }
 
     if (!hiddenMessage) {
-      const userMessageMetadata: MessageInsert["metadata"] =
+      const userMessageMetadata: MessageInsert["metadata"] = 
         context && typeof context === "object" ? (context as MessageInsert["metadata"]) : null;
       const userMessageToInsert: MessageInsert = {
         thread_id: db_thread_id,
-        user_id: userId,
+        user_id: userId, // Use SERVICE_USER_ID
         role: "user",
         content: message,
         completed: true,
@@ -148,9 +147,7 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
       const { error: insertUserMsgError } = await supabaseService.from("messages").insert(userMessageToInsert);
       if (insertUserMsgError) {
         console.error("Supabase user message insert error:", insertUserMsgError);
-        res.statusCode = 500;
-        res.end(JSON.stringify({ error: `Failed to save user message: ${insertUserMsgError.message}` }));
-        return;
+        return res.status(500).json({ error: `Failed to save user message: ${insertUserMsgError.message}` });
       }
     }
 
@@ -161,22 +158,18 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
         .from("files")
         .select("storage_path, filename, mime_type")
         .eq("id", filename)
-        .eq("user_id", userId)
+        .eq("user_id", userId) // Use SERVICE_USER_ID
         .single();
       if (fileFetchError || !fileRecord || !fileRecord.storage_path) {
         console.error(`Failed fetch file record ${filename}:`, fileFetchError);
-        res.statusCode = 400;
-        res.end(JSON.stringify({ error: "Failed to process attached file record." }));
-        return;
+        return res.status(400).json({ error: "Failed to process attached file record." });
       }
       const { data: blob, error: downloadError } = await supabaseService.storage
         .from("files")
         .download(fileRecord.storage_path);
       if (downloadError || !blob) {
         console.error(`Failed download file ${fileRecord.storage_path}:`, downloadError);
-        res.statusCode = 500;
-        res.end(JSON.stringify({ error: "Failed to download attached file data." }));
-        return;
+        return res.status(500).json({ error: "Failed to download attached file data." });
       }
       const openaiFile = await openai.files.create({
         file: new File([blob], fileRecord.filename || `file_${filename}`, {
@@ -189,7 +182,7 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
         `File processing took: ${(performance.now() - fileStartTime).toFixed(2)}ms. OpenAI File ID: ${openaiFileId}`,
       );
     }
-
+    
     const assistant = await getOpenaiAssistantByDbId(assistantId);
     const { data: assistantData } = await supabaseService
       .from("assistants")
@@ -212,7 +205,10 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
 
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Transfer-Encoding", "chunked");
-    res.statusCode = 200;
+    if (newThreadCreated) {
+      res.setHeader('X-Thread-ID', db_thread_id);
+    }
+    res.status(200);
 
     console.log("Using polling fallback for OpenAI run completion.");
     let status;
@@ -222,8 +218,14 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
       await new Promise((r) => setTimeout(r, 2000));
       status = await openai.beta.threads.runs.retrieve(openai_thread_id!, run.id);
       pollCount++;
-      if (pollCount > maxPolls) throw new Error("Polling timeout waiting for OpenAI run completion");
-    } while (status.status !== "completed");
+      if (pollCount > maxPolls) {
+        throw new Error("Polling timeout waiting for OpenAI run completion");
+      }
+    } while (status.status !== "completed" && status.status !== "failed" && status.status !== "cancelled");
+
+    if (status.status !== "completed") {
+        throw new Error(`OpenAI run did not complete successfully. Status: ${status.status}`);
+    }
 
     console.log(`Polling finished after ${pollCount} polls.`);
     const messages = await openai.beta.threads.messages.list(openai_thread_id!);
@@ -234,10 +236,12 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
       const assistantMessageMetadata: MessageInsert["metadata"] = {
         openai_message_id: lastMessage.id,
         openai_run_id: run.id,
+        ...(newThreadCreated && { new_db_thread_id: db_thread_id }),
+        ...(newThreadCreated && requestData?.context && { client_context: requestData.context as Json })
       };
       const assistantMessageToInsert: MessageInsert = {
         thread_id: db_thread_id,
-        user_id: userId,
+        user_id: userId, // Use SERVICE_USER_ID
         role: "assistant",
         content: assistantContent,
         completed: true,
@@ -247,29 +251,33 @@ export default async function handler(req: IncomingMessage & { body?: StreamPost
       const { error: insertAssistantMsgError } = await supabaseService
         .from("messages")
         .insert(assistantMessageToInsert);
-      if (insertAssistantMsgError) {
-        console.error("Failed to save assistant message:", insertAssistantMsgError);
-      }
 
+      if (insertAssistantMsgError) {
+        console.error("Supabase assistant message insert error:", insertAssistantMsgError);
+        // Don't send client error here as stream already started with 200
+        // Log it, and the stream will end, potentially incomplete from client view
+      }
       writeToStream(res, assistantContent);
     } else {
-      console.log("Last message was not text or content is empty.");
-      writeToStream(res, "[Assistant response was not text]");
+      console.error("No text content found in last assistant message.");
+      // Don't send client error here as stream already started with 200
+      writeToStream(res, "[Error: No text content from assistant]");
     }
-
     res.end();
-    console.log(`Chat stream processing finished in ${(performance.now() - startTime).toFixed(2)}ms`);
-  } catch (error: unknown) {
-    console.error("Error during stream processing:", error);
+
+  } catch (streamError: unknown) {
+    console.error("Stream processing error:", streamError);
+    const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
     if (!res.headersSent) {
-      res.statusCode = 500;
-      res.setHeader("Content-Type", "application/json");
-      const message = error instanceof Error ? error.message : "Internal server error during stream processing";
-      res.end(JSON.stringify({ error: message }));
+      res.status(500).json({ error: "Stream error", details: errorMessage });
     } else {
-      res.end();
+      if (!res.writableEnded) {
+         try { writeToStream(res, `\n[Error: ${errorMessage}]`); } catch (e) { /* ignore */ }
+         res.end();
+      }
     }
   }
+  console.log(`Chat stream processing finished in ${(performance.now() - startTime).toFixed(2)}ms`);
 }
 
 // function processOpenAIChunk(chunk: any): string | null {

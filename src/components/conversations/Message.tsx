@@ -55,15 +55,21 @@ const Message: React.FC<MessageProps> = ({
   const isAssistant = message.sender === "assistant";
 
   const getContextualInsight = () => {
-    if (message.content.includes("ice cream") || message.content.includes("summer")) {
+    if (
+      typeof message.content === "string" &&
+      (message.content.includes("ice cream") || message.content.includes("summer"))
+    ) {
       return "Summer ice cream campaigns perform best when launched 2-3 weeks before seasonal temperature increases. Consider starting in late April or early May for maximum impact.";
     }
 
-    if (message.content.includes("budget") || message.content.includes("$10,000")) {
+    if (
+      typeof message.content === "string" &&
+      (message.content.includes("budget") || message.content.includes("$10,000"))
+    ) {
       return "Similar campaigns in this budget range typically allocate 60% to premium publishers and 40% to mid-tier publishers for optimal reach/engagement balance.";
     }
 
-    if (message.content.includes("West Coast")) {
+    if (typeof message.content === "string" && message.content.includes("West Coast")) {
       return "West Coast markets show 28% higher engagement for food and beverage campaigns during summer months compared to national averages.";
     }
 
@@ -76,13 +82,18 @@ const Message: React.FC<MessageProps> = ({
         className={cn(
           "max-w-3xl space-y-2",
           isAssistant
-            ? "bg-gradient-to-r from-[#f0f7ff] to-[#e6f0ff] rounded-2xl rounded-tl-none p-4 shadow-sm"
-            : "bg-white border border-gray-200 rounded-2xl rounded-tr-none p-4 shadow-sm",
+            ? "bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100"
+            : "bg-[#F7F7F8] border border-gray-200 rounded-2xl rounded-tr-none p-4 shadow-sm",
         )}
       >
-        <div className="text-gray-800">{message.content}</div>
+        <div
+          style={{ fontFamily: "DM Serif Display, Playfair Display, Georgia, Times, serif" }}
+          className={cn(isAssistant ? "text-gray-800 text-base font-serif" : "text-gray-900 text-base font-sans")}
+        >
+          {message.content}
+        </div>
 
-        {isAssistant && message.content.includes("campaign") && (
+        {/* {isAssistant && typeof message.content === "string" && message.content.includes("campaign") && (
           <div className="mt-2 pt-2 border-t border-gray-200/50">
             <div className="flex justify-between items-center">
               <button
@@ -119,7 +130,7 @@ const Message: React.FC<MessageProps> = ({
               )}
             </AnimatePresence>
           </div>
-        )}
+        )} */}
 
         {message.showMap && (
           <div className="mt-3">
@@ -152,6 +163,7 @@ const Message: React.FC<MessageProps> = ({
                 publishers={message.publishers}
                 onPublisherSelect={onPublisherSelect}
                 onAddPublisherToCampaign={onAddPublisherToCampaign}
+                state={message.state}
               />
             ) : (
               <div className="border border-gray-200 rounded-md p-3 bg-white">
