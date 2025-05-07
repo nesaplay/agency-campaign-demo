@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
+import serverless from 'serverless-http';
+
 import cors from 'cors';
 import uploadHandler from './upload'; // Import the adapted handler
 import streamHandler from './chat/stream';
@@ -78,4 +80,4 @@ if (process.env.NODE_ENV !== 'test') { // Avoid listening during tests or when V
 }
 
 // Export the app for Vercel
-export default app; 
+export default serverless(app);
