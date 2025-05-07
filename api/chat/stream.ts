@@ -1,20 +1,20 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 // import type { IncomingMessage } from "http"; // No longer needed
 import { Database, Json } from "../types/supabase";
 import { openai } from "../lib/openai";
 import { getOpenaiAssistantByDbId } from "../lib/assistant-service";
 // Remove getUserByToken from imports
-import { getSupabaseServiceRoleClient } from "../lib/utils"; 
+import { getSupabaseServiceRoleClient } from "../lib/utils";
 
 const SERVICE_USER_ID = process.env.SUPABASE_SERVICE_ROLE_UID;
 const DEFAULT_ASSISTANT_ID = process.env.SUPABASE_ASSISTANT_ID;
 
 if (!SERVICE_USER_ID) {
-  throw new Error('SUPABASE_SERVICE_ROLE_UID is not set in environment variables');
+  throw new Error("SUPABASE_SERVICE_ROLE_UID is not set in environment variables");
 }
 
 if (!DEFAULT_ASSISTANT_ID) {
-  throw new Error('SUPABASE_ASSISTANT_ID is not set in environment variables');
+  throw new Error("SUPABASE_ASSISTANT_ID is not set in environment variables");
 }
 
 // Now TypeScript knows these are strings
@@ -40,10 +40,10 @@ function writeToStream(res: Response, data: string) {
 }
 
 export default async function streamHandler(req: Request, res: Response) {
-  // if (req.method !== "POST") {
-  //   res.setHeader("Allow", ["POST"]);
-  //   return res.status(405).send(`Method ${req.method} Not Allowed`);
-  // }
+  if (req.method !== "POST") {
+    res.setHeader("Allow", ["POST"]);
+    return res.status(405).send(`Method ${req.method} Not Allowed`);
+  }
 
   const startTime = performance.now();
   console.log("Starting chat stream processing...");
@@ -130,7 +130,7 @@ export default async function streamHandler(req: Request, res: Response) {
     }
 
     if (!hiddenMessage) {
-      const userMessageMetadata: MessageInsert["metadata"] = 
+      const userMessageMetadata: MessageInsert["metadata"] =
         context && typeof context === "object" ? (context as MessageInsert["metadata"]) : null;
       const userMessageToInsert: MessageInsert = {
         thread_id: db_thread_id,
@@ -179,7 +179,7 @@ export default async function streamHandler(req: Request, res: Response) {
         `File processing took: ${(performance.now() - fileStartTime).toFixed(2)}ms. OpenAI File ID: ${openaiFileId}`,
       );
     }
-    
+
     const assistant = await getOpenaiAssistantByDbId(assistantId);
     const { data: assistantData } = await supabaseService
       .from("assistants")
@@ -203,7 +203,7 @@ export default async function streamHandler(req: Request, res: Response) {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Transfer-Encoding", "chunked");
     if (newThreadCreated) {
-      res.setHeader('X-Thread-ID', db_thread_id);
+      res.setHeader("X-Thread-ID", db_thread_id);
     }
     res.status(200);
 
@@ -221,7 +221,7 @@ export default async function streamHandler(req: Request, res: Response) {
     } while (status.status !== "completed" && status.status !== "failed" && status.status !== "cancelled");
 
     if (status.status !== "completed") {
-        throw new Error(`OpenAI run did not complete successfully. Status: ${status.status}`);
+      throw new Error(`OpenAI run did not complete successfully. Status: ${status.status}`);
     }
 
     console.log(`Polling finished after ${pollCount} polls.`);
@@ -234,7 +234,7 @@ export default async function streamHandler(req: Request, res: Response) {
         openai_message_id: lastMessage.id,
         openai_run_id: run.id,
         ...(newThreadCreated && { new_db_thread_id: db_thread_id }),
-        ...(newThreadCreated && requestData?.context && { client_context: requestData.context as Json })
+        ...(newThreadCreated && requestData?.context && { client_context: requestData.context as Json }),
       };
       const assistantMessageToInsert: MessageInsert = {
         thread_id: db_thread_id,
@@ -261,7 +261,6 @@ export default async function streamHandler(req: Request, res: Response) {
       writeToStream(res, "[Error: No text content from assistant]");
     }
     res.end();
-
   } catch (streamError: unknown) {
     console.error("Stream processing error:", streamError);
     const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
@@ -269,8 +268,12 @@ export default async function streamHandler(req: Request, res: Response) {
       res.status(500).json({ error: "Stream error", details: errorMessage });
     } else {
       if (!res.writableEnded) {
-         try { writeToStream(res, `\n[Error: ${errorMessage}]`); } catch (e) { /* ignore */ }
-         res.end();
+        try {
+          writeToStream(res, `\n[Error: ${errorMessage}]`);
+        } catch (e) {
+          /* ignore */
+        }
+        res.end();
       }
     }
   }
@@ -280,4 +283,3 @@ export default async function streamHandler(req: Request, res: Response) {
 // function processOpenAIChunk(chunk: any): string | null {
 //     return chunk?.choices?.[0]?.delta?.content || null;
 // }
- 
