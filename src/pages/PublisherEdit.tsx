@@ -166,6 +166,7 @@ const PublisherEditPage: React.FC = () => {
                 publisher={originalPublisher} 
                 formData={formData} 
                 onFormChange={handleFormChange} 
+                isCreateMode={false}
               />
             </div>
             <div className="lg:col-span-2 sticky top-0">

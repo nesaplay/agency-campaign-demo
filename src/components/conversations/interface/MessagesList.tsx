@@ -73,10 +73,8 @@ const MessagesList: React.FC<MessagesListProps> = ({
                             key={publisher.id}
                             publisher={publisher}
                             onClick={() => onPublisherSelect(publisher.id)}
-                            onAddToCampaign={() => {
-                              onAddPublisherToCampaign(publisher.id);
-                            }}
-                            onViewDetailsInMenu={() => onPublisherSelect(publisher.id)}
+                            onAddToCampaign={() => onPublisherSelect(publisher.id)}
+                            onViewDetails={() => onPublisherSelect(publisher.id)}
                           />
                         ))}
                       </div>

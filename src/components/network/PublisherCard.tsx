@@ -6,19 +6,20 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import PublisherPreview, { PublisherPreviewData } from "@/components/publishers/PublisherPreview";
 import { useNavigate } from "react-router-dom";
+
 interface PublisherCardProps {
   publisher: Publisher;
   onClick: () => void;
-  onDeleteFromList?: () => void;
-  onViewDetailsInMenu?: () => void;
+  onDelete?: () => void;
+  onViewDetails?: () => void;
   onAddToCampaign?: () => void;
 }
 
 const PublisherCard: React.FC<PublisherCardProps> = ({
   publisher,
   onClick,
-  onDeleteFromList,
-  onViewDetailsInMenu,
+  onDelete,
+  onViewDetails,
   onAddToCampaign,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,8 +35,8 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
-    if (onDeleteFromList) {
-      onDeleteFromList();
+    if (onDelete) {
+      onDelete();
       toast({
         title: "Publisher removed",
         description: `${publisher.name} has been removed.`,
@@ -52,8 +53,8 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
   const handleViewDetailsClickInMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
-    if (onViewDetailsInMenu) {
-      onViewDetailsInMenu();
+    if (onViewDetails) {
+      onViewDetails();
     } else {
       onClick();
     }
@@ -100,7 +101,7 @@ const PublisherCard: React.FC<PublisherCardProps> = ({
               <Eye className="h-4 w-4 text-gray-500" />
               View Details
             </button>
-            {onDeleteFromList && (
+            {onDelete && (
               <button
                 className="w-full text-left py-2 px-3 hover:bg-red-50 transition-colors flex items-center gap-2 text-sm text-red-600"
                 onClick={handleDelete}
