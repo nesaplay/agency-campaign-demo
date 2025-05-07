@@ -1,8 +1,7 @@
 import type { Request, Response } from "express";
-// import type { IncomingMessage } from "http"; // No longer needed
 import { Json } from "../types/supabase";
-
-// Remove getUserByToken from imports
+import OpenAI from "openai";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 // --- Supabase Client Initialization ---
@@ -12,6 +11,11 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!supabaseUrl || !supabaseServiceKey) {
   throw new Error("Missing Supabase URL or Service Role Key environment variables");
 }
+
+
+type Database = any;
+type Assistant = any;
+type AssistantConfig = any
 
 // Now TypeScript knows these are strings
 const url: string = supabaseUrl;
@@ -34,12 +38,30 @@ function getSupabaseServiceRoleClient(): SupabaseClient<Database> {
   return supabaseServiceClientInstance;
 }
 
-import OpenAI from "openai";
-import { createServiceRoleClient } from "@/lib/supabase/server";
-import { Database } from "@/types/supabase";
-import { type Assistant } from "openai/resources/beta/assistants";
+const createServiceRoleClient = () => {
+  if (!process.env.VITE_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Missing Supabase environment variables for service role client');
+  }
 
-type AssistantConfig = Database["public"]["Tables"]["assistants"]["Row"];
+  return createServerClient<Database>(
+    process.env.VITE_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      cookies: {
+        get(name: string) {
+          return undefined;
+        },
+        set(name: string, value: string, options: CookieOptions) {},
+        remove(name: string, options: CookieOptions) {},
+      },
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      }
+    }
+  );
+};
 
 /**
  * Retrieves an OpenAI Assistant object using its corresponding database configuration ID.
@@ -107,7 +129,7 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error("Missing OPENAI_API_KEY environment variable");
 }
 
-export const openai = new OpenAI({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
