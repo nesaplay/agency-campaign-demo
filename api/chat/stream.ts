@@ -317,9 +317,12 @@ export default async function POST(req: Request, res: Response) {
     const messageWithContext = context ? `${message}\n\nCONTEXT:${JSON.stringify(context)}` : message;
     const messageToSend = userPrompt ? `${userPrompt}\n\n${messageWithContext}` : messageWithContext;
 
+    // priortize speed + "Give me short answer, limit to 250 characters. Prioritize speed and simplicity."
+    const fastMessageToSend = messageToSend + "\n\nGive me short answer, limit to 250 characters. Prioritize speed and simplicity.";
+
     await openai.beta.threads.messages.create(openai_thread_id!, {
       role: "user",
-      content: messageToSend,
+      content: fastMessageToSend,
       ...(openaiFileId ? { attachments: [{ file_id: openaiFileId, tools: [{ type: "code_interpreter" }] }] } : {}),
     });
 
