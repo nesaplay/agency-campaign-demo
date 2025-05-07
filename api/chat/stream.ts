@@ -19,7 +19,7 @@ const key: string = supabaseServiceKey;
 
 let supabaseServiceClientInstance: SupabaseClient<Database> | null = null;
 
-export function getSupabaseServiceRoleClient(): SupabaseClient<Database> {
+function getSupabaseServiceRoleClient(): SupabaseClient<Database> {
   if (!supabaseServiceClientInstance) {
     supabaseServiceClientInstance = createClient<Database>(url, key, {
       auth: {
@@ -48,7 +48,7 @@ type AssistantConfig = Database["public"]["Tables"]["assistants"]["Row"];
  * @returns The OpenAI Assistant object.
  * @throws Error if the database record or OpenAI assistant cannot be found or retrieved.
  */
-export async function getOpenaiAssistantByDbId(assistantId: string): Promise<Assistant> {
+async function getOpenaiAssistantByDbId(assistantId: string): Promise<Assistant> {
   const supabase = createServiceRoleClient();
 
   // 1. Fetch assistant config from DB by its primary key (UUID)
