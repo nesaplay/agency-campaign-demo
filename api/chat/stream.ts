@@ -39,7 +39,7 @@ function writeToStream(res: Response, data: string) {
   res.write(data);
 }
 
-export async function POST(req: Request, res: Response) {
+export default async function POST(req: Request, res: Response) {
   // if (req.method !== "POST") {
   //   res.setHeader("Allow", ["POST"]);
   //   return res.status(405).send(`Method ${req.method} Not Allowed`);
