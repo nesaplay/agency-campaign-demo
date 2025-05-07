@@ -1,10 +1,20 @@
 import type { Request, Response } from "express";
 // import type { IncomingMessage } from "http"; // No longer needed
 import { Database, Json } from "../types/supabase";
-import { openai } from "../lib/openai";
+
 import { getOpenaiAssistantByDbId } from "../lib/assistant-service";
 // Remove getUserByToken from imports
 import { getSupabaseServiceRoleClient } from "../lib/utils";
+
+import OpenAI from 'openai';
+
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('Missing OPENAI_API_KEY environment variable');
+}
+ 
+export const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+}); 
 
 const SERVICE_USER_ID = process.env.SUPABASE_SERVICE_ROLE_UID;
 const DEFAULT_ASSISTANT_ID = process.env.SUPABASE_ASSISTANT_ID;
