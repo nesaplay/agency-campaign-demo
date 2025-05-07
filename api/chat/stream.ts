@@ -337,9 +337,9 @@ export default async function POST(req: Request, res: Response) {
     console.log("Using polling fallback for OpenAI run completion.");
     let status;
     let pollCount = 0;
-    const maxPolls = 30;
+    const maxPolls = 50;
     do {
-      await new Promise((r) => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, 1000));
       status = await openai.beta.threads.runs.retrieve(openai_thread_id!, run.id);
       pollCount++;
       if (pollCount > maxPolls) {
