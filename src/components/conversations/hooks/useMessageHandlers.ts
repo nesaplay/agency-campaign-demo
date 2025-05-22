@@ -113,7 +113,7 @@ export const useMessageHandlers = ({
     {
       id: 'start_campaign',
       triggers: ["Start a new campaign", "new campaign"],
-      action: (): MessageType => {
+      action: (matchedContent: string): MessageType => {
         setCampaignStage(1);
         return {
           id: Date.now().toString(),
@@ -130,9 +130,19 @@ export const useMessageHandlers = ({
     },
     {
       id: 'set_budget',
-      triggers: ["$10,000", "budget"],
-      action: (): MessageType => {
-        const budgetSelection = "$10,000 - $50,000";
+      triggers: ["Under $10,000", "$10,000 - $50,000", "Over $50,000", "budget", "$10,000"],
+      action: (matchedContent: string): MessageType => {
+        const lowerMatchedContent = matchedContent.toLowerCase();
+        let budgetSelection = "$10,000 - $50,000"; // Default budget
+
+        if (lowerMatchedContent.includes("under $10,000")) {
+          budgetSelection = "Under $10,000";
+        } else if (lowerMatchedContent.includes("over $50,000")) {
+          budgetSelection = "Over $50,000";
+        } else if (lowerMatchedContent.includes("$10,000 - $50,000") || lowerMatchedContent.includes("$10,000")) {
+          budgetSelection = "$10,000 - $50,000";
+        }
+
         setCampaignDetails((prev) => ({ ...prev, budget: budgetSelection }));
         setCampaignStage(2);
 
@@ -171,11 +181,6 @@ export const useMessageHandlers = ({
                 timestamp: new Date(),
                 publishers: recommendedPublishers,
                 showAddPublisherButton: true,
-                // quickReplies: [
-                //   { id: '9', text: `Add all ${recommendedPublishers.length}`, value: 'add-all' },
-                //   { id: '10', text: 'See other options', value: 'more-options' },
-                //   { id: '11', text: 'View campaign summary', value: 'view-summary' }
-                // ]
               };
               setMessages((prev) => [...prev, recommendationsResponse]);
               setIsTyping(false);
@@ -199,7 +204,7 @@ export const useMessageHandlers = ({
     {
       id: 'add_all',
       triggers: ["Add all three", "add all"],
-      action: (): MessageType => {
+      action: (matchedContent: string): MessageType => {
         handleAddAllPublishers();
         setCampaignStage(4);
         return {
@@ -217,7 +222,7 @@ export const useMessageHandlers = ({
     {
       id: 'view_summary',
       triggers: ["View campaign summary", "Review summary"],
-      action: (): MessageType => {
+      action: (matchedContent: string): MessageType => {
         setShowSummaryPanel(true);
         return {
           id: Date.now().toString(),
@@ -268,7 +273,7 @@ export const useMessageHandlers = ({
     for (const step of stepsConfig) {
       const lowerContent = content.toLowerCase();
       if (step.triggers && Array.isArray(step.triggers) && step.triggers.some(trigger => lowerContent.includes(trigger.toLowerCase()))) {
-        response = step.action();
+        response = step.action(content);
         stepMatched = true;
         break;
       }
