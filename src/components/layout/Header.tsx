@@ -26,13 +26,13 @@ const Header: React.FC = () => {
         <BrandSelector />
         
         {/* Theme Toggle */}
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
         
         {/* Notification Bell */}
-        <button className="p-2 rounded-full hover:bg-white/10 relative">
+        {/* <button className="p-2 rounded-full hover:bg-white/10 relative">
           <Bell className="h-5 w-5 text-white" />
           <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-        </button>
+        </button> */}
 
         {/* User Profile */}
         <div className="flex items-center gap-3">
