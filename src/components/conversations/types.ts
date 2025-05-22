@@ -1,3 +1,4 @@
+import { Publisher } from "../network/types";
 
 export interface QuickReply {
   id: string;
@@ -5,21 +6,22 @@ export interface QuickReply {
   value: string;
 }
 
-export interface Publisher {
-  id: string;
-  name: string;
-  image: string;
-  location: string;
-  reach: string;
-  rating: number;
-}
-
 export interface Message {
   id: string;
-  content: string;
+  content: string | React.ReactNode;
   sender: 'user' | 'assistant';
   timestamp: Date;
   quickReplies?: QuickReply[];
   publishers?: Publisher[];
   showMap?: boolean;
+  state?: string;
+  showAddPublisherButton?: boolean;
+  feedback?: 'positive' | 'negative';
+  selectGeography?: { onSelect: (states: string[]) => void };
+  attachments?: {
+    id: string;
+    name: string;
+    type: string;
+    size: number;
+  }[];
 }

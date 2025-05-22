@@ -5,9 +5,7 @@ import NavigatorTabs from './NavigatorTabs';
 import PublisherDetailModal from './PublisherDetailModal';
 import SaveToListModalWrapper from './SaveToListModalWrapper';
 import FilterModalWrapper from './FilterModalWrapper';
-import { Publisher as NetworkPublisher } from '../types';
-import { Publisher as ConversationPublisher } from '@/components/conversations/types';
-import { adaptConversationPublisher } from './utils/publisherAdapter';
+import { Publisher } from '../types';
 
 const NetworkNavigatorInterface: React.FC = () => {
   const [isTabsSticky, setIsTabsSticky] = useState(false);
@@ -60,15 +58,14 @@ const NetworkNavigatorInterface: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleConversationPublisherSelect = (publisher: ConversationPublisher) => {
-    const networkPublisher = adaptConversationPublisher(publisher);
-    handlePublisherSelect(networkPublisher);
+  const handleConversationPublisherSelect = (publisher: Publisher) => {
+    handlePublisherSelect(publisher);
   };
 
   console.log("NetworkNavigatorInterface rendering", { filteredPublishers: filteredPublishers.length });
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full h-full">
       <FilterModalWrapper
         showFilters={showFilters}
         toggleFilters={toggleFilters}
@@ -94,7 +91,6 @@ const NetworkNavigatorInterface: React.FC = () => {
       <NavigatorTabs
         ref={tabsRef}
         isTabsSticky={isTabsSticky}
-        onConversationPublisherSelect={handleConversationPublisherSelect}
         filteredPublishers={filteredPublishers}
         selectedPublisher={selectedPublisher}
         selectedPublishers={selectedPublishers}

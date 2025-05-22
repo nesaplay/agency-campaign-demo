@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Briefcase, CheckCircle, MoreVertical, Edit, Eye, Archive } from 'lucide-react';
+import { Briefcase, CheckCircle, MoreVertical, Edit, Eye, Archive, Paperclip } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Brand } from './types';
 import { 
@@ -19,6 +18,13 @@ interface BrandCardProps {
 const BrandCard: React.FC<BrandCardProps> = ({ brand, onSetActive }) => {
   const [isHovering, setIsHovering] = useState(false);
   const navigate = useNavigate();
+
+  const attachmentsElement = brand.attachments && brand.attachments.length > 0 ? (
+    <div className="flex items-center">
+      <Paperclip className="h-3.5 w-3.5 mr-1" />
+      <span>{brand.attachments.length} files</span>
+    </div>
+  ) : null;
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -92,7 +98,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onSetActive }) => {
           </DropdownMenu>
         </div>
 
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-3 w-full">
           <div 
             className="h-12 w-12 rounded-lg flex items-center justify-center text-white text-xl font-semibold shadow-sm"
             style={{ backgroundColor: brand.color }}
@@ -101,9 +107,12 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onSetActive }) => {
           </div>
           <div>
             <h3 className="font-semibold text-lg text-gray-900">{brand.name}</h3>
-            <div className="flex items-center text-sm text-gray-500">
-              <Briefcase className="h-3.5 w-3.5 mr-1" />
-              <span>{brand.campaignCount} campaigns</span>
+            <div className="flex items-center text-sm text-gray-500 gap-2">
+              <div className="flex items-center">
+                <Briefcase className="h-3.5 w-3.5 mr-1" />
+                <span>{brand.campaignCount} campaigns</span>
+              </div>
+              {attachmentsElement}
             </div>
           </div>
         </div>
@@ -119,7 +128,9 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onSetActive }) => {
           )}
           onClick={(e) => {
             e.stopPropagation();
-            !brand.isActive && onSetActive(brand);
+            if (!brand.isActive) {
+              onSetActive(brand);
+            }
           }}
           disabled={brand.isActive}
           style={{ backgroundColor: brand.isActive ? brand.color : '' }}

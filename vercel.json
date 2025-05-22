@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/chat/stream.ts": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

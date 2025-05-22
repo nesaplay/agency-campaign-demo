@@ -1,6 +1,3 @@
-
-import { Publisher } from '@/components/network/types';
-
 export interface PublisherList {
   id: string;
   name: string;

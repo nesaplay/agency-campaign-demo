@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
-import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye, ExternalLink, Star, ChevronRight } from 'lucide-react';
-import { Publisher } from './types';
+import { MapPin, Users, BarChart2, DollarSign, Plus, MoreVertical, Trash2, Eye, ExternalLink, Star, ChevronRight, Newspaper } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
+import { Publisher } from './types';
 
 interface PublisherListItemProps {
   publisher: Publisher;
@@ -78,7 +77,8 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
     
     // Generate vibrant but not too bright colors
     const hue = Math.abs(nameHash) % 360;
-    return `hsl(${hue}, 70%, 60%)`;
+    // Make it slightly lighter/less saturated for background
+    return `hsl(${hue}, 60%, 85%)`; 
   };
   
   const brandColor = getPublisherBrandColor();
@@ -87,7 +87,7 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
   return (
     <div 
       className={cn(
-        "relative h-[110px] bg-white rounded-lg transition-all duration-150 cursor-pointer group",
+        "relative h-[110px] bg-white rounded-lg transition-all duration-150 cursor-pointer group flex items-center w-full gap-4",
         isHovered ? "shadow-md translate-x-0.5" : "shadow-sm border border-gray-200",
         isPremium && "ring-1 ring-amber-200"
       )}
@@ -98,18 +98,20 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
       {/* Publisher brand color strip */}
       <div 
         className="absolute top-0 left-0 right-0 h-1 rounded-t-lg" 
-        style={{ backgroundColor: brandColor }}
+        style={{ backgroundColor: `hsl(${Math.abs(publisher.name.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a; }, 0)) % 360}, 70%, 60%)` }}
       />
       
-      <div className="flex items-center h-full px-4 py-3">
+      <div className="flex items-center w-full h-full px-4 py-3">
         {/* SECTION: Identity & Information */}
-        <div className="flex items-center gap-4 w-[35%]">
-          {/* Logo */}
-          <div className="h-16 w-16 flex-shrink-0 bg-white flex items-center justify-center rounded-md shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex items-center gap-4 w-[35%] flex-1">
+          <div 
+            className="h-16 w-16 flex-shrink-0 flex items-center justify-center rounded-md shadow-sm overflow-hidden"
+            style={{ backgroundColor: brandColor }}
+          >
             <img
               src={publisher.logo}
               alt={`${publisher.name} logo`}
-              className="max-h-full max-w-full object-contain p-2"
+              className="max-h-12 max-w-12 object-contain" 
             />
           </div>
           
@@ -125,9 +127,9 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
             </div>
             
             {/* Content preview */}
-            <div className="mt-1 flex items-center">
-              <div className="w-6 h-6 rounded bg-gray-100 flex-shrink-0 mr-2">
-                <img src="https://source.unsplash.com/random/100x100/?newspaper" alt="" className="w-full h-full object-cover rounded" />
+            <div className="mt-1 flex items-center gap-2">
+              <div className="w-6 h-6 rounded bg-gray-100 flex items-center justify-center">
+                <Newspaper className="h-3.5 w-3.5" />
               </div>
               <p className="text-xs text-gray-600 line-clamp-1">Latest: "Local businesses thrive despite economic challenges."</p>
             </div>
@@ -135,7 +137,7 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
         </div>
         
         {/* SECTION: Categories & performance */}
-        <div className="flex flex-col gap-1 w-[25%]">
+        <div className="flex flex-col gap-4 w-[25%]">
           <div className={`self-start px-2.5 py-1 rounded-full text-xs font-medium shadow-sm ${getPerformanceBadgeStyle(publisher.performance)}`}>
             {publisher.performance === 'Excellent' && (
               <span className="flex items-center gap-1">
@@ -147,7 +149,7 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
           
           {/* Categories */}
           <div className="flex flex-wrap gap-1 mt-1">
-            {publisher.categories.slice(0, 3).map((category, index) => (
+            {publisher.categories.slice(0, 2).map((category, index) => (
               <span 
                 key={index} 
                 className={`px-2 py-0.5 border rounded-full text-xs ${getCategoryColor(category)}`}
@@ -155,21 +157,12 @@ const PublisherListItem: React.FC<PublisherListItemProps> = ({ publisher, onClic
                 {category}
               </span>
             ))}
-            {publisher.categories.length > 3 && (
+            {publisher.categories.length > 2 && (
               <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
-                +{publisher.categories.length - 3}
+                +{publisher.categories.length - 2}
               </span>
             )}
           </div>
-          
-          <a 
-            href="#" 
-            className="text-empowerlocal-blue text-xs flex items-center gap-0.5 hover:underline w-fit"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ExternalLink className="h-3 w-3" />
-            Visit Site
-          </a>
         </div>
         
         {/* SECTION: Metrics */}

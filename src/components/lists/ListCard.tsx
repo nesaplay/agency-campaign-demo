@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Eye, Share2, Users } from 'lucide-react';
 import { format } from 'date-fns';
@@ -13,7 +12,7 @@ interface ListCardProps {
 const ListCard: React.FC<ListCardProps> = ({ list, onClick }) => {
   return (
     <div 
-      className="card-component p-0 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-card hover:shadow-elevated transition-all duration-200 cursor-pointer"
+      className="card-component p-0 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-card hover:shadow-elevated transition-all duration-200 cursor-pointer flex flex-col"
       onClick={onClick}
     >
       {/* Cover Image */}
@@ -28,7 +27,7 @@ const ListCard: React.FC<ListCardProps> = ({ list, onClick }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         
         <div className="absolute bottom-0 left-0 p-4 text-white">
-          <h3 className="heading-3 font-bold text-xl tracking-[-0.2px]">{list.name}</h3>
+          <h3 className="font-bold text-white/80 text-xl tracking-[-0.2px]">{list.name}</h3>
         </div>
         
         {/* Visibility Badge */}
@@ -43,24 +42,28 @@ const ListCard: React.FC<ListCardProps> = ({ list, onClick }) => {
         </div>
       </div>
       
-      {/* Content */}
-      <div className="p-4">
-        <p className="body-text text-sm text-gray-600 leading-5 line-clamp-2">{list.description}</p>
+      {/* Content (flex-grow) */}
+      <div className="p-4 flex-grow flex flex-col justify-between gap-2">
+        <p className="body-text text-sm text-gray-600 leading-5 line-clamp-4 mb-3">{list.description}</p>
         
-        <div className="mt-4 flex items-center justify-between">
-          <div className="flex items-center text-sm text-gray-600">
-            <Users className="h-4 w-4 mr-1 text-gray-500" />
-            <span className="font-medium data-text">{list.publisherCount} publishers</span>
+        <div className="flex items-center text-xs text-gray-500">
+          <div className="flex items-center mr-2">
+            <Users className="h-3.5 w-3.5 mr-1" />
+            <span className="font-bold text-sm whitespace-nowrap">{list.publisherCount} publishers</span>
           </div>
           
-          <div className="text-xs text-gray-500 small-text">
+          <span className="mx-1">&middot;</span>
+          
+          <span className="whitespace-nowrap">
             Updated {format(list.lastUpdated, 'MMM d, yyyy')}
-          </div>
+          </span>
         </div>
+      </div>
         
-        {/* View Button */}
+      {/* View Button (mt-auto pushes to bottom) */}
+      <div className="p-4 pt-0 mt-auto">
         <button 
-          className="btn-primary mt-4 w-full py-2.5 flex items-center justify-center gap-1.5"
+          className="btn-primary w-full py-2.5 flex items-center justify-center gap-1.5"
           onClick={(e) => {
             e.stopPropagation();
             onClick();

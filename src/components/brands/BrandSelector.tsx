@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Link } from 'react-router-dom';
 
 const BrandSelector: React.FC = () => {
   const { brands, activeBrand, setActiveBrand } = useBrand();
@@ -56,12 +56,12 @@ const BrandSelector: React.FC = () => {
         ))}
         <div className="border-t border-gray-100 my-1"></div>
         <DropdownMenuItem asChild>
-          <a
-            href="/brands"
+          <Link
+            to="/brands"
             className="cursor-pointer flex items-center justify-center text-empowerlocal-blue font-medium"
           >
             Manage All Brands
-          </a>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
