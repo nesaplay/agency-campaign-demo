@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import EnvChecker from '@/components/debug/EnvChecker';
+import EnvFileChecker from '@/components/debug/EnvFileChecker';
 import Index from "./pages/Index";
 import Conversations from "./pages/Conversations";
 import NetworkNavigator from "./pages/NetworkNavigator";
@@ -29,32 +29,36 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    // EXTENSIVE ENV DEBUG LOGGING
-    console.log("=== APP.TSX ENVIRONMENT DEBUG START ===");
-    console.log("Current URL:", window.location.href);
-    console.log("NODE_ENV:", import.meta.env.NODE_ENV);
+    // IMMEDIATE ENV CHECK ON APP LOAD
+    console.log("=== APP STARTUP ENV CHECK ===");
+    console.log("Timestamp:", new Date().toISOString());
+    console.log("Window location:", window.location.href);
+    console.log("Document ready state:", document.readyState);
+    
+    // Check import.meta.env immediately
+    console.log("import.meta.env object exists:", !!import.meta.env);
+    console.log("import.meta.env type:", typeof import.meta.env);
+    console.log("import.meta.env keys count:", Object.keys(import.meta.env).length);
+    console.log("All keys:", Object.keys(import.meta.env));
+    
+    // Check our specific variables
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    
+    console.log("VITE_SUPABASE_URL raw value:", supabaseUrl);
+    console.log("VITE_SUPABASE_ANON_KEY raw value:", supabaseKey);
+    console.log("VITE_SUPABASE_URL type:", typeof supabaseUrl);
+    console.log("VITE_SUPABASE_ANON_KEY type:", typeof supabaseKey);
+    console.log("VITE_SUPABASE_URL defined:", supabaseUrl !== undefined);
+    console.log("VITE_SUPABASE_ANON_KEY defined:", supabaseKey !== undefined);
+    
+    // Check mode and other standard vars
     console.log("MODE:", import.meta.env.MODE);
-    console.log("BASE_URL:", import.meta.env.BASE_URL);
     console.log("DEV:", import.meta.env.DEV);
     console.log("PROD:", import.meta.env.PROD);
-    console.log("SSR:", import.meta.env.SSR);
+    console.log("BASE_URL:", import.meta.env.BASE_URL);
     
-    // Check specific env vars
-    console.log("VITE_SUPABASE_URL:", import.meta.env.VITE_SUPABASE_URL);
-    console.log("VITE_SUPABASE_ANON_KEY:", import.meta.env.VITE_SUPABASE_ANON_KEY);
-    console.log("Type of VITE_SUPABASE_URL:", typeof import.meta.env.VITE_SUPABASE_URL);
-    console.log("Type of VITE_SUPABASE_ANON_KEY:", typeof import.meta.env.VITE_SUPABASE_ANON_KEY);
-    
-    // List ALL environment variables
-    console.log("ALL ENV VARS:", import.meta.env);
-    console.log("ALL ENV KEYS:", Object.keys(import.meta.env));
-    console.log("VITE_ prefixed vars:", Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
-    
-    // Check if we're in browser environment
-    console.log("Is browser:", typeof window !== 'undefined');
-    console.log("Document ready state:", document.readyState);
-    console.log("Timestamp:", new Date().toISOString());
-    console.log("=== APP.TSX ENVIRONMENT DEBUG END ===");
+    console.log("=== END APP STARTUP ENV CHECK ===");
 
     const supabase = createClient();
 
@@ -87,6 +91,7 @@ const App = () => {
             <Toaster />
             <Sonner />
             <EnvChecker />
+            <EnvFileChecker />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/conversations" element={<Conversations />} />
