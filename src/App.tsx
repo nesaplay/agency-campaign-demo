@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,7 @@ import { BrandProvider } from "@/components/brands/BrandContext";
 import { ThemeProvider } from "next-themes";
 import { useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import EnvChecker from '@/components/debug/EnvChecker';
 import Index from "./pages/Index";
 import Conversations from "./pages/Conversations";
 import NetworkNavigator from "./pages/NetworkNavigator";
@@ -57,6 +59,7 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
+            <EnvChecker />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/conversations" element={<Conversations />} />
