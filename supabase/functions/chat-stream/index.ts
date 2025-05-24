@@ -522,7 +522,7 @@ Deno.serve(async (req: Request) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Stream processing error:", error); // Log the original error too
     // Ensure error responses also have CORS headers
-    return new Response(
+  return new Response(
       JSON.stringify({ error: "Stream error", details: errorMessage }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
