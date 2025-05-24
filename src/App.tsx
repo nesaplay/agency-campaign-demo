@@ -29,6 +29,33 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
+    // EXTENSIVE ENV DEBUG LOGGING
+    console.log("=== APP.TSX ENVIRONMENT DEBUG START ===");
+    console.log("Current URL:", window.location.href);
+    console.log("NODE_ENV:", import.meta.env.NODE_ENV);
+    console.log("MODE:", import.meta.env.MODE);
+    console.log("BASE_URL:", import.meta.env.BASE_URL);
+    console.log("DEV:", import.meta.env.DEV);
+    console.log("PROD:", import.meta.env.PROD);
+    console.log("SSR:", import.meta.env.SSR);
+    
+    // Check specific env vars
+    console.log("VITE_SUPABASE_URL:", import.meta.env.VITE_SUPABASE_URL);
+    console.log("VITE_SUPABASE_ANON_KEY:", import.meta.env.VITE_SUPABASE_ANON_KEY);
+    console.log("Type of VITE_SUPABASE_URL:", typeof import.meta.env.VITE_SUPABASE_URL);
+    console.log("Type of VITE_SUPABASE_ANON_KEY:", typeof import.meta.env.VITE_SUPABASE_ANON_KEY);
+    
+    // List ALL environment variables
+    console.log("ALL ENV VARS:", import.meta.env);
+    console.log("ALL ENV KEYS:", Object.keys(import.meta.env));
+    console.log("VITE_ prefixed vars:", Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
+    
+    // Check if we're in browser environment
+    console.log("Is browser:", typeof window !== 'undefined');
+    console.log("Document ready state:", document.readyState);
+    console.log("Timestamp:", new Date().toISOString());
+    console.log("=== APP.TSX ENVIRONMENT DEBUG END ===");
+
     const supabase = createClient();
 
     const checkAndSignIn = async () => {
