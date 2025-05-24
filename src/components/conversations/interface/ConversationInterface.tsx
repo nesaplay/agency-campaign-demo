@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/client";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from "@/lib/utils";
+import { CHAT_STREAM_SUPABASE_EDGE_URL } from '@/lib/constants'
 
 interface ConversationInterfaceProps {
   onPublisherSelect?: (publisher: ConversationPublisher) => void;
@@ -138,10 +139,13 @@ const ConversationInterface: React.FC<ConversationInterfaceProps> = ({ onPublish
       };
 
       // 3. Call the stream API endpoint
-      const response = await fetch("/api/chat/stream", {
+      
+      const url = CHAT_STREAM_SUPABASE_EDGE_URL;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
         },
         body: JSON.stringify(requestBody),
       });

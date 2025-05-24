@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CHAT_STREAM_SUPABASE_EDGE_URL, SUPABASE_ASSISTANT_ID } from "@/lib/constants";
 
 interface BrandChatInterfaceProps {
   brand: Brand;
@@ -39,8 +40,6 @@ interface BrandMetrics {
   objectives: string[];
   performance: PerformanceMetricProps[];
 }
-
-const LASSIE_ASSISTANT_ID = import.meta.env.VITE_SUPABASE_ASSISTANT_ID;
 
 const BrandMessage: React.FC<{
   message: Message;
@@ -375,17 +374,19 @@ const BrandChatInterface: React.FC<BrandChatInterfaceProps> = ({ brand, onBrandE
       // 2. Prepare request body
       const requestBody = {
         message: userInput,
-        assistantId: LASSIE_ASSISTANT_ID,
+        assistantId: SUPABASE_ASSISTANT_ID,
         context: JSON.stringify({
           brand,
         }),
       };
 
       // 3. Call the stream API endpoint
-      const response = await fetch("/api/chat/stream", {
+      const url = CHAT_STREAM_SUPABASE_EDGE_URL;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
         },
         body: JSON.stringify(requestBody),
       });

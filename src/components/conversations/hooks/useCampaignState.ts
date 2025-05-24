@@ -55,7 +55,6 @@ export const useCampaignState = (initialContext?: InitialStateContext) => {
       const initialMessages: MessageType[] = [];
       // Check if a brand is selected
       if (activeBrand) {
-          console.log('[useCampaignState] Active brand found: Adding recommendation prompt for', activeBrand.name);
           // Adjust timestamp slightly so it appears just before the default welcome
           const promptTimestamp = new Date();
           promptTimestamp.setMilliseconds(promptTimestamp.getMilliseconds() - 1);

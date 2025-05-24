@@ -14,12 +14,7 @@ import PublisherDetailModal from "@/components/network/navigator/PublisherDetail
 import { useNetworkNavigator } from "@/components/network/hooks/useNetworkNavigator";
 import { mockPublishers } from "@/components/network/mockData";
 import { useBrand } from "@/components/brands/BrandContext";
-
-const LASSIE_ASSISTANT_ID = import.meta.env.VITE_SUPABASE_ASSISTANT_ID;
-
-if (!LASSIE_ASSISTANT_ID) {
-  console.error('VITE_SUPABASE_ASSISTANT_ID is not set in environment variables');
-}
+import { CHAT_STREAM_SUPABASE_EDGE_URL, SUPABASE_ASSISTANT_ID } from "@/lib/constants";
 
 const AskLassie = () => {
   const { selectedPublisher, handleCloseDetail, handlePublisherSelect } = useNetworkNavigator();
@@ -62,7 +57,7 @@ const AskLassie = () => {
       // 2. Prepare request body
       const requestBody = {
         message: userInput,
-        assistantId: LASSIE_ASSISTANT_ID,
+        assistantId: SUPABASE_ASSISTANT_ID,
         thread_id: currentThreadId,
         context: JSON.stringify({
           brand: activeBrand,
@@ -70,10 +65,13 @@ const AskLassie = () => {
       };
 
       // 3. Call the stream API endpoint
-      const response = await fetch("/api/chat/stream", {
+      const url = CHAT_STREAM_SUPABASE_EDGE_URL;
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -159,25 +157,25 @@ const AskLassie = () => {
   // Placeholder handlers for MessagesList props
   const handleFeedback = () => console.log("Feedback clicked");
   const handleQuickReply = (text: string, value: string) => {
-    if (value === 'new') {
-      setMessages(prev => [
+    if (value === "new") {
+      setMessages((prev) => [
         ...prev,
         {
           id: `system-${Date.now()}`,
           content: "Great! Let's start building your new campaign. What would you like to call it?",
           sender: "assistant",
           timestamp: new Date(),
-        }
+        },
       ]);
-    } else if (value === 'existing') {
-      setMessages(prev => [
+    } else if (value === "existing") {
+      setMessages((prev) => [
         ...prev,
         {
           id: `system-${Date.now()}`,
           content: "Sure! Please select an existing campaign to continue.",
           sender: "assistant",
           timestamp: new Date(),
-        }
+        },
       ]);
     }
   };
@@ -259,10 +257,7 @@ const AskLassie = () => {
             className="flex flex-col flex-1 overflow-hidden mt-0 bg-empowerlocal-bg data-[state=inactive]:hidden"
           >
             <div className="py-4 h-full w-full flex items-center justify-between">
-              <ConversationInterface 
-                onPublisherSelect={handlePublisherSelect} 
-                assistantId={LASSIE_ASSISTANT_ID}
-              />
+              <ConversationInterface onPublisherSelect={handlePublisherSelect} assistantId={SUPABASE_ASSISTANT_ID} />
             </div>
             <PublisherDetailModal selectedPublisher={selectedPublisher} onClose={handleCloseDetail} />
           </TabsContent>
