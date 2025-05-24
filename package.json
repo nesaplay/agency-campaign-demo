@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev:client": "vite",
-    "dev:server": "nodemon --watch api --ext ts --exec \"tsx api/index.ts\"",
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev": "concurrently \"npm run dev:client\"",
     "build": "vite build && tsc",
     "build:dev": "vite build --mode development && tsc",
     "lint": "eslint .",
