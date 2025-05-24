@@ -19,7 +19,8 @@ const EnvFileChecker = () => {
         // Don't log the actual contents for security
       }
     } catch (error) {
-      console.log('.env file fetch error (this is normal):', error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.log('.env file fetch error (this is normal):', errorMessage);
     }
     
     // Check all environment variables
