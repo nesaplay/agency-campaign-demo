@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,8 +8,6 @@ import { BrandProvider } from "@/components/brands/BrandContext";
 import { ThemeProvider } from "next-themes";
 import { useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import EnvChecker from '@/components/debug/EnvChecker';
-import EnvFileChecker from '@/components/debug/EnvFileChecker';
 import Index from "./pages/Index";
 import Conversations from "./pages/Conversations";
 import NetworkNavigator from "./pages/NetworkNavigator";
@@ -29,37 +28,6 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    // IMMEDIATE ENV CHECK ON APP LOAD
-    console.log("=== APP STARTUP ENV CHECK ===");
-    console.log("Timestamp:", new Date().toISOString());
-    console.log("Window location:", window.location.href);
-    console.log("Document ready state:", document.readyState);
-    
-    // Check import.meta.env immediately
-    console.log("import.meta.env object exists:", !!import.meta.env);
-    console.log("import.meta.env type:", typeof import.meta.env);
-    console.log("import.meta.env keys count:", Object.keys(import.meta.env).length);
-    console.log("All keys:", Object.keys(import.meta.env));
-    
-    // Check our specific variables
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-    
-    console.log("VITE_SUPABASE_URL raw value:", supabaseUrl);
-    console.log("VITE_SUPABASE_ANON_KEY raw value:", supabaseKey);
-    console.log("VITE_SUPABASE_URL type:", typeof supabaseUrl);
-    console.log("VITE_SUPABASE_ANON_KEY type:", typeof supabaseKey);
-    console.log("VITE_SUPABASE_URL defined:", supabaseUrl !== undefined);
-    console.log("VITE_SUPABASE_ANON_KEY defined:", supabaseKey !== undefined);
-    
-    // Check mode and other standard vars
-    console.log("MODE:", import.meta.env.MODE);
-    console.log("DEV:", import.meta.env.DEV);
-    console.log("PROD:", import.meta.env.PROD);
-    console.log("BASE_URL:", import.meta.env.BASE_URL);
-    
-    console.log("=== END APP STARTUP ENV CHECK ===");
-
     const supabase = createClient();
 
     const checkAndSignIn = async () => {
@@ -90,8 +58,6 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <EnvChecker />
-            <EnvFileChecker />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/conversations" element={<Conversations />} />
